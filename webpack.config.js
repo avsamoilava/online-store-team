@@ -1,5 +1,4 @@
 const path = require('path');
-const { merge } = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
@@ -38,13 +37,10 @@ const baseConfig = {
     }),
     new CleanWebpackPlugin(),
   ],
+  devServer: {
+    hot: true,
+    historyApiFallback: true,
+  },
 };
 
-module.exports = ({ mode }) => {
-  const isProductionMode = mode === 'prod';
-  const envConfig = isProductionMode
-    ? require('./webpack/webpack.prod.config')
-    : require('./webpack/webpack.dev.config');
-
-  return merge(baseConfig, envConfig);
-};
+module.exports = baseConfig;
