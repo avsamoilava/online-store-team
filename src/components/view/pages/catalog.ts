@@ -79,38 +79,25 @@ class Catalog {
     switch (sortOption) {
       case 'price asc':
         this.productsData.sort((a, b) => (a.price > b.price ? 1 : -1));
-        this.page = 1;
-        this.render();
         break;
       case 'price desc':
         this.productsData.sort((a, b) => (a.price < b.price ? 1 : -1));
-        this.page = 1;
-        this.render();
         break;
       case 'rating asc':
         this.productsData.sort((a, b) => (a.rating > b.rating ? 1 : -1));
-        this.page = 1;
-        this.render();
         break;
       case 'rating desc':
         this.productsData.sort((a, b) => (a.rating < b.rating ? 1 : -1));
-        this.page = 1;
-        this.render();
         break;
       case 'discount asc':
         this.productsData.sort((a, b) => (a.discountPercentage > b.discountPercentage ? 1 : -1));
-        this.page = 1;
-        this.render();
         break;
       case 'discount desc':
         this.productsData.sort((a, b) => (a.discountPercentage < b.discountPercentage ? 1 : -1));
-        this.page = 1;
-        this.render();
-        break;
-
-      default:
         break;
     }
+    this.page = 1;
+    this.render();
   }
   filter() {
     return;
