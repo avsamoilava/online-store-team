@@ -18,6 +18,7 @@ class App {
     router
       .on('/', () => this.view.render('/'))
       .on('/cart', () => this.view.render('/cart'))
+      .on('/catalog', () => this.view.render('/catalog'))
       .on('/details/:id', (data) => {
         if (data?.data) {
           this.controller.getOne(data.data.id, (item: Product) => this.view.renderDetails(item));
