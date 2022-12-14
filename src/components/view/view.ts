@@ -11,7 +11,7 @@ class View {
   private catalog: Catalog = new Catalog();
   private elements: Elements = {
     '/': home,
-    '/catalog': this.catalog.element,
+    '/catalog': this.catalog.element(),
     '/cart': cart,
     '404': page404,
   };
