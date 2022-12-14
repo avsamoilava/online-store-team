@@ -18,11 +18,18 @@ const baseConfig = {
       {
         test: /\.(png|svg)$/i,
         type: 'asset/resource',
+        generator: {
+          filename: 'assets/[name][hash][ext]',
+        },
       },
       {
         test: /\.ts$/,
         use: 'ts-loader',
         exclude: /node_modules/,
+      },
+      {
+        test: /\.(woff|woff2|ttf)$/i,
+        type: 'asset/resource',
       },
     ],
   },

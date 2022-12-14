@@ -1,0 +1,26 @@
+@font-face {
+  font-family: "Raleway";
+  src: url(./assets/fonts/Raleway/Raleway-Regular.woff2) format("woff2"),
+  url(./assets/fonts/Raleway/Raleway-Regular.woff) format("woff"),
+  url(./assets/fonts/Raleway/Raleway-Regular.ttf) format("ttf"),;
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Raleway";
+  src: url(./assets/fonts/Raleway/Raleway-Medium.woff2) format("woff2"),
+  url(./assets/fonts/Raleway/Raleway-Medium.woff) format("woff"),
+  url(./assets/fonts/Raleway/Raleway-Medium.ttf) format("ttf");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Marker";
+  src: url(./assets/fonts/Permanent-marker/PermanentMarker-Regular.woff2) format("woff2"),
+  url(./assets/fonts/Permanent-marker/PermanentMarker-Regular.woff) format("woff"),
+  url(./assets/fonts/Permanent-marker/PermanentMarker-Regular.ttf) format("ttf");
+  font-weight: 400;
+  font-style: normal;
+}
