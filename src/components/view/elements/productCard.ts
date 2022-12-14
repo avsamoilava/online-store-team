@@ -2,7 +2,7 @@ import { el } from 'redom';
 import { Product } from '../../../types';
 import { router } from '../../router';
 
-export const productCard = (product: Product): HTMLElement => {
+export const productCard = (product: Readonly<Product>): HTMLElement => {
   const cardInfo = el('.card__info', { onclick: () => router.navigate(`/details/${product.id}`) }, [
     el('span.card__info-title', 'Category: ', [el('span', product.category)]),
     el('span.card__info-title', 'Brand: ', [el('span', product.brand)]),

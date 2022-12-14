@@ -20,7 +20,9 @@ class App {
       .on('/cart', () => this.view.render('/cart'))
       .on('/details/:id', (data) => {
         if (data?.data) {
-          this.controller.getOne(data.data.id, (item: Product) => this.view.renderDetails(item));
+          this.controller.getOne(data.data.id, (item: Readonly<Product>) =>
+            this.view.renderDetails(item)
+          );
         }
       })
       .notFound(() => this.view.render('404'))

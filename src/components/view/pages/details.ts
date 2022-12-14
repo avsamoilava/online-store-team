@@ -1,7 +1,7 @@
 import { el } from 'redom';
 import { Product } from '../../../types';
 
-export const details = (product: Product): HTMLElement =>
+export const details = (product: Readonly<Product>): HTMLElement =>
   el('section.details', [
     el('.container', [
       el('.details__content', [

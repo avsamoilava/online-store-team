@@ -13,21 +13,16 @@ class View {
     '/cart': cart,
     '404': page404,
   };
-  productsData: Product[] = [];
 
   render(path: string): void {
     setChildren(this.rootElement, [this.elements[path as keyof Elements]]);
   }
 
-  renderCatalog(data?: Product[]): void {
-    if (!this.productsData.length && data) {
-      this.productsData = data;
-    }
-    this.catalog.draw(this.productsData);
+  renderCatalog(data: Readonly<Product>[]): void {
+    this.catalog.draw(data);
   }
 
-  renderDetails(product: Product) {
-    console.log(location.pathname);
+  renderDetails(product: Readonly<Product>) {
     setChildren(this.rootElement, [details(product)]);
   }
 }

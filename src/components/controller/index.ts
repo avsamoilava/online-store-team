@@ -11,7 +11,7 @@ class Controller {
     return res;
   }
 
-  getOne(id: string, cb: (data: Product) => void) {
+  getOne(id: string, cb: (data: Readonly<Product>) => void) {
     fetch(`${this.url}/${id}`)
       .then((res) => this.errorHandler(res))
       .then((res) => res.json())
