@@ -24,6 +24,10 @@ const baseConfig = {
         use: 'ts-loader',
         exclude: /node_modules/,
       },
+      {
+        test: /\.(woff|woff2|ttf)$/i,
+        type: 'asset/resource',
+      },
     ],
   },
   resolve: {
