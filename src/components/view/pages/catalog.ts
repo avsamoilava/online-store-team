@@ -43,7 +43,12 @@ class Catalog {
 
   draw(data: Readonly<Product>[]) {
     this.productsData = data;
+
     if (this.productsData.length) {
+      const params = new URLSearchParams(location.search);
+      const sortOption = params.get('sort') as SortOptions;
+      if (sortOption) this.sort(sortOption);
+
       const pagination: Pagination = new Pagination(this.productsData.length, this.limit);
       const handleClick = (e: Event): void => {
         const element = e.target as HTMLElement;
