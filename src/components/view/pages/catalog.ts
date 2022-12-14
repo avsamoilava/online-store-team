@@ -47,7 +47,10 @@ class Catalog {
     if (this.productsData.length) {
       const params = new URLSearchParams(location.search);
       const sortOption = params.get('sort') as SortOptions;
-      if (sortOption) this.sort(sortOption);
+      if (sortOption) {
+        dropdownText.textContent = sortOption.replace('_', ' ');
+        this.sort(sortOption);
+      }
 
       const pagination: Pagination = new Pagination(this.productsData.length, this.limit);
       const handleClick = (e: Event): void => {
