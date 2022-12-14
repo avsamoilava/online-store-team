@@ -22,3 +22,11 @@ export type ApiResponse = {
   skip: number;
   total: number;
 };
+
+export type SortOptions =
+  | 'price asc'
+  | 'price desc'
+  | 'rating asc'
+  | 'rating desc'
+  | 'discount asc'
+  | 'discount desc';

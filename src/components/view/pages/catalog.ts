@@ -1,16 +1,10 @@
 import { el, setChildren } from 'redom';
-import { Product } from '../../../types';
+import { Product, SortOptions } from '../../../types';
+import { sortProducts } from '../../utils/sort';
 import { dropdown, dropdownList, dropdownText } from '../elements/dropdown';
 import Pagination from '../elements/pagination';
 import { productCard } from '../elements/productCard';
 
-type SortOptions =
-  | 'price asc'
-  | 'price desc'
-  | 'rating asc'
-  | 'rating desc'
-  | 'discount asc'
-  | 'discount desc';
 class Catalog {
   constructor(
     private productsData: Readonly<Product>[] = [],
@@ -65,6 +59,7 @@ class Catalog {
       setChildren(this.pagesContainer, [paginationEl]);
     }
   }
+
   render(): void {
     const coef: number = this.limit * (this.page - 1);
     const filteredProducts: Readonly<Product>[] =
@@ -75,30 +70,13 @@ class Catalog {
     const products: HTMLElement[] = filteredProducts.map((item) => productCard(item));
     setChildren(this.productsList, products);
   }
+
   sort(sortOption: SortOptions) {
-    switch (sortOption) {
-      case 'price asc':
-        this.productsData.sort((a, b) => (a.price > b.price ? 1 : -1));
-        break;
-      case 'price desc':
-        this.productsData.sort((a, b) => (a.price < b.price ? 1 : -1));
-        break;
-      case 'rating asc':
-        this.productsData.sort((a, b) => (a.rating > b.rating ? 1 : -1));
-        break;
-      case 'rating desc':
-        this.productsData.sort((a, b) => (a.rating < b.rating ? 1 : -1));
-        break;
-      case 'discount asc':
-        this.productsData.sort((a, b) => (a.discountPercentage > b.discountPercentage ? 1 : -1));
-        break;
-      case 'discount desc':
-        this.productsData.sort((a, b) => (a.discountPercentage < b.discountPercentage ? 1 : -1));
-        break;
-    }
+    sortProducts(sortOption, this.productsData);
     this.page = 1;
     this.render();
   }
+
   filter() {
     return;
   }
