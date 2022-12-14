@@ -1,7 +1,77 @@
 .header {
   padding: 20px;
-  &__nav {
+  
+  // .header__container
+
+  &__container {
     display: flex;
-    gap: 20px;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  // .header__logo
+
+  &__logo {
+    font-family: Marker, fantasy;
+    font-size: 2.5rem;
+    transition: color linear 0.36s;
+
+    &:hover {
+      color: $accent-interactive;
+    }
+
+    @media (max-width: 768px) {
+      font-size: 2rem;
+    }
+  }
+
+  // .header__nav
+
+  &__nav {
+    flex: 0 0 20%;
+  }
+
+  // .header__total
+
+  &__total {
+    font-size: 15px;
+  }
+
+  // .header__cart
+
+  &__cart {
+    a {
+      display: block;
+      height: 24px;
+      width: 24px;
+      background: url(./assets/images/icons/cart.png) center/cover no-repeat;
+      cursor: pointer;
+    }
+  }
+}
+
+.nav {
+
+  // .nav__list
+
+  &__list {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  // .nav__item
+
+  &__item {
+    a {
+      font-size: 15px;
+      line-height: 1.4;
+      text-transform: capitalize;
+      transition: color linear 0.36s;
+      
+      &:hover {
+        color: $accent-interactive;
+      }
+    }
   }
 }
