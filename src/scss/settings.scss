@@ -4,6 +4,9 @@ html,
 *::after {
   box-sizing: border-box;
 }
+html,body {
+  height: 100%;
+}
 body {
   margin: 0;
   padding: 0;
@@ -11,6 +14,9 @@ body {
   min-height: 100vh;
   min-width: 320px;
   font-family: Raleway, sans-serif;
+}
+main {
+  flex: 1 1 auto;
 }
 button {
   border: none;
@@ -43,4 +49,9 @@ p {
   max-width: 1140px;
   padding: 0 15px;
   margin: 0 auto;
+}
+.wrapper {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
 }
