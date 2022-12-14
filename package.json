@@ -37,5 +37,9 @@
     "webpack": "^5.37.1",
     "webpack-cli": "^4.5.0",
     "webpack-dev-server": "^3.11.2"
+  },
+  "dependencies": {
+    "navigo": "^8.11.1",
+    "redom": "^3.29.1"
   }
 }
