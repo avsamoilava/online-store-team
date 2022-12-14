@@ -8,6 +8,7 @@ export const productCard = (product: Readonly<Product>): HTMLElement => {
     el('span.card__info-title', 'Brand: ', [el('span', product.brand)]),
     el('span.card__info-title', 'Stock: ', [el('span', product.stock)]),
     el('span.card__info-title', 'Rating: ', [el('span', product.rating)]),
+    el('span.card__info-title', 'Discount: ', [el('span', `${product.discountPercentage}%`)]),
     el('span.card__info-link', 'More info'),
   ]);
   cardInfo.setAttribute('data-navigo', '');
