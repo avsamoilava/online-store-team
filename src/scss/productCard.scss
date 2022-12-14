@@ -1,5 +1,4 @@
 .card {
-  border: 2px solid black;
   height: 558px;
   display: flex;
   flex-direction: column;
@@ -8,7 +7,7 @@
   &__top {
     flex-grow: 1;
     max-height: 405px;
-    margin-bottom: 24px;
+    margin-bottom: 12px;
     position: relative;
     overflow: hidden;
     width: 100%;
@@ -20,18 +19,22 @@
     bottom: 0;
     left: 0;
     right: 0;
-    background-color: rgba($accent, 0.6);
-    padding: 24px;
+    background-color: rgba($accent, 0.77);
+    padding: 28px;
     transform: translate(-100%, -100%);
     transition: all .3s ease-in-out;
+    display: flex;
+    flex-direction: column;
     &-title {
       font-size: 22px;
       line-height: 140%;
       color: $light;
-      display: block;
       letter-spacing: 1px;
       font-weight: 600;
       margin-right: auto;
+      span {
+        font-weight: 400;
+      }
       &:not(:last-child) {
         margin-bottom: 12px;
       }
@@ -42,6 +45,16 @@
       background-size: 20px 30px;
       background-position: right center;
       text-transform: uppercase;
+      color: $light;
+      font-size: 24px;
+      text-align: center;
+      padding-right: 32px;
+      margin: auto;
+      margin-bottom: 12px;
+      transition: all .3s ease-in-out;
+      &:hover {
+        transform: scale(1.1);
+      }
     }
   }
   &__price {
@@ -49,6 +62,7 @@
     font-weight: 500;
     font-size: 15px;
     line-height: 140%;
+    margin-bottom: 12px;
     letter-spacing: 0.02em;
   }
   &__title {
