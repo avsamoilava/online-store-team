@@ -16,8 +16,11 @@ const baseConfig = {
         use: ['style-loader', 'css-loader', 'sass-loader'],
       },
       {
-        test: /\.(png)$/i,
+        test: /\.(png|svg)$/i,
         type: 'asset/resource',
+        generator: {
+          filename: 'assets/[name][hash][ext]',
+        },
       },
       {
         test: /\.ts$/,
