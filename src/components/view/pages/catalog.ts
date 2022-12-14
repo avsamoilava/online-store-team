@@ -1,5 +1,6 @@
 import { el, setChildren } from 'redom';
 import { Product, SortOptions } from '../../../types';
+import { router } from '../../router';
 import { sortProducts } from '../../utils/sort';
 import { dropdown, dropdownList, dropdownText } from '../elements/dropdown';
 import Pagination from '../elements/pagination';
@@ -19,8 +20,9 @@ class Catalog {
       const element = e.target as HTMLElement;
       if (!element.classList.contains('dropdown__item')) return;
       if (element.textContent) {
-        const option = element.textContent as SortOptions;
-        dropdownText.textContent = option;
+        dropdownText.textContent = element.textContent;
+        const option = element.textContent.replace(' ', '_') as SortOptions;
+        router.navigate(location.pathname + `?sort=${option}`);
         this.sort(option);
       }
     };

@@ -24,9 +24,9 @@ export type ApiResponse = {
 };
 
 export type SortOptions =
-  | 'price asc'
-  | 'price desc'
-  | 'rating asc'
-  | 'rating desc'
-  | 'discount asc'
-  | 'discount desc';
+  | 'price_asc'
+  | 'price_desc'
+  | 'rating_asc'
+  | 'rating_desc'
+  | 'discount_asc'
+  | 'discount_desc';
