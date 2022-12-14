@@ -8,11 +8,26 @@
 </head>
 <body>
   <header class="header">
-    <div class="container">
-      <nav class="header__nav">
-        <a href="/" data-navigo>catalog</a>
-        <a href="/cart" data-navigo>cart</a>
-      </nav>
+    <div class="container header__container">
+      <div class="header__logo">
+        <a href="/" data-navigo>Online Store</a>
+      </div>
+      <nav class="header__nav nav">
+        <ul class="nav__list">
+          <li class="nav__item">
+            <a href="/" data-navigo>home</a>
+          </li>
+          <li class="nav__item">
+            <a href="/catalog" data-navigo>catalog</a>
+          </li>
+        </ul>
+      </nav> 
+      <div class="header__total">
+          Total amount: 0
+        </div>
+        <div class="header__cart">
+          <a href="/cart" data-navigo></a>
+       </div>
     </div>
   </header>
   <main>
