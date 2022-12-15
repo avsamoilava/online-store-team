@@ -2,7 +2,7 @@ import { el, setChildren } from 'redom';
 import { Product } from '../../../types';
 import { filterProducts, sortProducts } from '../../utils';
 import Dropdown from '../elements/dropdown';
-import { filters } from '../elements/filters';
+import { filterBlock, filters, filtersContent } from '../elements/filters';
 import Pagination from '../elements/pagination';
 import { productCard } from '../elements/productCard';
 import SearchInput from '../elements/searchInput';
@@ -46,6 +46,12 @@ class Catalog {
 
   draw(data: Readonly<Product>[]) {
     this.productsData = data;
+    const brands = this.productsData.map((el) => el.brand);
+    const categories = this.productsData.map((el) => el.category);
+    setChildren(filtersContent, [
+      filterBlock('Categories:', Array.from(new Set(categories))),
+      filterBlock('Brands:', Array.from(new Set(brands))),
+    ]);
     if (!this.productsData.length) {
       this.setNoItemsTitle();
       return;
