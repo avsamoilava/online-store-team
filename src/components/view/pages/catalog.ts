@@ -96,7 +96,6 @@ class Catalog {
   }
 
   sort(sortOption: string) {
-    console.log(this);
     sortProducts(sortOption, this.productsData);
     this.page = 1;
     this.render();
