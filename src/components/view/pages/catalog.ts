@@ -1,7 +1,7 @@
 import { el, setChildren } from 'redom';
-import { Product, SortOptions } from '../../../types';
+import { Product } from '../../../types';
 import { setQueryString, sortProducts } from '../../utils';
-import { dropdown, dropdownList, dropdownText } from '../elements/dropdown';
+import Dropdown from '../elements/dropdown';
 import Pagination from '../elements/pagination';
 import { productCard } from '../elements/productCard';
 import { searchInput } from '../elements/searchInput';
@@ -12,22 +12,12 @@ class Catalog {
     private page: number = 1,
     private limit: number = 9,
     private productsList: HTMLElement = el('.products'),
-    private pagesContainer: HTMLElement = el('.catalog__pagination')
+    private pagesContainer: HTMLElement = el('.catalog__pagination'),
+    private dropdown: Dropdown = new Dropdown()
   ) {}
 
   element() {
-    const handleClick = (e: Event) => {
-      const element = e.target as HTMLElement;
-      if (!element.classList.contains('dropdown__item')) return;
-      if (element.textContent) {
-        dropdownText.textContent = element.textContent;
-        const option = element.textContent.replace(' ', '_') as SortOptions;
-        setQueryString('sort', option);
-
-        this.sort(option);
-      }
-    };
-    dropdownList.addEventListener('click', handleClick);
+    const dropdownElem = this.dropdown.element(this.sort.bind(this));
 
     let timer: ReturnType<typeof setTimeout>;
     searchInput.addEventListener('input', () => {
@@ -44,7 +34,7 @@ class Catalog {
       el('.container', [
         el('.catalog__content', [
           el('h1.catalog__title', 'catalog'),
-          el('.catalog__controls', [dropdown, searchInput]),
+          el('.catalog__controls', [dropdownElem, searchInput]),
           this.productsList,
           this.pagesContainer,
         ]),
@@ -77,9 +67,9 @@ class Catalog {
       const paginationEl: HTMLDivElement = pagination.pagesElement(1, handleClick);
       this.render();
 
-      const sortOption = params.get('sort') as SortOptions;
+      const sortOption = params.get('sort');
       if (sortOption) {
-        dropdownText.textContent = sortOption.replace('_', ' ');
+        this.dropdown.text.textContent = sortOption.replace('_', ' ');
         this.sort(sortOption);
       }
 
@@ -105,7 +95,8 @@ class Catalog {
     setChildren(this.productsList, products);
   }
 
-  sort(sortOption: SortOptions) {
+  sort(sortOption: string) {
+    console.log(this);
     sortProducts(sortOption, this.productsData);
     this.page = 1;
     this.render();

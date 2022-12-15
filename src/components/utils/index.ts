@@ -1,7 +1,18 @@
-import { Product, SortOptions } from '../../types';
+import { Product } from '../../types';
 import { router } from '../router';
 
-export function sortProducts(option: SortOptions, arr: Product[]) {
+export function sortProducts(option: string, arr: Product[]) {
+  if (
+    ![
+      'price_asc',
+      'price_desc',
+      'rating_asc',
+      'rating_desc',
+      'discount_asc',
+      'discount_desc',
+    ].includes(option)
+  )
+    return;
   switch (option) {
     case 'price_asc':
       arr.sort((a, b) => (a.price > b.price ? 1 : -1));
