@@ -1,7 +1,6 @@
 import { el, setChildren } from 'redom';
 import { Product, SortOptions } from '../../../types';
-import { router } from '../../router';
-import { sortProducts } from '../../utils/sort';
+import { setQueryString, sortProducts } from '../../utils';
 import { dropdown, dropdownList, dropdownText } from '../elements/dropdown';
 import Pagination from '../elements/pagination';
 import { productCard } from '../elements/productCard';
@@ -23,11 +22,7 @@ class Catalog {
       if (element.textContent) {
         dropdownText.textContent = element.textContent;
         const option = element.textContent.replace(' ', '_') as SortOptions;
-
-        const params = new URLSearchParams(location.search);
-        if (params.has('sort')) params.delete('sort');
-        params.set('sort', option);
-        router.navigate(location.pathname + `?${params.toString()}`);
+        setQueryString('sort', option);
 
         this.sort(option);
       }
@@ -39,11 +34,7 @@ class Catalog {
       clearTimeout(timer);
       timer = setTimeout(() => {
         const searchQuery = (searchInput as HTMLInputElement).value.trim().toLowerCase();
-
-        const params = new URLSearchParams(location.search);
-        if (params.has('search')) params.delete('search');
-        if (searchQuery) params.set('search', searchQuery);
-        router.navigate(location.pathname + `?${params.toString()}`);
+        setQueryString('search', searchQuery);
 
         this.filter(searchQuery);
       }, 500);
@@ -61,6 +52,9 @@ class Catalog {
     ]);
     return element;
   }
+
+  /////// ИСПРАВИТЬ ПАГИНАЦИЮ ПРИ ФИЛЬТРЕ
+  /////// КОГДА НЕТ НАЙДЕННЫХ ТОВАРОВ, ВЫВОДИТЬ ИНФУ ОБ ЭТОМ
 
   draw(data: Readonly<Product>[]) {
     this.productsData = data;
