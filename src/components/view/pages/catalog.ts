@@ -12,7 +12,7 @@ class Catalog {
     private productsData: Readonly<Product>[] = [],
     private page: number = 1,
     private limit: number = 9,
-    private productsList: HTMLElement = el('.products'),
+    private productsList: HTMLElement = el('.products#columns3'),
     private pagesContainer: HTMLElement = el('.catalog__pagination'),
     private dropdown: Dropdown = new Dropdown(),
     private searchInput: SearchInput = new SearchInput(),
@@ -27,7 +27,11 @@ class Catalog {
       el('.container', [
         el('.catalog__content', [
           el('h1.catalog__title', 'catalog'),
-          el('.catalog__controls', [dropdownElem, viewControls, searchInputElem]),
+          el('.catalog__controls', [
+            dropdownElem,
+            viewControls(this.changeView.bind(this)),
+            searchInputElem,
+          ]),
           this.productsList,
           this.pagesContainer,
         ]),
@@ -91,6 +95,13 @@ class Catalog {
     this.pagination = new Pagination(itemsCount, this.limit);
     const paginationEl: HTMLDivElement = this.pagination.pagesElement(1, this.render.bind(this));
     setChildren(this.pagesContainer, [paginationEl]);
+  }
+
+  changeView(columns: number) {
+    this.limit = columns ** 2;
+    this.setPages(this.productsData.length);
+    this.render();
+    this.productsList.id = `columns${columns}`;
   }
 
   filter(query: string) {

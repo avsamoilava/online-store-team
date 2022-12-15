@@ -17,10 +17,18 @@
 }
 .products {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
   grid-row-gap: 65px;
   grid-column-gap: 30px;
   margin-bottom: 60px;
+  &#columns2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  &#columns3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  &#columns4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
   &__no-items {
     grid-column: span 3;
     text-align: center;
