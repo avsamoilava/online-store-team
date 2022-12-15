@@ -1,10 +1,10 @@
 import { el, setChildren } from 'redom';
 import { Product } from '../../../types';
-import { setQueryString, sortProducts } from '../../utils';
+import { sortProducts } from '../../utils';
 import Dropdown from '../elements/dropdown';
 import Pagination from '../elements/pagination';
 import { productCard } from '../elements/productCard';
-import { searchInput } from '../elements/searchInput';
+import SearchInput from '../elements/searchInput';
 
 class Catalog {
   constructor(
@@ -13,28 +13,19 @@ class Catalog {
     private limit: number = 9,
     private productsList: HTMLElement = el('.products'),
     private pagesContainer: HTMLElement = el('.catalog__pagination'),
-    private dropdown: Dropdown = new Dropdown()
+    private dropdown: Dropdown = new Dropdown(),
+    private searchInput: SearchInput = new SearchInput()
   ) {}
 
   element() {
     const dropdownElem = this.dropdown.element(this.sort.bind(this));
-
-    let timer: ReturnType<typeof setTimeout>;
-    searchInput.addEventListener('input', () => {
-      clearTimeout(timer);
-      timer = setTimeout(() => {
-        const searchQuery = (searchInput as HTMLInputElement).value.trim().toLowerCase();
-        setQueryString('search', searchQuery);
-
-        this.filter(searchQuery);
-      }, 500);
-    });
+    const searchInputElem = this.searchInput.element(this.filter.bind(this));
 
     const element: HTMLElement = el('section.catalog', [
       el('.container', [
         el('.catalog__content', [
           el('h1.catalog__title', 'catalog'),
-          el('.catalog__controls', [dropdownElem, searchInput]),
+          el('.catalog__controls', [dropdownElem, searchInputElem]),
           this.productsList,
           this.pagesContainer,
         ]),
@@ -76,7 +67,7 @@ class Catalog {
 
       const filterOption = params.get('search');
       if (filterOption) {
-        (searchInput as HTMLInputElement).value = filterOption;
+        this.searchInput.setValue(filterOption);
         this.filter(filterOption);
       }
 
