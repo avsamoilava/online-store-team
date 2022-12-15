@@ -35,7 +35,6 @@ class Catalog {
   }
 
   /////// ИСПРАВИТЬ ПАГИНАЦИЮ ПРИ ФИЛЬТРЕ
-  /////// КОГДА НЕТ НАЙДЕННЫХ ТОВАРОВ, ВЫВОДИТЬ ИНФУ ОБ ЭТОМ
 
   draw(data: Readonly<Product>[]) {
     this.productsData = data;
@@ -65,6 +64,10 @@ class Catalog {
   }
 
   render(page?: number, data?: Readonly<Product>[]): void {
+    if (data && !data.length) {
+      setChildren(this.productsList, [el('h1.products__no-items', 'No products found...')]);
+      return;
+    }
     if (page) this.page = page;
     const coef: number = this.limit * (this.page - 1);
     const productsArray = data ? data : this.productsData;
