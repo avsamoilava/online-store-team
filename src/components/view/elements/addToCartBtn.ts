@@ -2,11 +2,11 @@ import { el, setChildren } from 'redom';
 
 class AddToCartBtn {
   constructor(
-    private wrapper: HTMLElement = el('.card__btn.btn'),
-    private addBtn = el('button', 'Add to cart'),
-    private countElement = el('span', '1'),
-    private plusBtn = el('button', '+'),
-    private minusBtn = el('button', '-'),
+    private wrapper: HTMLElement = el('.card__btn.card__btn-wrapper'),
+    private addBtn = el('button.card__add-btn.btn', 'Add to cart'),
+    private countElement = el('span.card__counter', '1'),
+    private plusBtn = el('button.card__btn-small.plus'),
+    private minusBtn = el('button.card__btn-small.minus'),
     private counter = 0
   ) {}
   private increaseCounter() {

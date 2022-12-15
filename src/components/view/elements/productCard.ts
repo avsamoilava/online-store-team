@@ -20,10 +20,6 @@ export const productCard = (product: Readonly<Product>): HTMLElement => {
     el('.card__top', [el('img.card__image', { src: product.images[0] }), cardInfo]),
     el('h4.card__title', product.title),
     el('span.card__price', `$${product.price}`),
-    el('.card__buttons', [
-      // el('button.card__btn.btn', 'Add to cart'),
-      addToCartBtn.element(),
-      el('button.card__btn.btn.btn-fill', 'Buy now'),
-    ]),
+    el('.card__buttons', [addToCartBtn.element(), el('button.card__btn.btn.btn-fill', 'Buy now')]),
   ]);
 };
