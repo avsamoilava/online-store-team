@@ -1,48 +1,19 @@
 import { el, setChildren } from 'redom';
 import { Product } from '../../../types';
 import { filterProducts, sortProducts } from '../../utils';
-import Dropdown from '../elements/dropdown';
-import { filterBlock, filters, filtersContent } from '../elements/filters';
+import { filterBlock, filtersContent } from '../elements/filters';
 import Pagination from '../elements/pagination';
 import { productCard } from '../elements/productCard';
-import SearchInput from '../elements/searchInput';
-import { viewControls } from '../elements/viewControls';
 
 class Catalog {
   constructor(
-    private productsData: Readonly<Product>[] = [],
-    private page: number = 1,
-    private limit: number = 9,
-    private productsList: HTMLElement = el('.products#columns3'),
-    private pagesContainer: HTMLElement = el('.catalog__pagination'),
-    private dropdown: Dropdown = new Dropdown(),
-    private searchInput: SearchInput = new SearchInput(),
-    private pagination: Pagination = new Pagination(100, 9)
+    protected productsData: Readonly<Product>[] = [],
+    protected productsList: HTMLElement = el('.products#columns3'),
+    protected page: number = 1,
+    protected limit: number = 9,
+    protected pagination: Pagination = new Pagination(100, 9),
+    protected pagesContainer: HTMLElement = el('.catalog__pagination')
   ) {}
-
-  element() {
-    const dropdownElem = this.dropdown.element(this.sort.bind(this));
-    const searchInputElem = this.searchInput.element(this.filter.bind(this));
-
-    const element: HTMLElement = el('section.catalog', [
-      el('.container.catalog__container', [
-        el('.catalog__content', [
-          el('h1.catalog__title', 'catalog'),
-          filters,
-          el('.catalog__products', [
-            el('.catalog__controls', [
-              dropdownElem,
-              viewControls(this.changeView.bind(this)),
-              searchInputElem,
-            ]),
-            this.productsList,
-            this.pagesContainer,
-          ]),
-        ]),
-      ]),
-    ]);
-    return element;
-  }
 
   draw(data: Readonly<Product>[]) {
     this.productsData = data;
@@ -52,26 +23,13 @@ class Catalog {
       filterBlock('Categories:', Array.from(new Set(categories))),
       filterBlock('Brands:', Array.from(new Set(brands))),
     ]);
+
     if (!this.productsData.length) {
       this.setNoItemsTitle();
       return;
     }
-    const params = new URLSearchParams(location.search);
     this.setPages(this.productsData.length);
     this.render();
-
-    const sortOption = params.get('sort');
-    if (sortOption) {
-      this.dropdown.text.textContent = sortOption.replace('_', ' ');
-      this.dropdown.closeIcon.classList.add('dropdown__close--active');
-      this.sort(sortOption);
-    }
-
-    const filterOption = params.get('search');
-    if (filterOption) {
-      this.searchInput.setValue(filterOption);
-      this.filter(filterOption);
-    }
   }
 
   render(page?: number, data?: Readonly<Product>[]): void {
@@ -91,11 +49,11 @@ class Catalog {
     setChildren(this.productsList, products);
   }
 
-  setNoItemsTitle() {
-    setChildren(this.productsList, [el('h1.products__no-items', 'No products found...')]);
-    setChildren(this.pagesContainer, []);
-  }
-
+  ////////////////////////
+  // Когда сначала отфильтровал товары, а потом сортируешь,
+  // сортировка работает неправильно -
+  // фильтрует полный список товаров
+  ////////////////////
   sort(sortOption: string) {
     sortProducts(sortOption, this.productsData);
     this.render(1);
@@ -118,6 +76,11 @@ class Catalog {
     const filtered = this.productsData.filter((el) => filterProducts(el, query));
     this.setPages(filtered.length);
     this.render(1, filtered);
+  }
+
+  setNoItemsTitle() {
+    setChildren(this.productsList, [el('h1.products__no-items', 'No products found...')]);
+    setChildren(this.pagesContainer, []);
   }
 }
 
