@@ -85,6 +85,7 @@
   }
   &__btn {
     flex-grow: 1;
+    width: 50%;
     &:not(:last-child) {
       margin-right: 12px;
     }
