@@ -24,16 +24,18 @@ class Catalog {
     const searchInputElem = this.searchInput.element(this.filter.bind(this));
 
     const element: HTMLElement = el('section.catalog', [
-      el('.container', [
+      el('.container.catalog__container', [
         el('.catalog__content', [
           el('h1.catalog__title', 'catalog'),
-          el('.catalog__controls', [
-            dropdownElem,
-            viewControls(this.changeView.bind(this)),
-            searchInputElem,
+          el('.catalog__products', [
+            el('.catalog__controls', [
+              dropdownElem,
+              viewControls(this.changeView.bind(this)),
+              searchInputElem,
+            ]),
+            this.productsList,
+            this.pagesContainer,
           ]),
-          this.productsList,
-          this.pagesContainer,
         ]),
       ]),
     ]);
