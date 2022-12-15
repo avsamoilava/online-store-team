@@ -14,7 +14,8 @@ class Catalog {
     private productsList: HTMLElement = el('.products'),
     private pagesContainer: HTMLElement = el('.catalog__pagination'),
     private dropdown: Dropdown = new Dropdown(),
-    private searchInput: SearchInput = new SearchInput()
+    private searchInput: SearchInput = new SearchInput(),
+    private pagination: Pagination = new Pagination(100, 9)
   ) {}
 
   element() {
@@ -34,8 +35,6 @@ class Catalog {
     return element;
   }
 
-  /////// ИСПРАВИТЬ ПАГИНАЦИЮ ПРИ ФИЛЬТРЕ
-
   draw(data: Readonly<Product>[]) {
     this.productsData = data;
     if (!this.productsData.length) {
@@ -43,9 +42,7 @@ class Catalog {
       return;
     }
     const params = new URLSearchParams(location.search);
-
-    const pagination: Pagination = new Pagination(this.productsData.length, this.limit);
-    const paginationEl: HTMLDivElement = pagination.pagesElement(1, this.render.bind(this));
+    this.setPages(this.productsData.length);
     this.render();
 
     const sortOption = params.get('sort');
@@ -60,8 +57,6 @@ class Catalog {
       this.searchInput.setValue(filterOption);
       this.filter(filterOption);
     }
-
-    setChildren(this.pagesContainer, [paginationEl]);
   }
 
   render(page?: number, data?: Readonly<Product>[]): void {
@@ -83,6 +78,7 @@ class Catalog {
 
   setNoItemsTitle() {
     setChildren(this.productsList, [el('h1.products__no-items', 'No products found...')]);
+    setChildren(this.pagesContainer, []);
   }
 
   sort(sortOption: string) {
@@ -90,8 +86,15 @@ class Catalog {
     this.render(1);
   }
 
+  setPages(itemsCount: number) {
+    this.pagination = new Pagination(itemsCount, this.limit);
+    const paginationEl: HTMLDivElement = this.pagination.pagesElement(1, this.render.bind(this));
+    setChildren(this.pagesContainer, [paginationEl]);
+  }
+
   filter(query: string) {
     const filtered = this.productsData.filter((el) => filterProducts(el, query));
+    this.setPages(filtered.length);
     this.render(1, filtered);
   }
 }

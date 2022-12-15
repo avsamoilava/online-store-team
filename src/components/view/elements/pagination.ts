@@ -34,7 +34,8 @@ class Pagination implements IPagination {
     if (page >= lastPage - 1) {
       arr = this.setPages(lastPage - 2);
     }
-    return [1, ...arr, lastPage];
+    const pages = Array.from(new Set([1, ...arr, lastPage]));
+    return pages.filter((el) => el > 0);
   }
 
   pagesElement(page: number, fn: CatalogRenderFn) {
@@ -64,13 +65,15 @@ class Pagination implements IPagination {
     );
 
     pagination.append(...buttons);
-    const dots1: HTMLSpanElement = document.createElement('span');
-    dots1.classList.add(...(page > 3 ? ['dots', 'dots--active'] : ['dots']));
-    dots1.textContent = '...';
-    const dots2: HTMLSpanElement = document.createElement('span');
-    dots2.classList.add(...(page < lastPage - 2 ? ['dots', 'dots--active'] : ['dots']));
-    dots2.textContent = '...';
-    pagination.append(dots1, dots2);
+    if (this.getPageCount() > 5) {
+      const dots1: HTMLSpanElement = document.createElement('span');
+      dots1.classList.add(...(page > 3 ? ['dots', 'dots--active'] : ['dots']));
+      dots1.textContent = '...';
+      const dots2: HTMLSpanElement = document.createElement('span');
+      dots2.classList.add(...(page < lastPage - 2 ? ['dots', 'dots--active'] : ['dots']));
+      dots2.textContent = '...';
+      pagination.append(dots1, dots2);
+    }
 
     return pagination;
   }
