@@ -5,7 +5,7 @@ import CloseIcon from '../../../assets/images/icons/close.svg';
 
 class Dropdown {
   public text: HTMLElement = el('span.dropdown__text', 'Sort by');
-  private closeIcon = el('img.dropdown__close', { src: CloseIcon });
+  public closeIcon = el('img.dropdown__close', { src: CloseIcon });
   private top: HTMLElement = el('.dropdown__top', [this.text]);
   public list: HTMLElement = el('ul.dropdown__list', [
     el('li.dropdown__item', 'price asc'),
@@ -26,6 +26,7 @@ class Dropdown {
       if (!element.classList.contains('dropdown__item')) return;
       if (element.textContent) {
         this.text.textContent = element.textContent;
+        this.closeIcon.classList.add('dropdown__close--active');
         const option = element.textContent.replace(' ', '_') as SortOptions;
         setQueryString('sort', option);
 
@@ -52,6 +53,7 @@ class Dropdown {
   reset() {
     setQueryString('sort', '');
     this.text.textContent = 'Sort by';
+    this.closeIcon.classList.remove('dropdown__close--active');
   }
 }
 export default Dropdown;

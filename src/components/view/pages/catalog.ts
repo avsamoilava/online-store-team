@@ -70,6 +70,7 @@ class Catalog {
       const sortOption = params.get('sort');
       if (sortOption) {
         this.dropdown.text.textContent = sortOption.replace('_', ' ');
+        this.dropdown.closeIcon.classList.add('dropdown__close--active');
         this.sort(sortOption);
       }
 
