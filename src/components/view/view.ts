@@ -1,7 +1,7 @@
 import { setChildren } from 'redom';
 import { Elements, Product } from '../../types';
-import { cart } from './pages/cart';
 import { Home } from './pages/home';
+import { Cart } from './pages/Cart';
 import Catalog from './pages/catalog';
 import { details } from './pages/details';
 import { page404 } from './pages/page-404';
@@ -9,11 +9,12 @@ import { page404 } from './pages/page-404';
 class View {
   private rootElement = document.getElementById('root') as HTMLDivElement;
   private catalog: Catalog = new Catalog();
+  private cart: Cart = new Cart();
   private home: Home = new Home();
   private elements: Elements = {
     '/': this.home.content,
     '/catalog': this.catalog.element(),
-    '/cart': cart,
+    '/cart': this.cart.testTemplate(),
     '404': page404,
   };
 
