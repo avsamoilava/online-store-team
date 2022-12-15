@@ -38,34 +38,35 @@ class Catalog {
 
   draw(data: Readonly<Product>[]) {
     this.productsData = data;
-
-    if (this.productsData.length) {
-      const params = new URLSearchParams(location.search);
-
-      const pagination: Pagination = new Pagination(this.productsData.length, this.limit);
-      const paginationEl: HTMLDivElement = pagination.pagesElement(1, this.render.bind(this));
-      this.render();
-
-      const sortOption = params.get('sort');
-      if (sortOption) {
-        this.dropdown.text.textContent = sortOption.replace('_', ' ');
-        this.dropdown.closeIcon.classList.add('dropdown__close--active');
-        this.sort(sortOption);
-      }
-
-      const filterOption = params.get('search');
-      if (filterOption) {
-        this.searchInput.setValue(filterOption);
-        this.filter(filterOption);
-      }
-
-      setChildren(this.pagesContainer, [paginationEl]);
+    if (!this.productsData.length) {
+      this.setNoItemsTitle();
+      return;
     }
+    const params = new URLSearchParams(location.search);
+
+    const pagination: Pagination = new Pagination(this.productsData.length, this.limit);
+    const paginationEl: HTMLDivElement = pagination.pagesElement(1, this.render.bind(this));
+    this.render();
+
+    const sortOption = params.get('sort');
+    if (sortOption) {
+      this.dropdown.text.textContent = sortOption.replace('_', ' ');
+      this.dropdown.closeIcon.classList.add('dropdown__close--active');
+      this.sort(sortOption);
+    }
+
+    const filterOption = params.get('search');
+    if (filterOption) {
+      this.searchInput.setValue(filterOption);
+      this.filter(filterOption);
+    }
+
+    setChildren(this.pagesContainer, [paginationEl]);
   }
 
   render(page?: number, data?: Readonly<Product>[]): void {
     if (data && !data.length) {
-      setChildren(this.productsList, [el('h1.products__no-items', 'No products found...')]);
+      this.setNoItemsTitle();
       return;
     }
     if (page) this.page = page;
@@ -78,6 +79,10 @@ class Catalog {
 
     const products: HTMLElement[] = filteredProducts.map((item) => productCard(item));
     setChildren(this.productsList, products);
+  }
+
+  setNoItemsTitle() {
+    setChildren(this.productsList, [el('h1.products__no-items', 'No products found...')]);
   }
 
   sort(sortOption: string) {
