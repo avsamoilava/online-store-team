@@ -23,7 +23,12 @@ class Catalog {
       if (element.textContent) {
         dropdownText.textContent = element.textContent;
         const option = element.textContent.replace(' ', '_') as SortOptions;
-        router.navigate(location.pathname + `?sort=${option}`);
+
+        const params = new URLSearchParams(location.search);
+        if (params.has('sort')) params.delete('sort');
+        params.set('sort', option);
+        router.navigate(location.pathname + `?${params.toString()}`);
+
         this.sort(option);
       }
     };
@@ -33,12 +38,14 @@ class Catalog {
     searchInput.addEventListener('input', () => {
       clearTimeout(timer);
       timer = setTimeout(() => {
-        const searchQuery = (searchInput as HTMLInputElement).value;
-        this.filter(searchQuery.trim().toLowerCase());
-        // console.log(router.getCurrentLocation());
-        // console.log(Array.from(new URLSearchParams(location.search).entries()));
-        // router.navigate(location.pathname + `?search=${searchQuery}`);
-        // this.view.filterSources(searchInput.value.trim().toLowerCase());
+        const searchQuery = (searchInput as HTMLInputElement).value.trim().toLowerCase();
+
+        const params = new URLSearchParams(location.search);
+        if (params.has('search')) params.delete('search');
+        if (searchQuery) params.set('search', searchQuery);
+        router.navigate(location.pathname + `?${params.toString()}`);
+
+        this.filter(searchQuery);
       }, 500);
     });
 
@@ -60,11 +67,6 @@ class Catalog {
 
     if (this.productsData.length) {
       const params = new URLSearchParams(location.search);
-      const sortOption = params.get('sort') as SortOptions;
-      if (sortOption) {
-        dropdownText.textContent = sortOption.replace('_', ' ');
-        this.sort(sortOption);
-      }
 
       const pagination: Pagination = new Pagination(this.productsData.length, this.limit);
       const handleClick = (e: Event): void => {
@@ -80,6 +82,19 @@ class Catalog {
 
       const paginationEl: HTMLDivElement = pagination.pagesElement(1, handleClick);
       this.render();
+
+      const sortOption = params.get('sort') as SortOptions;
+      if (sortOption) {
+        dropdownText.textContent = sortOption.replace('_', ' ');
+        this.sort(sortOption);
+      }
+
+      const filterOption = params.get('search');
+      if (filterOption) {
+        (searchInput as HTMLInputElement).value = filterOption;
+        this.filter(filterOption);
+      }
+
       setChildren(this.pagesContainer, [paginationEl]);
     }
   }
