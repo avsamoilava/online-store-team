@@ -10,7 +10,7 @@ export class Home {
         el('h1.home__greeting', 'welcome to the ', el('div', 'Online store')),
         el(
           '.home__text',
-          'We save your time! We offer the best prices! We deliver as soon as possible!'
+          'We save your time!\nWe offer the best prices!\nWe deliver as soon as possible!'
         ),
         el('.home__btn', [el('a', 'Catalog', { href: '/catalog', data: 'data-navigo' })]),
       ]),
