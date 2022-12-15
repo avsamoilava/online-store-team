@@ -4,5 +4,14 @@
   &__list {
     overflow-y: auto;
     max-height: 250px;
+    &::-webkit-scrollbar {
+      width: 8px;
+      box-shadow: -5px -5px 5px -5px rgba(#000, 0.7) inset;
+      border-radius: 8px;
+    }
+    &::-webkit-scrollbar-thumb {
+      border-radius: 8px;
+      background: linear-gradient(#9cd3d6, $accent);
+    }
   }
 }
