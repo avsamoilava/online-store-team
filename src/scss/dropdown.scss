@@ -1,8 +1,7 @@
 .dropdown {
   position: relative;
   border: 2px solid $accent;
-  margin-bottom: 40px;
-  max-width: 320px;
+  width: 300px;
   &__text {
     pointer-events: none;
   }

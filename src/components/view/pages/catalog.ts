@@ -5,6 +5,7 @@ import { sortProducts } from '../../utils/sort';
 import { dropdown, dropdownList, dropdownText } from '../elements/dropdown';
 import Pagination from '../elements/pagination';
 import { productCard } from '../elements/productCard';
+import { searchInput } from '../elements/searchInput';
 
 class Catalog {
   constructor(
@@ -28,11 +29,24 @@ class Catalog {
     };
     dropdownList.addEventListener('click', handleClick);
 
+    let timer: ReturnType<typeof setTimeout>;
+    searchInput.addEventListener('input', () => {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        const searchQuery = (searchInput as HTMLInputElement).value;
+        this.filter(searchQuery.trim().toLowerCase());
+        // console.log(router.getCurrentLocation());
+        // console.log(Array.from(new URLSearchParams(location.search).entries()));
+        // router.navigate(location.pathname + `?search=${searchQuery}`);
+        // this.view.filterSources(searchInput.value.trim().toLowerCase());
+      }, 500);
+    });
+
     const element: HTMLElement = el('section.catalog', [
       el('.container', [
         el('.catalog__content', [
           el('h1.catalog__title', 'catalog'),
-          dropdown,
+          el('.catalog__controls', [dropdown, searchInput]),
           this.productsList,
           this.pagesContainer,
         ]),
@@ -70,12 +84,13 @@ class Catalog {
     }
   }
 
-  render(): void {
+  render(data?: Readonly<Product>[]): void {
     const coef: number = this.limit * (this.page - 1);
+    const productsArray = data ? data : this.productsData;
     const filteredProducts: Readonly<Product>[] =
-      this.productsData.length >= this.limit
-        ? this.productsData.filter((_, idx) => idx >= 0 + coef && idx < this.limit + coef)
-        : this.productsData;
+      productsArray.length >= this.limit
+        ? productsArray.filter((_, idx) => idx >= 0 + coef && idx < this.limit + coef)
+        : productsArray;
 
     const products: HTMLElement[] = filteredProducts.map((item) => productCard(item));
     setChildren(this.productsList, products);
@@ -87,8 +102,18 @@ class Catalog {
     this.render();
   }
 
-  filter() {
-    return;
+  filter(query: string) {
+    const filtered = this.productsData.filter((el) =>
+      // el.brand.toLowerCase().includes(query) ||
+      // el.category.toLowerCase().includes(query) ||
+      // String(el.price).includes(query) ||
+      // el.description.toLowerCase().includes(query) ||
+      // String(el.rating).includes(query) ||
+      // String(el.stock).includes(query)||
+      el.title.toLowerCase().includes(query)
+    );
+    this.page = 1;
+    this.render(filtered);
   }
 }
 

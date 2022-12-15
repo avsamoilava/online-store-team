@@ -3,6 +3,16 @@
   &__title {
     margin-bottom: 50px;
   }
+  &__controls {
+    display: flex;
+    margin-bottom: 40px;
+    justify-content: space-between;
+  }
+  &__search {
+    padding: 15px 20px;
+    font-size: 18px;
+    border: 1px solid $accent;
+  }
 }
 .products {
   display: grid;
