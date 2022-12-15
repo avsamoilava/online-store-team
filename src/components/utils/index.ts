@@ -42,3 +42,12 @@ export function setQueryString(key: string, value: string): void {
   const queryString = params.toString();
   router.navigate(location.pathname + `${queryString ? `?${queryString}` : ''}`);
 }
+
+export const filterProducts = (el: Product, query: string) =>
+  // el.brand.toLowerCase().includes(query) ||
+  // el.category.toLowerCase().includes(query) ||
+  // String(el.price).includes(query) ||
+  // el.description.toLowerCase().includes(query) ||
+  // String(el.rating).includes(query) ||
+  // String(el.stock).includes(query) ||
+  el.title.toLowerCase().includes(query);

@@ -1,6 +1,6 @@
 import { el, setChildren } from 'redom';
 import { Product } from '../../../types';
-import { sortProducts } from '../../utils';
+import { filterProducts, sortProducts } from '../../utils';
 import Dropdown from '../elements/dropdown';
 import Pagination from '../elements/pagination';
 import { productCard } from '../elements/productCard';
@@ -94,15 +94,7 @@ class Catalog {
   }
 
   filter(query: string) {
-    const filtered = this.productsData.filter((el) =>
-      // el.brand.toLowerCase().includes(query) ||
-      // el.category.toLowerCase().includes(query) ||
-      // String(el.price).includes(query) ||
-      // el.description.toLowerCase().includes(query) ||
-      // String(el.rating).includes(query) ||
-      // String(el.stock).includes(query)||
-      el.title.toLowerCase().includes(query)
-    );
+    const filtered = this.productsData.filter((el) => filterProducts(el, query));
     this.page = 1;
     this.render(filtered);
   }
