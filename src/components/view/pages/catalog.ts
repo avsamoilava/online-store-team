@@ -5,6 +5,7 @@ import Dropdown from '../elements/dropdown';
 import Pagination from '../elements/pagination';
 import { productCard } from '../elements/productCard';
 import SearchInput from '../elements/searchInput';
+import { viewControls } from '../elements/viewControls';
 
 class Catalog {
   constructor(
@@ -26,7 +27,7 @@ class Catalog {
       el('.container', [
         el('.catalog__content', [
           el('h1.catalog__title', 'catalog'),
-          el('.catalog__controls', [dropdownElem, searchInputElem]),
+          el('.catalog__controls', [dropdownElem, viewControls, searchInputElem]),
           this.productsList,
           this.pagesContainer,
         ]),
