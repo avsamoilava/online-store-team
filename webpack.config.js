@@ -16,7 +16,7 @@ const baseConfig = {
         use: ['style-loader', 'css-loader', 'sass-loader'],
       },
       {
-        test: /\.(png|svg)$/i,
+        test: /\.(png|svg|jpg)$/i,
         type: 'asset/resource',
         generator: {
           filename: 'assets/[name][hash][ext]',
