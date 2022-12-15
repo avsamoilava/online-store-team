@@ -1,11 +1,11 @@
 import { el, setChildren } from 'redom';
-import { Product, SortOptions } from '../../../types';
-import { router } from '../../router';
-import { sortProducts } from '../../utils/sort';
-import { dropdown, dropdownList, dropdownText } from '../elements/dropdown';
+import { Product } from '../../../types';
+import { filterProducts, sortProducts } from '../../utils';
+import Dropdown from '../elements/dropdown';
 import Pagination from '../elements/pagination';
 import { productCard } from '../elements/productCard';
-import { searchInput } from '../elements/searchInput';
+import SearchInput from '../elements/searchInput';
+import { viewControls } from '../elements/viewControls';
 
 class Catalog {
   constructor(
@@ -13,40 +13,21 @@ class Catalog {
     private page: number = 1,
     private limit: number = 9,
     private productsList: HTMLElement = el('.products'),
-    private pagesContainer: HTMLElement = el('.catalog__pagination')
+    private pagesContainer: HTMLElement = el('.catalog__pagination'),
+    private dropdown: Dropdown = new Dropdown(),
+    private searchInput: SearchInput = new SearchInput(),
+    private pagination: Pagination = new Pagination(100, 9)
   ) {}
 
   element() {
-    const handleClick = (e: Event) => {
-      const element = e.target as HTMLElement;
-      if (!element.classList.contains('dropdown__item')) return;
-      if (element.textContent) {
-        dropdownText.textContent = element.textContent;
-        const option = element.textContent.replace(' ', '_') as SortOptions;
-        router.navigate(location.pathname + `?sort=${option}`);
-        this.sort(option);
-      }
-    };
-    dropdownList.addEventListener('click', handleClick);
-
-    let timer: ReturnType<typeof setTimeout>;
-    searchInput.addEventListener('input', () => {
-      clearTimeout(timer);
-      timer = setTimeout(() => {
-        const searchQuery = (searchInput as HTMLInputElement).value;
-        this.filter(searchQuery.trim().toLowerCase());
-        // console.log(router.getCurrentLocation());
-        // console.log(Array.from(new URLSearchParams(location.search).entries()));
-        // router.navigate(location.pathname + `?search=${searchQuery}`);
-        // this.view.filterSources(searchInput.value.trim().toLowerCase());
-      }, 500);
-    });
+    const dropdownElem = this.dropdown.element(this.sort.bind(this));
+    const searchInputElem = this.searchInput.element(this.filter.bind(this));
 
     const element: HTMLElement = el('section.catalog', [
       el('.container', [
         el('.catalog__content', [
           el('h1.catalog__title', 'catalog'),
-          el('.catalog__controls', [dropdown, searchInput]),
+          el('.catalog__controls', [dropdownElem, viewControls, searchInputElem]),
           this.productsList,
           this.pagesContainer,
         ]),
@@ -57,34 +38,34 @@ class Catalog {
 
   draw(data: Readonly<Product>[]) {
     this.productsData = data;
+    if (!this.productsData.length) {
+      this.setNoItemsTitle();
+      return;
+    }
+    const params = new URLSearchParams(location.search);
+    this.setPages(this.productsData.length);
+    this.render();
 
-    if (this.productsData.length) {
-      const params = new URLSearchParams(location.search);
-      const sortOption = params.get('sort') as SortOptions;
-      if (sortOption) {
-        dropdownText.textContent = sortOption.replace('_', ' ');
-        this.sort(sortOption);
-      }
+    const sortOption = params.get('sort');
+    if (sortOption) {
+      this.dropdown.text.textContent = sortOption.replace('_', ' ');
+      this.dropdown.closeIcon.classList.add('dropdown__close--active');
+      this.sort(sortOption);
+    }
 
-      const pagination: Pagination = new Pagination(this.productsData.length, this.limit);
-      const handleClick = (e: Event): void => {
-        const element = e.target as HTMLElement;
-        if (!element.classList.contains('pagination__btn')) return;
-        const page = Number(element.textContent);
-        this.page = page;
-        (element.parentElement as HTMLElement).replaceWith(
-          pagination.pagesElement(page, handleClick)
-        );
-        this.render();
-      };
-
-      const paginationEl: HTMLDivElement = pagination.pagesElement(1, handleClick);
-      this.render();
-      setChildren(this.pagesContainer, [paginationEl]);
+    const filterOption = params.get('search');
+    if (filterOption) {
+      this.searchInput.setValue(filterOption);
+      this.filter(filterOption);
     }
   }
 
-  render(data?: Readonly<Product>[]): void {
+  render(page?: number, data?: Readonly<Product>[]): void {
+    if (data && !data.length) {
+      this.setNoItemsTitle();
+      return;
+    }
+    if (page) this.page = page;
     const coef: number = this.limit * (this.page - 1);
     const productsArray = data ? data : this.productsData;
     const filteredProducts: Readonly<Product>[] =
@@ -96,24 +77,26 @@ class Catalog {
     setChildren(this.productsList, products);
   }
 
-  sort(sortOption: SortOptions) {
+  setNoItemsTitle() {
+    setChildren(this.productsList, [el('h1.products__no-items', 'No products found...')]);
+    setChildren(this.pagesContainer, []);
+  }
+
+  sort(sortOption: string) {
     sortProducts(sortOption, this.productsData);
-    this.page = 1;
-    this.render();
+    this.render(1);
+  }
+
+  setPages(itemsCount: number) {
+    this.pagination = new Pagination(itemsCount, this.limit);
+    const paginationEl: HTMLDivElement = this.pagination.pagesElement(1, this.render.bind(this));
+    setChildren(this.pagesContainer, [paginationEl]);
   }
 
   filter(query: string) {
-    const filtered = this.productsData.filter((el) =>
-      // el.brand.toLowerCase().includes(query) ||
-      // el.category.toLowerCase().includes(query) ||
-      // String(el.price).includes(query) ||
-      // el.description.toLowerCase().includes(query) ||
-      // String(el.rating).includes(query) ||
-      // String(el.stock).includes(query)||
-      el.title.toLowerCase().includes(query)
-    );
-    this.page = 1;
-    this.render(filtered);
+    const filtered = this.productsData.filter((el) => filterProducts(el, query));
+    this.setPages(filtered.length);
+    this.render(1, filtered);
   }
 }
 

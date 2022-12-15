@@ -28,6 +28,22 @@
       background-color: $medium;
     }
   }
+  &__close {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    top: 0;
+    right: -40px;
+    cursor: pointer;
+    transition: all .3s ease-in-out;
+    display: none;
+    &:hover {
+      transform: scale(1.1);
+    }
+    &--active {
+      display: block;
+    }
+  }
   &__list {
     position: absolute;
     top: 100%;

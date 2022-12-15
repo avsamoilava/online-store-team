@@ -1,4 +1,5 @@
 import { el } from 'redom';
+import { router } from '../../router';
 
 export class Home {
   public content: HTMLElement = el('section.home', [
@@ -10,9 +11,17 @@ export class Home {
         el('h1.home__greeting', 'welcome to the ', el('div', 'Online store')),
         el(
           '.home__text',
-          'We save your time! We offer the best prices! We deliver as soon as possible!'
+          'We save your time!\nWe offer the best prices!\nWe deliver as soon as possible!'
         ),
-        el('.home__btn', [el('a', 'Catalog', { href: '/catalog', data: 'data-navigo' })]),
+        el('.home__btn', [
+          el('a', 'Catalog', {
+            href: '/catalog',
+            onclick: (e: Event) => {
+              e.preventDefault();
+              router.navigate('/catalog');
+            },
+          }),
+        ]),
       ]),
     ]),
   ]);

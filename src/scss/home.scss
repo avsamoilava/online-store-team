@@ -45,9 +45,10 @@
   &__text {
     grid-column: 1/2;
     grid-row: 3/4;
-    max-width: 250px;
+    max-width: 280px;
     line-height: 1.6;
     font-size: 1.2rem;
+    white-space: break-spaces;
   }
 
   &__btn {
@@ -73,7 +74,7 @@
       color: $light;
       position: relative;
       margin-left: -60px;
-      margin-top: -20px;      
+      margin-top: -20px;
 
       &::after {
         position: absolute;
