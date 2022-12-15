@@ -12,6 +12,7 @@
   &__content {
     display: grid;
     grid-template-columns: 280px 1fr;
+    grid-column-gap: 35px;
   }
   &__products {
     grid-column: 2 / 3;

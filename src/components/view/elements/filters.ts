@@ -4,7 +4,7 @@ class Filters {
   private filtersContent: HTMLElement = el('.filters__content');
   element() {
     const filters: HTMLElement = el('aside.catalog__filters.filters', [
-      el('.filters__top', [el('h2.filters__title', 'Filter by:'), this.filtersContent]),
+      el('.filters__top', [this.filtersContent]),
     ]);
     return filters;
   }

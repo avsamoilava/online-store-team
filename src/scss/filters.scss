@@ -1,0 +1,8 @@
+.filters {
+  position: fixed;
+  top: 100px;
+  &__list {
+    overflow-y: auto;
+    max-height: 250px;
+  }
+}
