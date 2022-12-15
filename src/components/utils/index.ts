@@ -51,3 +51,8 @@ export const filterProducts = (el: Product, query: string) =>
   // String(el.rating).includes(query) ||
   // String(el.stock).includes(query) ||
   el.title.toLowerCase().includes(query);
+
+export function getInfo(key: 'brand' | 'category', arr: Product[]): string[] {
+  const items = arr.map((el) => el[key]);
+  return Array.from(new Set(items));
+}
