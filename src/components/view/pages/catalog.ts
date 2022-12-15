@@ -2,6 +2,7 @@ import { el, setChildren } from 'redom';
 import { Product } from '../../../types';
 import { filterProducts, sortProducts } from '../../utils';
 import Dropdown from '../elements/dropdown';
+import { filters } from '../elements/filters';
 import Pagination from '../elements/pagination';
 import { productCard } from '../elements/productCard';
 import SearchInput from '../elements/searchInput';
@@ -27,6 +28,7 @@ class Catalog {
       el('.container.catalog__container', [
         el('.catalog__content', [
           el('h1.catalog__title', 'catalog'),
+          filters,
           el('.catalog__products', [
             el('.catalog__controls', [
               dropdownElem,
