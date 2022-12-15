@@ -44,18 +44,7 @@ class Catalog {
       const params = new URLSearchParams(location.search);
 
       const pagination: Pagination = new Pagination(this.productsData.length, this.limit);
-      const handleClick = (e: Event): void => {
-        const element = e.target as HTMLElement;
-        if (!element.classList.contains('pagination__btn')) return;
-        const page = Number(element.textContent);
-        this.page = page;
-        (element.parentElement as HTMLElement).replaceWith(
-          pagination.pagesElement(page, handleClick)
-        );
-        this.render();
-      };
-
-      const paginationEl: HTMLDivElement = pagination.pagesElement(1, handleClick);
+      const paginationEl: HTMLDivElement = pagination.pagesElement(1, this.render.bind(this));
       this.render();
 
       const sortOption = params.get('sort');
@@ -75,7 +64,8 @@ class Catalog {
     }
   }
 
-  render(data?: Readonly<Product>[]): void {
+  render(page?: number, data?: Readonly<Product>[]): void {
+    if (page) this.page = page;
     const coef: number = this.limit * (this.page - 1);
     const productsArray = data ? data : this.productsData;
     const filteredProducts: Readonly<Product>[] =
@@ -89,14 +79,12 @@ class Catalog {
 
   sort(sortOption: string) {
     sortProducts(sortOption, this.productsData);
-    this.page = 1;
-    this.render();
+    this.render(1);
   }
 
   filter(query: string) {
     const filtered = this.productsData.filter((el) => filterProducts(el, query));
-    this.page = 1;
-    this.render(filtered);
+    this.render(1, filtered);
   }
 }
 

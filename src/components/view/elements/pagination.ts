@@ -1,9 +1,11 @@
+import { CatalogRenderFn } from '../../../types';
+
 interface IPagination {
   getPageCount: () => number;
   getPagesArray: () => number[];
   setPages: (n: number) => number[];
   pages: (n: number) => number[];
-  pagesElement: (n: number, callback: (e: Event) => void) => HTMLDivElement;
+  pagesElement: (n: number, fn: CatalogRenderFn) => HTMLDivElement;
 }
 
 class Pagination implements IPagination {
@@ -35,10 +37,18 @@ class Pagination implements IPagination {
     return [1, ...arr, lastPage];
   }
 
-  pagesElement(page: number, callback: (e: Event) => void) {
+  pagesElement(page: number, fn: CatalogRenderFn) {
+    const handleClick = (e: Event): void => {
+      const element = e.target as HTMLElement;
+      if (!element.classList.contains('pagination__btn')) return;
+      const page = Number(element.textContent);
+      (element.parentElement as HTMLElement).replaceWith(this.pagesElement(page, fn));
+      fn(page);
+    };
+
     const pagination: HTMLDivElement = document.createElement('div');
     pagination.classList.add('pagination');
-    pagination.addEventListener('click', callback);
+    pagination.addEventListener('click', handleClick);
 
     const paginationBtns: number[] = this.pages(page);
     const lastPage: number = this.getPageCount();

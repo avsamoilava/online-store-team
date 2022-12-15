@@ -1,10 +1,5 @@
 import { el } from 'redom';
 import { setQueryString } from '../../utils';
-// import { router } from '../../router';
-
-// export const searchInput: HTMLElement = el('input.catalog__search', {
-//   placeholder: 'Search product...',
-// });
 
 class SearchInput {
   private searchInput: HTMLElement = el('input.catalog__search', {

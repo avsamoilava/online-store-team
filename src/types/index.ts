@@ -16,6 +16,8 @@ export interface Elements {
   [key: string]: HTMLElement;
 }
 
+export type CatalogRenderFn = (page?: number, data?: Readonly<Product>[]) => void;
+
 export type ApiResponse = {
   products: Product[];
   limit: number;
