@@ -12,7 +12,7 @@ class View {
   private home: Home = new Home();
   private elements: Elements = {
     '/': this.home.content,
-    '/catalog': this.catalog.element,
+    '/catalog': this.catalog.element(),
     '/cart': cart,
     '404': page404,
   };
