@@ -1,6 +1,12 @@
 .filters {
   position: fixed;
   top: 100px;
+  &__subtitle {
+    margin-bottom: 16px;
+  }
+  &__block {
+    margin-bottom: 20px;
+  }
   &__list {
     overflow-y: auto;
     max-height: 250px;

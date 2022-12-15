@@ -37,6 +37,16 @@ export function sortProducts(option: string, arr: Product[]) {
 
 export function setQueryString(key: string, value: string): void {
   const params = new URLSearchParams(location.search);
+  if (key === 'brand' || key === 'category') {
+    const currentValue = params.get(key);
+    if (currentValue) {
+      if (currentValue.split('_').includes(value)) return;
+      if (value.match(/-delete/)) {
+        const arr = currentValue.split('_').filter((el) => el !== value.replace(/-delete/, ''));
+        value = arr.join('_');
+      } else value = `${currentValue}_` + value;
+    }
+  }
   if (params.has(key)) params.delete(key);
   if (value) params.set(key, value);
   const queryString = params.toString();
