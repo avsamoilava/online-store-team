@@ -1,6 +1,5 @@
 import { el } from 'redom';
 import { Product } from '../../../types';
-import Controller from '../../controller';
 import { router } from '../../router';
 
 export class Cart {
@@ -96,16 +95,15 @@ export class Cart {
       },
     ],
     private amount: number = 0,
-    private sum: number = 0,
-    private contr: Controller = new Controller()
+    private sum: number = 0
   ) {}
 
   testTemplate(items?: Readonly<Product>[]): HTMLElement {
-    items = this.products; //! тестовые входные данные
-    if (!items || !items.length) {
+    if (items) this.products = items; //! тестовые входные данные
+    if (!this.products || !this.products.length) {
       return this.renderEmpty();
     }
-    const template = this.renderTable(items);
+    const template = this.renderTable(this.products);
     return template;
   }
 
