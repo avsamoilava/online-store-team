@@ -38,6 +38,21 @@ class Filters {
       this.block('Categories:', categoriesArr, 'category'),
       this.block('Brands:', brandsArr, 'brand'),
     ]);
+    this.restoreState();
+  }
+  private restoreState() {
+    const params = new URLSearchParams(location.search);
+    const [categories, brands] = [params.get('category'), params.get('brand')];
+    this.markCheckedElements(categories);
+    this.markCheckedElements(brands);
+  }
+  private markCheckedElements(query: string | null) {
+    if (query) {
+      query.split('*').forEach((val) => {
+        const elem = document.getElementById(val);
+        if (elem instanceof HTMLInputElement) elem.checked = true;
+      });
+    }
   }
 }
 
