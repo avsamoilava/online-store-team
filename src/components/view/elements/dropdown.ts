@@ -20,6 +20,7 @@ class Dropdown {
     this.closeIcon.addEventListener('click', (e) => {
       e.stopPropagation();
       this.reset();
+      fn('');
     });
     const handleClick = (e: Event) => {
       const element = e.target as HTMLElement;

@@ -7,6 +7,7 @@ import { productCard } from '../elements/productCard';
 class Catalog {
   constructor(
     protected productsData: Readonly<Product>[] = [],
+    protected filteredData: Readonly<Product>[] = [],
     protected productsList: HTMLElement = el('.products#columns3'),
     protected page: number = 1,
     protected limit: number = 9,
@@ -43,16 +44,6 @@ class Catalog {
     setChildren(this.productsList, products);
   }
 
-  ////////////////////////
-  // Когда сначала отфильтровал товары, а потом сортируешь,
-  // сортировка работает неправильно -
-  // фильтрует полный список товаров
-  ////////////////////
-  sort(sortOption: string) {
-    sortProducts(sortOption, this.productsData);
-    this.render(1);
-  }
-
   setPages(itemsCount: number) {
     this.pagination = new Pagination(itemsCount, this.limit);
     const paginationEl: HTMLDivElement = this.pagination.pagesElement(1, this.render.bind(this));
@@ -66,10 +57,18 @@ class Catalog {
     this.productsList.id = `columns${columns}`;
   }
 
+  sort(sortOption: string) {
+    if (!sortOption) this.render(this.page, this.productsData);
+    const arrayToSort = [...(this.filteredData.length ? this.filteredData : this.productsData)];
+    sortProducts(sortOption, arrayToSort);
+    this.render(1, arrayToSort);
+  }
+
   filter(query: string) {
     const filtered = this.productsData.filter((el) => filterProducts(el, query));
-    this.setPages(filtered.length);
-    this.render(1, filtered);
+    this.filteredData = filtered;
+    this.setPages(this.filteredData.length);
+    this.render(1, this.filteredData);
   }
 
   setNoItemsTitle() {
