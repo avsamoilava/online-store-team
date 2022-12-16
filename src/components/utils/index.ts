@@ -53,7 +53,7 @@ export function setQueryString(key: string, value: string): void {
   router.navigate(location.pathname + `${queryString ? `?${queryString}` : ''}`);
 }
 
-export const filterProducts: FilterFn = (el, query) =>
+export const filterProducts = (el: Product, query: string) =>
   // el.brand.toLowerCase().includes(query) ||
   // el.category.toLowerCase().includes(query) ||
   // String(el.price).includes(query) ||
@@ -62,7 +62,7 @@ export const filterProducts: FilterFn = (el, query) =>
   // String(el.stock).includes(query) ||
   el.title.toLowerCase().includes(query);
 
-export const filterByCategory: FilterFn = (el, query) => el.category.toLowerCase() === query;
+export const filterByKey: FilterFn = (el, query, key) => el[key] === query;
 
 export function getInfo(key: 'brand' | 'category', arr: Product[]): string[] {
   const items = arr.map((el) => el[key]);

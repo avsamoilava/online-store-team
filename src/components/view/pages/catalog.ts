@@ -73,9 +73,10 @@ class Catalog {
     this.render(1, arrayToSort);
   }
 
-  filter(query: string, fn?: FilterFn) {
+  filter(query: string, fn?: FilterFn, key?: 'brand' | 'category') {
+    console.log(query, key);
     let filtered: Readonly<Product>[];
-    if (fn) filtered = this.productsData.filter((el) => fn(el, query));
+    if (fn && key) filtered = this.productsData.filter((el) => fn(el, query, key));
     else filtered = this.productsData.filter((el) => filterProducts(el, query));
     this.filteredData = this.filteredData.concat(filtered);
     this.setPages(this.filteredData.length);

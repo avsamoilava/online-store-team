@@ -17,7 +17,7 @@ export interface Elements {
 }
 
 export type CatalogRenderFn = (page?: number, data?: Readonly<Product>[]) => void;
-export type FilterFn = (el: Product, query: string) => boolean;
+export type FilterFn = (el: Product, query: string, key: 'brand' | 'category') => boolean;
 
 export type ApiResponse = {
   products: Product[];
