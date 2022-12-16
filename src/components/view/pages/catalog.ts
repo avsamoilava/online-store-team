@@ -58,7 +58,10 @@ class Catalog {
   }
 
   sort(sortOption: string) {
-    if (!sortOption) this.render(this.page, this.productsData);
+    if (!sortOption) {
+      this.render(this.page, this.filteredData.length ? this.filteredData : this.productsData);
+      return;
+    }
     const arrayToSort = [...(this.filteredData.length ? this.filteredData : this.productsData)];
     sortProducts(sortOption, arrayToSort);
     this.render(1, arrayToSort);
