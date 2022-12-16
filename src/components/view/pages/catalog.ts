@@ -1,5 +1,5 @@
 import { el, setChildren } from 'redom';
-import { Product } from '../../../types';
+import { FilterFn, Product } from '../../../types';
 import { filterProducts, sortProducts } from '../../utils';
 import Pagination from '../elements/pagination';
 import { productCard } from '../elements/productCard';
@@ -34,7 +34,13 @@ class Catalog {
     }
     if (page) this.page = page;
     const coef: number = this.limit * (this.page - 1);
-    const productsArray = data ? data : this.productsData;
+
+    const productsArray = data
+      ? data
+      : this.filteredData.length
+      ? this.filteredData
+      : this.productsData;
+
     const filteredProducts: Readonly<Product>[] =
       productsArray.length >= this.limit
         ? productsArray.filter((_, idx) => idx >= 0 + coef && idx < this.limit + coef)
@@ -67,9 +73,11 @@ class Catalog {
     this.render(1, arrayToSort);
   }
 
-  filter(query: string) {
-    const filtered = this.productsData.filter((el) => filterProducts(el, query));
-    this.filteredData = filtered;
+  filter(query: string, fn?: FilterFn) {
+    let filtered: Readonly<Product>[];
+    if (fn) filtered = this.productsData.filter((el) => fn(el, query));
+    else filtered = this.productsData.filter((el) => filterProducts(el, query));
+    this.filteredData = this.filteredData.concat(filtered);
     this.setPages(this.filteredData.length);
     this.render(1, this.filteredData);
   }

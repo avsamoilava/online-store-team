@@ -1,8 +1,13 @@
 import { el, setChildren } from 'redom';
-import { setQueryString } from '../../utils';
+import { FilterFn } from '../../../types';
+import { filterByCategory, setQueryString } from '../../utils';
 
 class Filters {
   private filtersContent: HTMLElement = el('.filters__content');
+  private filterItems: (query: string, fn?: FilterFn) => void;
+  constructor(fn: (query: string, fn?: FilterFn) => void) {
+    this.filterItems = fn;
+  }
   element() {
     const filters: HTMLElement = el('aside.catalog__filters.filters', [
       el('.filters__top', [this.filtersContent]),
@@ -14,6 +19,7 @@ class Filters {
     const handleClick = (e: Event) => {
       const elem = e.target as HTMLElement;
       if (elem instanceof HTMLInputElement) {
+        this.filterItems(elem.id, filterByCategory);
         setQueryString(queryKey, elem.checked ? elem.id : `${elem.id}-delete`);
       }
     };

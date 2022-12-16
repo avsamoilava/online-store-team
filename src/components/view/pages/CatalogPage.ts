@@ -10,7 +10,7 @@ import Catalog from './catalog';
 class CatalogPage extends Catalog {
   private dropdown: Dropdown = new Dropdown();
   private searchInput: SearchInput = new SearchInput();
-  private filters: Filters = new Filters();
+  private filters: Filters = new Filters(this.filter.bind(this));
 
   constructor() {
     super();

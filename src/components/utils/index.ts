@@ -1,4 +1,4 @@
-import { Product } from '../../types';
+import { FilterFn, Product } from '../../types';
 import { router } from '../router';
 
 export function sortProducts(option: string, arr: Product[]) {
@@ -53,7 +53,7 @@ export function setQueryString(key: string, value: string): void {
   router.navigate(location.pathname + `${queryString ? `?${queryString}` : ''}`);
 }
 
-export const filterProducts = (el: Product, query: string) =>
+export const filterProducts: FilterFn = (el, query) =>
   // el.brand.toLowerCase().includes(query) ||
   // el.category.toLowerCase().includes(query) ||
   // String(el.price).includes(query) ||
@@ -61,6 +61,8 @@ export const filterProducts = (el: Product, query: string) =>
   // String(el.rating).includes(query) ||
   // String(el.stock).includes(query) ||
   el.title.toLowerCase().includes(query);
+
+export const filterByCategory: FilterFn = (el, query) => el.category.toLowerCase() === query;
 
 export function getInfo(key: 'brand' | 'category', arr: Product[]): string[] {
   const items = arr.map((el) => el[key]);
