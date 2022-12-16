@@ -1,11 +1,10 @@
 import { el, setChildren } from 'redom';
-import { FilterFn } from '../../../types';
-import { filterByKey, setQueryString } from '../../utils';
+import { setQueryString } from '../../utils';
 
 class Filters {
   private filtersContent: HTMLElement = el('.filters__content');
-  private filterItems: (query: string, fn?: FilterFn, key?: 'brand' | 'category') => void;
-  constructor(fn: (query: string, fn?: FilterFn, key?: 'brand' | 'category') => void) {
+  private filterItems: (query?: string) => void;
+  constructor(fn: (query?: string) => void) {
     this.filterItems = fn;
   }
   element() {
@@ -19,9 +18,8 @@ class Filters {
     const handleClick = (e: Event) => {
       const elem = e.target as HTMLElement;
       if (elem instanceof HTMLInputElement) {
-        if (queryKey === 'brand' || queryKey === 'category')
-          this.filterItems(elem.id, filterByKey, queryKey);
         setQueryString(queryKey, elem.checked ? elem.id : `${elem.id}-delete`);
+        this.filterItems();
       }
     };
     const elements = arr.map((el) => this.item(el));
