@@ -2,13 +2,13 @@ import { setChildren } from 'redom';
 import { Elements, Product } from '../../types';
 import { Home } from './pages/home';
 import { Cart } from './pages/Cart';
-import Catalog from './pages/catalog';
 import { details } from './pages/details';
 import { page404 } from './pages/page-404';
+import CatalogPage from './pages/CatalogPage';
 
 class View {
   private rootElement = document.getElementById('root') as HTMLDivElement;
-  private catalog: Catalog = new Catalog();
+  private catalog: CatalogPage = new CatalogPage();
   private cart: Cart = new Cart();
   private home: Home = new Home();
   private elements: Elements = {

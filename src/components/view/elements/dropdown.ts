@@ -20,6 +20,7 @@ class Dropdown {
     this.closeIcon.addEventListener('click', (e) => {
       e.stopPropagation();
       this.reset();
+      fn('');
     });
     const handleClick = (e: Event) => {
       const element = e.target as HTMLElement;
@@ -48,6 +49,11 @@ class Dropdown {
       [this.top, this.list, this.closeIcon]
     );
     return dropdown;
+  }
+
+  restoreState(value: string) {
+    this.text.textContent = value.replace('_', ' ');
+    this.closeIcon.classList.add('dropdown__close--active');
   }
 
   reset() {
