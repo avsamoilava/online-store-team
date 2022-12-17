@@ -1,6 +1,6 @@
 import { el, setChildren } from 'redom';
 import { Product } from '../../../types';
-import { filterByCategoryAndBrand, filterProducts, sortProducts } from '../../utils';
+import { filterProducts, sortProducts } from '../../utils';
 import Pagination from '../elements/pagination';
 import { productCard } from '../elements/productCard';
 
@@ -65,7 +65,7 @@ class Catalog {
 
   sort(sortOption: string) {
     if (!sortOption) {
-      this.render(this.page, this.filteredData.length ? this.filteredData : this.productsData);
+      this.render(this.page);
       return;
     }
     const arrayToSort = [...(this.filteredData.length ? this.filteredData : this.productsData)];
@@ -73,11 +73,8 @@ class Catalog {
     this.render(1, arrayToSort);
   }
 
-  filter(query?: string) {
-    let filtered;
-    if (query) filtered = this.productsData.filter((el) => filterProducts(el, query));
-    else filtered = filterByCategoryAndBrand(this.productsData);
-    console.log(filtered);
+  filter() {
+    const filtered = filterProducts(this.productsData);
     this.filteredData = filtered;
     this.setPages(this.filteredData.length);
     this.render(1, this.filteredData);

@@ -53,7 +53,7 @@ export function setQueryString(key: string, value: string): void {
   router.navigate(location.pathname + `${queryString ? `?${queryString}` : ''}`);
 }
 
-export const filterProducts = (el: Product, query: string) =>
+export const searchProducts = (el: Product, query: string) =>
   // el.brand.toLowerCase().includes(query) ||
   // el.category.toLowerCase().includes(query) ||
   // String(el.price).includes(query) ||
@@ -65,15 +65,30 @@ export const filterProducts = (el: Product, query: string) =>
 export const filterBy: FilterFn = (el, query, key) => {
   return el[key].toLowerCase() === query.toLowerCase();
 };
-export function filterByCategoryAndBrand(arr: Readonly<Product>[]): Readonly<Product>[] {
+export function filterProducts(arr: Readonly<Product>[]): Readonly<Product>[] {
   const params = new URLSearchParams(location.search);
   const categories = params.get('category')?.split('*');
   const brands = params.get('brand')?.split('*');
-  console.log(categories, brands);
+  const search = params.get('search');
+  if (categories && brands && search) {
+    const arr1 = categories.map((c) => arr.filter((el) => filterBy(el, c, 'category'))).flat();
+    const arr2 = brands.map((b) => arr1.filter((el) => filterBy(el, b, 'brand'))).flat();
+    const arr3 = arr2.filter((el) => searchProducts(el, search));
+    return arr3;
+  }
   if (categories && brands) {
     const arr1 = categories.map((c) => arr.filter((el) => filterBy(el, c, 'category'))).flat();
     const arr2 = brands.map((b) => arr1.filter((el) => filterBy(el, b, 'brand'))).flat();
-    console.log(arr2);
+    return arr2;
+  }
+  if (search && brands) {
+    const arr1 = brands.map((b) => arr.filter((el) => filterBy(el, b, 'brand'))).flat();
+    const arr2 = arr1.filter((el) => searchProducts(el, search));
+    return arr2;
+  }
+  if (categories && search) {
+    const arr1 = categories.map((c) => arr.filter((el) => filterBy(el, c, 'category'))).flat();
+    const arr2 = arr1.filter((el) => searchProducts(el, search));
     return arr2;
   }
   if (categories) {
@@ -82,7 +97,10 @@ export function filterByCategoryAndBrand(arr: Readonly<Product>[]): Readonly<Pro
   if (brands) {
     return brands.map((b) => arr.filter((el) => filterBy(el, b, 'brand'))).flat();
   }
-  return [];
+  if (search) {
+    return arr.filter((el) => searchProducts(el, search));
+  }
+  return arr;
 }
 export function getInfo(key: 'brand' | 'category', arr: Product[]): string[] {
   const items = arr.map((el) => el[key]);

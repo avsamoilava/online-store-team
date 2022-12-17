@@ -52,15 +52,11 @@ class CatalogPage extends Catalog {
 
   private restorePreviousState() {
     const params = new URLSearchParams(location.search);
-    const [sortOption, filterOption] = [params.get('sort'), params.get('search')];
+    const sortOption = params.get('sort');
+    this.filter();
     if (sortOption) {
-      this.dropdown.text.textContent = sortOption.replace('_', ' ');
-      this.dropdown.closeIcon.classList.add('dropdown__close--active');
+      this.dropdown.restoreState(sortOption);
       this.sort(sortOption);
-    }
-    if (filterOption) {
-      this.searchInput.setValue(filterOption);
-      this.filter(filterOption);
     }
   }
 }

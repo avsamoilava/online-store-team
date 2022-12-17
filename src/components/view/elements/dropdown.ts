@@ -51,6 +51,11 @@ class Dropdown {
     return dropdown;
   }
 
+  restoreState(value: string) {
+    this.text.textContent = value.replace('_', ' ');
+    this.closeIcon.classList.add('dropdown__close--active');
+  }
+
   reset() {
     setQueryString('sort', '');
     this.text.textContent = 'Sort by';
