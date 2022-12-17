@@ -65,42 +65,28 @@ export const searchProducts = (el: Product, query: string) =>
 export const filterBy: FilterFn = (el, query, key) => {
   return el[key].toLowerCase() === query.toLowerCase();
 };
+
 export function filterProducts(arr: Readonly<Product>[]): Readonly<Product>[] {
+  let filteredArray = [...arr];
   const params = new URLSearchParams(location.search);
-  const categories = params.get('category')?.split('*');
-  const brands = params.get('brand')?.split('*');
-  const search = params.get('search');
-  if (categories && brands && search) {
-    const arr1 = categories.map((c) => arr.filter((el) => filterBy(el, c, 'category'))).flat();
-    const arr2 = brands.map((b) => arr1.filter((el) => filterBy(el, b, 'brand'))).flat();
-    const arr3 = arr2.filter((el) => searchProducts(el, search));
-    return arr3;
-  }
-  if (categories && brands) {
-    const arr1 = categories.map((c) => arr.filter((el) => filterBy(el, c, 'category'))).flat();
-    const arr2 = brands.map((b) => arr1.filter((el) => filterBy(el, b, 'brand'))).flat();
-    return arr2;
-  }
-  if (search && brands) {
-    const arr1 = brands.map((b) => arr.filter((el) => filterBy(el, b, 'brand'))).flat();
-    const arr2 = arr1.filter((el) => searchProducts(el, search));
-    return arr2;
-  }
-  if (categories && search) {
-    const arr1 = categories.map((c) => arr.filter((el) => filterBy(el, c, 'category'))).flat();
-    const arr2 = arr1.filter((el) => searchProducts(el, search));
-    return arr2;
-  }
-  if (categories) {
-    return categories.map((c) => arr.filter((el) => filterBy(el, c, 'category'))).flat();
-  }
-  if (brands) {
-    return brands.map((b) => arr.filter((el) => filterBy(el, b, 'brand'))).flat();
-  }
-  if (search) {
-    return arr.filter((el) => searchProducts(el, search));
-  }
-  return arr;
+  const paramsObject = Object.fromEntries(params.entries());
+
+  ///////////////
+  delete paramsObject['sort'];
+  ///////////////
+
+  Object.keys(paramsObject).forEach((key) => {
+    if (key === 'category' || key === 'brand') {
+      filteredArray = paramsObject[key]
+        .split('*')
+        .map((c) => filteredArray.filter((el) => filterBy(el, c, key)))
+        .flat();
+    } else {
+      filteredArray = filteredArray.filter((el) => searchProducts(el, paramsObject[key]));
+    }
+  });
+
+  return filteredArray;
 }
 export function getInfo(key: 'brand' | 'category', arr: Product[]): string[] {
   const items = arr.map((el) => el[key]);
