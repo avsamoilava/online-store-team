@@ -1,3 +1,8 @@
+.range {
+  &__input {
+    margin-top: 40px;
+  }
+}
 .noUi-connect {
   background-color: $accent;
 }
@@ -25,7 +30,6 @@
   top: 0;
   right: -7px;
   background-image: url(./assets/images/icons/bg.svg);
-
 }
 .noUi-handle.noUi-handle-upper {
   right: -5px;

@@ -26,6 +26,11 @@ export type ApiResponse = {
   total: number;
 };
 
+export type MinAndMax = {
+  min: number;
+  max: number;
+};
+
 export type SortOptions =
   | 'price_asc'
   | 'price_desc'

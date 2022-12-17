@@ -1,6 +1,6 @@
 import { el } from 'redom';
 import { Product } from '../../../types';
-import { getInfo } from '../../utils';
+import { getInfo, getMinAndMax } from '../../utils';
 import Dropdown from '../elements/dropdown';
 import Filters from '../elements/filters';
 import SearchInput from '../elements/searchInput';
@@ -46,7 +46,9 @@ class CatalogPage extends Catalog {
 
     const categories = getInfo('category', this.productsData);
     const brand = getInfo('brand', this.productsData);
-    this.filters.setFilters(categories, brand);
+    const priceValues = getMinAndMax('price', this.productsData);
+    const stockValues = getMinAndMax('stock', this.productsData);
+    this.filters.setFilters(categories, brand, priceValues, stockValues);
     this.restorePreviousState();
   }
 

@@ -1,4 +1,4 @@
-import { FilterFn, Product } from '../../types';
+import { FilterFn, MinAndMax, Product } from '../../types';
 import { router } from '../router';
 
 export function sortProducts(option: string, arr: Product[]) {
@@ -88,7 +88,12 @@ export function filterProducts(arr: Readonly<Product>[]): Readonly<Product>[] {
 
   return filteredArray;
 }
+
 export function getInfo(key: 'brand' | 'category', arr: Product[]): string[] {
   const items = arr.map((el) => el[key]);
   return Array.from(new Set(items));
+}
+export function getMinAndMax(key: 'price' | 'stock', arr: Product[]): MinAndMax {
+  const items = arr.map((el) => el[key]).sort((a, b) => (a > b ? 1 : -1));
+  return { min: items[0], max: items[items.length - 1] };
 }

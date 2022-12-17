@@ -1,14 +1,17 @@
 import { el, setChildren } from 'redom';
+import { MinAndMax } from '../../../types';
 import { setQueryString } from '../../utils';
 import RangeInput from './RangeInput';
 
 class Filters {
   private filtersContent: HTMLElement = el('.filters__content');
-  private priceInput: RangeInput = new RangeInput(2, 1000);
-  private stockInput: RangeInput = new RangeInput(1, 150);
+  private priceInput: RangeInput;
+  private stockInput: RangeInput;
   private filterItems: () => void;
   constructor(fn: () => void) {
     this.filterItems = fn;
+    this.priceInput = new RangeInput();
+    this.stockInput = new RangeInput();
   }
 
   element() {
@@ -41,12 +44,12 @@ class Filters {
     ]);
   }
 
-  setFilters(categoriesArr: string[], brandsArr: string[]) {
+  setFilters(categoriesArr: string[], brandsArr: string[], prices: MinAndMax, stock: MinAndMax) {
     setChildren(this.filtersContent, [
       this.block('Categories:', this.filterList(categoriesArr, 'category')),
       this.block('Brands:', this.filterList(brandsArr, 'brand')),
-      this.block('Price:', this.priceInput.element()),
-      this.block('Stock:', this.stockInput.element()),
+      this.block('Price:', this.priceInput.element(prices)),
+      this.block('Stock:', this.stockInput.element(stock)),
     ]);
     this.restoreState();
   }
