@@ -101,6 +101,8 @@ export class Cart {
   private modalWrap = el('.cart__modal');
 
   testTemplate(items?: Readonly<Product>[]): HTMLElement {
+    setChildren(this.modalWrap, [this.modal.render()]);
+    document.querySelector('.wrapper')?.append(this.modalWrap);
     if (items) this.products = items; //! тестовые входные данные
     if (!this.products || !this.products.length) {
       return this.renderEmpty();
@@ -110,10 +112,9 @@ export class Cart {
   }
 
   renderTable(list: Readonly<Product>[]): HTMLElement {
-    this.buyBtnListener(this.buyBtn);
-    this.appendModal(this.modalWrap);
+    this.showModal(this.buyBtn);
+    this.closeModal(this.modalWrap);
     const table = el('section.cart', [
-      this.modalWrap,
       el(
         '.container.cart__container',
         [
@@ -202,22 +203,35 @@ export class Cart {
     return prods;
   }
 
-  appendModal(wrap: HTMLElement): void {
-    const inner = this.modal.render();
-    setChildren(wrap, [inner]);
-    //document.body.append(this.modal.render());
+  showModal(btn: HTMLElement): void {
+    btn.addEventListener('click', () => {
+      window.scrollTo(0, 0);
+      document.body.style.overflow = 'hidden';
+      if (!this.modalWrap.classList.contains('cart__modal_active')) {
+        this.modalWrap.classList.add('cart__modal_active');
+      }
+    });
   }
 
-  buyBtnListener(btn: HTMLElement): void {
-    btn.addEventListener('click', () => {
-      console.log(1);
-      this.modalWrap.classList.toggle('cart__modal_active');
+  closeModal(elem: HTMLElement): void {
+    elem.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement;
+      if (
+        target?.className === 'cart__modal cart__modal_active' ||
+        target?.className === 'modal__close'
+      ) {
+        if (this.modalWrap.classList.contains('cart__modal_active')) {
+          document.body.style.overflow = 'auto';
+          this.modalWrap.classList.remove('cart__modal_active');
+        }
+      }
     });
   }
 
   reset(): void {
     console.log('');
   }
+
   update(): void {
     console.log('');
   }
