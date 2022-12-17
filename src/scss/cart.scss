@@ -55,6 +55,23 @@ padding: 20px 5px;
     justify-content: space-between;
   }
 
+  &__modal {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #6e9c9fb4;
+
+    &_active {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+  }
+
 }
 
 .order {
