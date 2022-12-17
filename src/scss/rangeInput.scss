@@ -1,0 +1,32 @@
+.noUi-connect {
+  background-color: $accent;
+}
+.noUi-target {
+  border-radius: 3px;
+  background-color: $medium;
+  border: none;
+  box-shadow: none;
+}
+.noUi-horizontal {
+  height: 3px;
+}
+.noUi-handle:after, .noUi-handle:before {
+  display: none;
+}
+.noUi-handle {
+  border: none;
+  box-shadow: none;
+  cursor: pointer;
+}
+.noUi-horizontal .noUi-handle {
+  width: 13px;
+  height: 13px;
+  background-color: transparent;
+  top: 0;
+  right: -7px;
+  background-image: url(./assets/images/icons/bg.svg);
+
+}
+.noUi-handle.noUi-handle-upper {
+  right: -5px;
+}
