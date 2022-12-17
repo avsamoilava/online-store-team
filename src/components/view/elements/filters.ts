@@ -48,8 +48,8 @@ class Filters {
     setChildren(this.filtersContent, [
       this.block('Categories:', this.filterList(categoriesArr, 'category')),
       this.block('Brands:', this.filterList(brandsArr, 'brand')),
-      this.block('Price:', this.priceInput.element(prices)),
-      this.block('Stock:', this.stockInput.element(stock)),
+      this.block('Price:', this.priceInput.element(prices, 'price')),
+      this.block('Stock:', this.stockInput.element(stock, 'stock')),
     ]);
     this.restoreState();
   }

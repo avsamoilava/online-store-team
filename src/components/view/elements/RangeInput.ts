@@ -2,9 +2,10 @@ import { el } from 'redom';
 import * as noUiSlider from 'nouislider';
 import 'nouislider/dist/nouislider.css';
 import { MinAndMax } from '../../../types';
+import { setQueryString } from '../../utils';
 
 class RangeInput {
-  element({ min, max }: MinAndMax) {
+  element({ min, max }: MinAndMax, key: 'price' | 'stock') {
     const rangeInput = el('.range__input');
     const range = el('.range', [rangeInput]);
     noUiSlider.create(rangeInput, {
@@ -22,7 +23,7 @@ class RangeInput {
       },
     });
     (rangeInput as noUiSlider.target).noUiSlider?.on('set', (values) => {
-      console.log(values);
+      setQueryString(key, values.join('-'));
     });
     return range;
   }
