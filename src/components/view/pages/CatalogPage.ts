@@ -46,7 +46,7 @@ class CatalogPage extends Catalog {
 
     const categories = getInfo('category', this.productsData);
     const brand = getInfo('brand', this.productsData);
-    this.filters.setBrandsAndCategories(categories, brand);
+    this.filters.setFilters(categories, brand);
     this.restorePreviousState();
   }
 

@@ -1,32 +1,35 @@
 import { el, setChildren } from 'redom';
 import { setQueryString } from '../../utils';
+import RangeInput from './RangeInput';
 
 class Filters {
   private filtersContent: HTMLElement = el('.filters__content');
-  private filterItems: (query?: string) => void;
-  constructor(fn: (query?: string) => void) {
+  private priceInput: RangeInput = new RangeInput(2, 1000);
+  private stockInput: RangeInput = new RangeInput(1, 150);
+  private filterItems: () => void;
+  constructor(fn: () => void) {
     this.filterItems = fn;
   }
+
   element() {
-    const filters: HTMLElement = el('aside.catalog__filters.filters', [
-      el('.filters__top', [this.filtersContent]),
-    ]);
+    const filters: HTMLElement = el('aside.catalog__filters.filters', [this.filtersContent]);
     return filters;
   }
 
-  block(title: string, arr: string[], queryKey: string): HTMLElement {
+  block(title: string, element: HTMLElement) {
+    return el('.filters__block', [el('h3.filters__subtitle', title), element]);
+  }
+
+  filterList(arr: string[], key: string): HTMLElement {
     const handleClick = (e: Event) => {
       const elem = e.target as HTMLElement;
       if (elem instanceof HTMLInputElement) {
-        setQueryString(queryKey, elem.checked ? elem.id : `${elem.id}-delete`);
+        setQueryString(key, elem.checked ? elem.id : `${elem.id}-delete`);
         this.filterItems();
       }
     };
     const elements = arr.map((el) => this.item(el));
-    return el('.filters__block', [
-      el('h3.filters__subtitle', title),
-      el('ul.filters__list', { onclick: handleClick }, elements),
-    ]);
+    return el('ul.filters__list', { onclick: handleClick }, elements);
   }
 
   item(item: string): HTMLElement {
@@ -38,10 +41,12 @@ class Filters {
     ]);
   }
 
-  setBrandsAndCategories(categoriesArr: string[], brandsArr: string[]) {
+  setFilters(categoriesArr: string[], brandsArr: string[]) {
     setChildren(this.filtersContent, [
-      this.block('Categories:', categoriesArr, 'category'),
-      this.block('Brands:', brandsArr, 'brand'),
+      this.block('Categories:', this.filterList(categoriesArr, 'category')),
+      this.block('Brands:', this.filterList(brandsArr, 'brand')),
+      this.block('Price:', this.priceInput.element()),
+      this.block('Stock:', this.stockInput.element()),
     ]);
     this.restoreState();
   }
