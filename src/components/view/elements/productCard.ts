@@ -1,6 +1,7 @@
 import { el } from 'redom';
 import { Product } from '../../../types';
 import { router } from '../../router';
+import AddToCartBtn from './addToCartBtn';
 
 export const productCard = (product: Readonly<Product>): HTMLElement => {
   const cardInfo = el('.card__info', { onclick: () => router.navigate(`/details/${product.id}`) }, [
@@ -13,13 +14,12 @@ export const productCard = (product: Readonly<Product>): HTMLElement => {
   ]);
   cardInfo.setAttribute('data-navigo', '');
 
+  const addToCartBtn = new AddToCartBtn();
+
   return el('.card', [
     el('.card__top', [el('img.card__image', { src: product.images[0] }), cardInfo]),
     el('h4.card__title', product.title),
     el('span.card__price', `$${product.price}`),
-    el('.card__buttons', [
-      el('button.card__btn.btn', 'Add to cart'),
-      el('button.card__btn.btn.btn-fill', 'Buy now'),
-    ]),
+    el('.card__buttons', [addToCartBtn.element(), el('button.card__btn.btn.btn-fill', 'Buy now')]),
   ]);
 };
