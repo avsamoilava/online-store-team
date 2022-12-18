@@ -82,13 +82,12 @@
   &__buttons {
     display: flex;
     width: 100%;
+    justify-content: space-between;
+    gap: 12px;
   }
   &__btn {
     flex-grow: 1;
     width: 50%;
-    &:not(:last-child) {
-      margin-right: 12px;
-    }
   }
   &__btn-wrapper {
     position: relative;
