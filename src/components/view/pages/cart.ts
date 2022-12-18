@@ -1,6 +1,6 @@
 import { el } from 'redom';
 import { ProductInCart } from '../../../types';
-import { getProductsInCart } from '../../utils';
+import { getPriceWithDiscount, getProductsInCart } from '../../utils';
 import { breadCrumbs } from '../elements/breadCrumbs';
 import { Modal } from './Modal';
 
@@ -36,7 +36,10 @@ export class Cart {
                   el('.table-header__item', item)
                 )
               ),
-              el('ul.table__body', this.renderItems()),
+              el(
+                'ul.table__body',
+                this.products.map((item, i) => this.item(item, i))
+              ),
               el('.table__reset'),
             ]),
           ]),
@@ -48,7 +51,7 @@ export class Cart {
             el('.cart__order.order', [
               el('.order__header', `Total`),
               el('.order__amount', `Amount: ${this.products.length}`),
-              el('.order__sum', 'Total cost: ??'),
+              el('.order__sum', `Total cost: ${this.totalAmount().toFixed(2)}€`),
               el('.order__go', [this.buyBtn]),
             ]),
           ]),
@@ -65,40 +68,31 @@ export class Cart {
     );
   }
 
-  renderItems(): HTMLElement[] {
-    const prods = this.products.map(
-      (product: Readonly<ProductInCart>, index: number): HTMLElement => {
-        return el('li.table__row.product', [
-          el('.product__preview', [
-            el('.product_num', `${index + 1}`),
-            el('img', { src: product.thumbnail }),
-            el('span', product.title),
-          ]),
-          el('.product__disc', `${product.discountPercentage}%`),
-          el('.product_price.price', [
-            el('.price__item.price__item_base', `${product.price}€`),
-            el(
-              '.price__item.price__item_disc',
-              `${((product.price * (100 - product.discountPercentage)) / 100).toFixed(2)}€`
-            ),
-          ]),
-          el('.product__amount.amount', [
-            el('button.amount__item.amount__item_down', '-', { 'data-id': product.id }),
-            el('span.amount__item.amount__item_value', product.count),
-            el('button.amount__item.amount__item_up', '+', { 'data-id': product.id }),
-          ]),
-          el('.product__stock', product.stock),
-          el(
-            '.product__total',
-            `${(
-              ((product.price * (100 - product.discountPercentage)) / 100) *
-              product.count
-            ).toFixed(2)}€`
-          ),
-        ]);
-      }
-    );
-    return prods;
+  item(product: Readonly<ProductInCart>, index: number) {
+    const priceWithDiscount = getPriceWithDiscount(product);
+    return el('li.table__row.product', [
+      el('.product__preview', [
+        el('.product_num', `${index + 1}`),
+        el('img', { src: product.thumbnail }),
+        el('span', product.title),
+      ]),
+      el('.product__disc', `${product.discountPercentage}%`),
+      el('.product_price.price', [
+        el('.price__item.price__item_base', `${product.price}€`),
+        el('.price__item.price__item_disc', `${priceWithDiscount.toFixed(2)}€`),
+      ]),
+      el('.product__amount.amount', [
+        el('button.amount__item.amount__item_down', '-', { 'data-id': product.id }),
+        el('span.amount__item.amount__item_value', product.count),
+        el('button.amount__item.amount__item_up', '+', { 'data-id': product.id }),
+      ]),
+      el('.product__stock', product.stock),
+      el('.product__total', `${(priceWithDiscount * product.count).toFixed(2)}€`),
+    ]);
+  }
+
+  totalAmount() {
+    return this.products.reduce((a, b) => a + getPriceWithDiscount(b) * b.count, 0);
   }
 
   reset(): void {

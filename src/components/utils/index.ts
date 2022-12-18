@@ -93,3 +93,6 @@ export function getMinAndMax(key: 'price' | 'stock', arr: Product[]): MinAndMax 
 
 export const getProductsInCart = (): ProductInCart[] =>
   JSON.parse(localStorage.getItem('cart') || '[]');
+
+export const getPriceWithDiscount = (product: Product) =>
+  (product.price * (100 - product.discountPercentage)) / 100;
