@@ -1,6 +1,6 @@
 import { el, setChildren } from 'redom';
-import { MinAndMax, QueryParams } from '../../../types';
-import { setQueryString } from '../../utils';
+import { MinAndMax } from '../../../types';
+import { getParams, setQueryString } from '../../utils';
 import RangeInput from './RangeInput';
 
 class Filters {
@@ -48,16 +48,15 @@ class Filters {
     setChildren(this.filtersContent, [
       this.block('Categories:', this.filterList(categoriesArr, 'category')),
       this.block('Brands:', this.filterList(brandsArr, 'brand')),
-      this.block('Price:', this.priceInput.element(prices, 'price')),
-      this.block('Stock:', this.stockInput.element(stock, 'stock')),
+      this.block('Price:', this.priceInput.element(prices, 'price', this.filterItems)),
+      this.block('Stock:', this.stockInput.element(stock, 'stock', this.filterItems)),
     ]);
     this.restoreState();
   }
 
   private restoreState() {
-    const params: Partial<QueryParams> = Object.fromEntries(
-      new URLSearchParams(location.search).entries()
-    );
+    const params = getParams();
+
     if (params.price) this.restoreRanges(params.price, 'price');
     if (params.stock) this.restoreRanges(params.stock, 'stock');
     if (params.category) this.markCheckedElements(params.category);

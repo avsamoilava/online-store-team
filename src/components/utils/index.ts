@@ -1,4 +1,4 @@
-import { FilterFn, MinAndMax, Product } from '../../types';
+import { FilterFn, MinAndMax, Product, QueryParams } from '../../types';
 import { router } from '../router';
 
 export function sortProducts(option: string, arr: Product[]) {
@@ -66,26 +66,41 @@ export const filterBy: FilterFn = (el, query, key) => {
   return el[key].toLowerCase() === query.toLowerCase();
 };
 
+export const getParams = (): Partial<QueryParams> =>
+  Object.fromEntries(new URLSearchParams(location.search).entries());
+
+function filterByRange(
+  arr: Readonly<Product>[],
+  min: number,
+  max: number,
+  key: string
+): Readonly<Product>[] {
+  return arr.filter((el) => el[key as keyof Product] >= min && el[key as keyof Product] <= max);
+}
 export function filterProducts(arr: Readonly<Product>[]): Readonly<Product>[] {
   let filteredArray = [...arr];
-  const params = new URLSearchParams(location.search);
-  const paramsObject = Object.fromEntries(params.entries());
-
+  const params = getParams();
   ///////////////
-  delete paramsObject['sort'];
-  delete paramsObject['price'];
-  delete paramsObject['stock'];
+  delete params['sort'];
   ///////////////
 
-  Object.keys(paramsObject).forEach((key) => {
+  Object.keys(params).forEach((key) => {
     if (key === 'category' || key === 'brand') {
-      filteredArray = paramsObject[key]
+      filteredArray = (params[key] as string)
         .split('*')
         .map((c) => filteredArray.filter((el) => filterBy(el, c, key)))
         .flat();
-    } else {
-      filteredArray = filteredArray.filter((el) => searchProducts(el, paramsObject[key]));
     }
+    if (params.price) {
+      const [min, max] = params.price.split('-').map(Number);
+      filteredArray = filterByRange(filteredArray, min, max, 'price');
+    }
+    if (params.stock) {
+      const [min, max] = params.stock.split('-').map(Number);
+      filteredArray = filterByRange(filteredArray, min, max, 'stock');
+    }
+    if (params.search)
+      filteredArray = filteredArray.filter((el) => searchProducts(el, params.search as string));
   });
 
   return filteredArray;

@@ -45,4 +45,5 @@ export type QueryParams = {
   brand: string;
   stock: string;
   sort: string;
+  search: string;
 };

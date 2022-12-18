@@ -7,12 +7,13 @@ import { setQueryString } from '../../utils';
 class RangeInput {
   private rangeInput: HTMLElement = el('.range__input');
 
-  element({ min, max }: MinAndMax, key: 'price' | 'stock') {
+  element({ min, max }: MinAndMax, key: 'price' | 'stock', fn: () => void) {
     this.createRange(min, max);
     const range = el('.range', [this.rangeInput]);
 
     (this.rangeInput as noUiSlider.target).noUiSlider?.on('set', (values) => {
       setQueryString(key, values.join('-'));
+      fn();
     });
     return range;
   }
