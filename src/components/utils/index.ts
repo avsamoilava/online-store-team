@@ -59,7 +59,7 @@ function filterByRange(
 ): Readonly<Product>[] {
   return arr.filter((el) => el[key as keyof Product] >= min && el[key as keyof Product] <= max);
 }
-export function filterProducts(arr: Readonly<Product>[]): Readonly<Product>[] {
+export function filterAndSortProducts(arr: Readonly<Product>[]): Readonly<Product>[] {
   let filteredArray = [...arr];
   const params = getParams();
 
@@ -70,15 +70,11 @@ export function filterProducts(arr: Readonly<Product>[]): Readonly<Product>[] {
         .map((c) => filteredArray.filter((el) => filterBy(el, c, key)))
         .flat();
     }
-    if (params.price) {
-      const [min, max] = params.price.split('-').map(Number);
-      filteredArray = filterByRange(filteredArray, min, max, 'price');
+    if (key === 'price' || key === 'stock') {
+      const [min, max] = (params[key] as string).split('-').map(Number);
+      filteredArray = filterByRange(filteredArray, min, max, key);
     }
-    if (params.stock) {
-      const [min, max] = params.stock.split('-').map(Number);
-      filteredArray = filterByRange(filteredArray, min, max, 'stock');
-    }
-    if (params.search)
+    if (key === 'search')
       filteredArray = filteredArray.filter((el) => searchProducts(el, params.search as string));
     if (params.sort) sortProducts(params.sort, filteredArray);
   });

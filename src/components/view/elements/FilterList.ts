@@ -1,18 +1,19 @@
 import { el } from 'redom';
+import { QueryParams } from '../../../types';
 import { setQueryString } from '../../utils';
+import BaseElement from './BaseElement';
 
-class FilterList {
-  private filter: () => void;
-  constructor(fn: () => void) {
-    this.filter = fn;
+class FilterList extends BaseElement {
+  constructor(fn: () => void, key: keyof QueryParams) {
+    super(fn, key);
   }
 
-  element(arr: string[], key: string) {
+  element(arr: string[]) {
     const handleClick = (e: Event) => {
       const elem = e.target as HTMLElement;
       if (elem instanceof HTMLInputElement) {
-        setQueryString(key, elem.checked ? elem.id : `${elem.id}-delete`);
-        this.filter();
+        setQueryString(this.key, elem.checked ? elem.id : `${elem.id}-delete`);
+        this.selectItemsByQuery();
       }
     };
     const elements = arr.map((el) => this.item(el));
@@ -28,11 +29,13 @@ class FilterList {
     ]);
   }
 
-  restoreState(query: string) {
-    query.split('*').forEach((val) => {
-      const elem = document.getElementById(val);
-      if (elem instanceof HTMLInputElement) elem.checked = true;
-    });
+  restoreState() {
+    super.restoreState((query: string) =>
+      query.split('*').forEach((val) => {
+        const elem = document.getElementById(val);
+        if (elem instanceof HTMLInputElement) elem.checked = true;
+      })
+    );
   }
 }
 export default FilterList;

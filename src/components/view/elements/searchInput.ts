@@ -1,31 +1,32 @@
 import { el } from 'redom';
-import { getParams, setQueryString } from '../../utils';
+import { QueryParams } from '../../../types';
+import { setQueryString } from '../../utils';
+import BaseElement from './BaseElement';
 
-class SearchInput {
+class SearchInput extends BaseElement {
   private searchInput: HTMLElement = el('input.catalog__search', {
     placeholder: 'Search product...',
   });
-  private search: () => void;
-  constructor(fn: () => void) {
-    this.search = fn;
+  constructor(fn: () => void, key: keyof QueryParams) {
+    super(fn, key);
   }
   element() {
-    const { search } = getParams();
-    if (search) this.setValue(search);
+    this.restoreState();
 
     let timer: ReturnType<typeof setTimeout>;
     this.searchInput.addEventListener('input', () => {
       clearTimeout(timer);
       timer = setTimeout(() => {
         const searchQuery = (this.searchInput as HTMLInputElement).value.trim().toLowerCase();
-        setQueryString('search', searchQuery);
-        this.search();
+        setQueryString(this.key, searchQuery);
+        this.selectItemsByQuery();
       }, 500);
     });
     return this.searchInput;
   }
-  setValue(value: string) {
-    (this.searchInput as HTMLInputElement).value = value;
+
+  restoreState() {
+    super.restoreState((query: string) => ((this.searchInput as HTMLInputElement).value = query));
   }
 }
 

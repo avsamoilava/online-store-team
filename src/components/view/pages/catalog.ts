@@ -1,6 +1,6 @@
 import { el, setChildren } from 'redom';
 import { Product } from '../../../types';
-import { filterProducts } from '../../utils';
+import { filterAndSortProducts } from '../../utils';
 import Pagination from '../elements/pagination';
 import { productCard } from '../elements/productCard';
 
@@ -52,7 +52,7 @@ class Catalog {
 
   setPages(itemsCount: number) {
     this.pagination = new Pagination(itemsCount, this.limit);
-    const paginationEl: HTMLDivElement = this.pagination.element(1, this.render.bind(this));
+    const paginationEl: HTMLElement = this.pagination.element(1, this.render.bind(this));
     setChildren(this.pagesContainer, [paginationEl]);
   }
 
@@ -64,7 +64,7 @@ class Catalog {
   }
 
   filterAndSort() {
-    const filtered = filterProducts(this.productsData);
+    const filtered = filterAndSortProducts(this.productsData);
     this.filteredData = filtered;
     this.setPages(this.filteredData.length);
     this.render(1, this.filteredData);

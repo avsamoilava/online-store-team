@@ -1,24 +1,24 @@
 import { el } from 'redom';
 import * as noUiSlider from 'nouislider';
 import 'nouislider/dist/nouislider.css';
-import { MinAndMax } from '../../../types';
+import { MinAndMax, QueryParams } from '../../../types';
 import { setQueryString } from '../../utils';
+import BaseElement from './BaseElement';
 
-class RangeInput {
+class RangeInput extends BaseElement {
   private rangeInput: HTMLElement = el('.range__input');
-  private filter: () => void;
 
-  constructor(fn: () => void) {
-    this.filter = fn;
+  constructor(fn: () => void, key: keyof QueryParams) {
+    super(fn, key);
   }
 
-  element({ min, max }: MinAndMax, key: 'price' | 'stock') {
+  element({ min, max }: MinAndMax) {
     this.createRange(min, max);
     const range = el('.range', [this.rangeInput]);
 
     (this.rangeInput as noUiSlider.target).noUiSlider?.on('set', (values) => {
-      setQueryString(key, values.join('-'));
-      this.filter();
+      setQueryString(this.key, values.join('-'));
+      this.selectItemsByQuery();
     });
     return range;
   }
@@ -38,8 +38,10 @@ class RangeInput {
       },
     });
   }
-  restoreState(query: string) {
-    (this.rangeInput as noUiSlider.target).noUiSlider?.set(query.split('-'));
+  restoreState() {
+    super.restoreState((query: string) =>
+      (this.rangeInput as noUiSlider.target).noUiSlider?.set(query.split('-'))
+    );
   }
 }
 
