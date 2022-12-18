@@ -24,9 +24,9 @@ class SearchInput extends BaseElement {
     });
     return this.searchInput;
   }
+
   restoreState() {
-    const restore = (query: string) => ((this.searchInput as HTMLInputElement).value = query);
-    super.restoreState(restore);
+    super.restoreState((query: string) => ((this.searchInput as HTMLInputElement).value = query));
   }
 }
 

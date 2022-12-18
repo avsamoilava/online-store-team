@@ -52,7 +52,7 @@ class Catalog {
 
   setPages(itemsCount: number) {
     this.pagination = new Pagination(itemsCount, this.limit);
-    const paginationEl: HTMLDivElement = this.pagination.element(1, this.render.bind(this));
+    const paginationEl: HTMLElement = this.pagination.element(1, this.render.bind(this));
     setChildren(this.pagesContainer, [paginationEl]);
   }
 

@@ -30,13 +30,12 @@ class FilterList extends BaseElement {
   }
 
   restoreState() {
-    const restore = (query: string) => {
+    super.restoreState((query: string) =>
       query.split('*').forEach((val) => {
         const elem = document.getElementById(val);
         if (elem instanceof HTMLInputElement) elem.checked = true;
-      });
-    };
-    super.restoreState(restore);
+      })
+    );
   }
 }
 export default FilterList;

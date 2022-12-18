@@ -54,12 +54,11 @@ class Dropdown extends BaseElement {
   }
 
   restoreState() {
-    const restore = (query: string) => {
+    super.restoreState((query: string) => {
       if (!sortOptions.includes(query.replace('_', ' '))) return;
       this.text.textContent = query.replace('_', ' ');
       this.closeIcon.classList.add('dropdown__close--active');
-    };
-    super.restoreState(restore);
+    });
   }
 
   reset() {

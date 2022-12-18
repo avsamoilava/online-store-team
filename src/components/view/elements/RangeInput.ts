@@ -39,9 +39,9 @@ class RangeInput extends BaseElement {
     });
   }
   restoreState() {
-    const restore = (query: string) =>
-      (this.rangeInput as noUiSlider.target).noUiSlider?.set(query.split('-'));
-    super.restoreState(restore);
+    super.restoreState((query: string) =>
+      (this.rangeInput as noUiSlider.target).noUiSlider?.set(query.split('-'))
+    );
   }
 }
 
