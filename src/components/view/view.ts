@@ -2,7 +2,7 @@ import { setChildren } from 'redom';
 import { Elements, Product } from '../../types';
 import { Home } from './pages/home';
 import { Cart } from './pages/cart';
-import { details } from './pages/details';
+import { Details } from './pages/details';
 import { page404 } from './pages/page-404';
 import CatalogPage from './pages/CatalogPage';
 
@@ -11,6 +11,7 @@ class View {
   private catalog: CatalogPage = new CatalogPage();
   private cart: Cart = new Cart();
   private home: Home = new Home();
+  private details: Details = new Details();
   private elements: Elements = {
     '/': this.home.content,
     '/catalog': this.catalog.element(),
@@ -27,7 +28,7 @@ class View {
   }
 
   renderDetails(product: Readonly<Product>) {
-    setChildren(this.rootElement, [details(product)]);
+    setChildren(this.rootElement, [this.details.createDetails(product)]);
   }
 }
 
