@@ -1,5 +1,5 @@
 import { el } from 'redom';
-import { Product } from '../../../types';
+import { ProductInCart, Product } from '../../../types';
 import { router } from '../../router';
 import AddToCartBtn from './addToCartBtn';
 
@@ -11,6 +11,9 @@ class ProductCard {
     this.addToCartBtn = new AddToCartBtn();
   }
   element() {
+    this.restoreState();
+    const addBtn = this.addToCartBtn.element();
+    addBtn.addEventListener('click', () => this.addToCart());
     const cardInfo = el(
       '.card__info',
       { onclick: () => router.navigate(`/details/${this.product.id}`) },
@@ -31,11 +34,20 @@ class ProductCard {
       el('.card__top', [el('img.card__image', { src: this.product.images[0] }), cardInfo]),
       el('h4.card__title', this.product.title),
       el('span.card__price', `$${this.product.price}`),
-      el('.card__buttons', [
-        this.addToCartBtn.element(),
-        el('button.card__btn.btn.btn-fill', 'Buy now'),
-      ]),
+      el('.card__buttons', [addBtn, el('button.card__btn.btn.btn-fill', 'Buy now')]),
     ]);
+  }
+  addToCart() {
+    const itemToAdd = { ...this.product, count: this.addToCartBtn.count };
+    let cart: ProductInCart[] = JSON.parse(localStorage.getItem('cart') || '[]');
+    cart = cart.filter((item) => item.title !== itemToAdd.title);
+    cart.push(itemToAdd);
+    localStorage.setItem('cart', JSON.stringify(cart));
+  }
+  private restoreState() {
+    const cart: ProductInCart[] = JSON.parse(localStorage.getItem('cart') || '[]');
+    const prod = cart.find((item) => item.title === this.product.title);
+    if (prod) this.addToCartBtn.count = prod.count;
   }
 }
 

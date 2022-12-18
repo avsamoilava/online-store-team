@@ -13,6 +13,7 @@ class App {
   }
 
   start() {
+    if (!localStorage.getItem('cart')) localStorage.setItem('cart', '[]');
     this.controller.getAll((data) => this.view.renderCatalog(data.products));
 
     router
