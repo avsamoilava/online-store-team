@@ -1,6 +1,7 @@
 import { el } from 'redom';
-import { ProductInCart, Product } from '../../../types';
+import { Product } from '../../../types';
 import { router } from '../../router';
+import { getProductsInCart } from '../../utils';
 import AddToCartBtn from './addToCartBtn';
 
 class ProductCard {
@@ -10,6 +11,7 @@ class ProductCard {
     this.product = product;
     this.addToCartBtn = new AddToCartBtn();
   }
+
   element() {
     this.restoreState();
     const addBtn = this.addToCartBtn.element();
@@ -37,16 +39,16 @@ class ProductCard {
       el('.card__buttons', [addBtn, el('button.card__btn.btn.btn-fill', 'Buy now')]),
     ]);
   }
+
   addToCart() {
     const itemToAdd = { ...this.product, count: this.addToCartBtn.count };
-    let cart: ProductInCart[] = JSON.parse(localStorage.getItem('cart') || '[]');
-    cart = cart.filter((item) => item.title !== itemToAdd.title);
-    cart.push(itemToAdd);
+    const cart = getProductsInCart().filter((item) => item.title !== itemToAdd.title);
+    if (this.addToCartBtn.count) cart.push(itemToAdd);
     localStorage.setItem('cart', JSON.stringify(cart));
   }
+
   private restoreState() {
-    const cart: ProductInCart[] = JSON.parse(localStorage.getItem('cart') || '[]');
-    const prod = cart.find((item) => item.title === this.product.title);
+    const prod = getProductsInCart().find((item) => item.title === this.product.title);
     if (prod) this.addToCartBtn.count = prod.count;
   }
 }

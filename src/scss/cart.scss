@@ -1,5 +1,5 @@
 .cart {
-  
+
 padding: 20px 5px;
   &__container {}
 
@@ -8,22 +8,6 @@ padding: 20px 5px;
     font-size: 55px;
     line-height: 1.1;
     margin-bottom: 20px;
-  }
-
-  &__drops {
-    margin-bottom: 20px;
-    a {
-      font-weight: 500;
-      font-size: 17px;
-      line-height: 140%;
-    }
-
-    span {
-      font-weight: 500;
-      font-size: 17px;
-      line-height: 140%;
-      color: $current-point;
-    }
   }
 
   &__content {}
@@ -171,7 +155,7 @@ padding: 20px 5px;
     img {
       width: 150px;
     }
-  
+
   }
 
   &__disc {
@@ -198,7 +182,7 @@ padding: 20px 5px;
 .price {
   &__item {
     color: $accent-extra;
-    
+
     &_base {
       text-decoration: line-through;
     }
@@ -214,7 +198,7 @@ padding: 20px 5px;
 
   &__item {
 
-   
+
 
     &_down {
       width: 15px;

@@ -1,4 +1,4 @@
-import { FilterFn, MinAndMax, Product, QueryParams } from '../../types';
+import { FilterFn, MinAndMax, Product, ProductInCart, QueryParams } from '../../types';
 import { router } from '../router';
 export const sortOptions = [
   'price asc',
@@ -90,3 +90,6 @@ export function getMinAndMax(key: 'price' | 'stock', arr: Product[]): MinAndMax 
   const items = arr.map((el) => el[key]).sort((a, b) => (a > b ? 1 : -1));
   return { min: items[0], max: items[items.length - 1] };
 }
+
+export const getProductsInCart = (): ProductInCart[] =>
+  JSON.parse(localStorage.getItem('cart') || '[]');
