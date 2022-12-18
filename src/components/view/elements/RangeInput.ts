@@ -6,14 +6,19 @@ import { setQueryString } from '../../utils';
 
 class RangeInput {
   private rangeInput: HTMLElement = el('.range__input');
+  private filter: () => void;
 
-  element({ min, max }: MinAndMax, key: 'price' | 'stock', fn: () => void) {
+  constructor(fn: () => void) {
+    this.filter = fn;
+  }
+
+  element({ min, max }: MinAndMax, key: 'price' | 'stock') {
     this.createRange(min, max);
     const range = el('.range', [this.rangeInput]);
 
     (this.rangeInput as noUiSlider.target).noUiSlider?.on('set', (values) => {
       setQueryString(key, values.join('-'));
-      fn();
+      this.filter();
     });
     return range;
   }
@@ -33,7 +38,8 @@ class RangeInput {
       },
     });
   }
-  setRange(min: number, max: number) {
+  restoreState(query: string) {
+    const [min, max] = query.split('-');
     (this.rangeInput as noUiSlider.target).noUiSlider?.set([min, max]);
   }
 }
