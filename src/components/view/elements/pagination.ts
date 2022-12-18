@@ -5,7 +5,7 @@ interface IPagination {
   getPagesArray: () => number[];
   setPages: (n: number) => number[];
   pages: (n: number) => number[];
-  pagesElement: (n: number, fn: CatalogRenderFn) => HTMLDivElement;
+  element: (n: number, fn: CatalogRenderFn) => HTMLDivElement;
 }
 
 class Pagination implements IPagination {
@@ -38,12 +38,12 @@ class Pagination implements IPagination {
     return pages.filter((el) => el > 0);
   }
 
-  pagesElement(page: number, fn: CatalogRenderFn) {
+  element(page: number, fn: CatalogRenderFn) {
     const handleClick = (e: Event): void => {
       const element = e.target as HTMLElement;
       if (!element.classList.contains('pagination__btn')) return;
       const page = Number(element.textContent);
-      (element.parentElement as HTMLElement).replaceWith(this.pagesElement(page, fn));
+      (element.parentElement as HTMLElement).replaceWith(this.element(page, fn));
       fn(page);
     };
 

@@ -8,29 +8,25 @@ import { viewControls } from '../elements/viewControls';
 import Catalog from './catalog';
 
 class CatalogPage extends Catalog {
-  private dropdown: Dropdown = new Dropdown();
-  private searchInput: SearchInput = new SearchInput();
-  private filters: Filters = new Filters(this.filter.bind(this));
+  private dropdown: Dropdown = new Dropdown(this.filterAndSort.bind(this));
+  private searchInput: SearchInput = new SearchInput(this.filterAndSort.bind(this));
+  private filters: Filters = new Filters(this.filterAndSort.bind(this));
 
   constructor() {
     super();
   }
 
   element() {
-    const dropdownElem = this.dropdown.element(this.sort.bind(this));
-    const searchInputElem = this.searchInput.element(this.filter.bind(this));
-    const filtersElem = this.filters.element();
-
     const element: HTMLElement = el('section.catalog', [
       el('.container.catalog__container', [
         el('.catalog__content', [
           el('h1.catalog__title', 'catalog'),
-          filtersElem,
+          this.filters.element(),
           el('.catalog__products', [
             el('.catalog__controls', [
-              dropdownElem,
+              this.dropdown.element(),
               viewControls(this.changeView.bind(this)),
-              searchInputElem,
+              this.searchInput.element(),
             ]),
             this.productsList,
             this.pagesContainer,
@@ -49,17 +45,7 @@ class CatalogPage extends Catalog {
     const priceValues = getMinAndMax('price', this.productsData);
     const stockValues = getMinAndMax('stock', this.productsData);
     this.filters.setFilters(categories, brand, priceValues, stockValues);
-    this.restorePreviousState();
-  }
-
-  private restorePreviousState() {
-    const params = new URLSearchParams(location.search);
-    const sortOption = params.get('sort');
-    this.filter();
-    if (sortOption) {
-      this.dropdown.restoreState(sortOption);
-      this.sort(sortOption);
-    }
+    this.filterAndSort();
   }
 }
 export default CatalogPage;

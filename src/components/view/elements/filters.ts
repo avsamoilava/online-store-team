@@ -37,12 +37,12 @@ class Filters {
   }
 
   private restoreState() {
-    const params = getParams();
+    const { price, stock, category, brand } = getParams();
 
-    if (params.price) this.priceInput.restoreState(params.price);
-    if (params.stock) this.stockInput.restoreState(params.stock);
-    if (params.category) this.categoriesList.restoreState(params.category);
-    if (params.brand) this.brandsList.restoreState(params.brand);
+    if (price) this.priceInput.restoreState(price);
+    if (stock) this.stockInput.restoreState(stock);
+    if (category) this.categoriesList.restoreState(category);
+    if (brand) this.brandsList.restoreState(brand);
   }
 }
 

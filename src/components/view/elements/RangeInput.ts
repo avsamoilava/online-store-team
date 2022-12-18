@@ -39,8 +39,7 @@ class RangeInput {
     });
   }
   restoreState(query: string) {
-    const [min, max] = query.split('-');
-    (this.rangeInput as noUiSlider.target).noUiSlider?.set([min, max]);
+    (this.rangeInput as noUiSlider.target).noUiSlider?.set(query.split('-'));
   }
 }
 

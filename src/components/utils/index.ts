@@ -1,38 +1,20 @@
 import { FilterFn, MinAndMax, Product, QueryParams } from '../../types';
 import { router } from '../router';
-
+export const sortOptions = [
+  'price asc',
+  'price desc',
+  'rating asc',
+  'rating desc',
+  'discount asc',
+  'discount desc',
+];
 export function sortProducts(option: string, arr: Product[]) {
-  if (
-    ![
-      'price_asc',
-      'price_desc',
-      'rating_asc',
-      'rating_desc',
-      'discount_asc',
-      'discount_desc',
-    ].includes(option)
-  )
-    return;
-  switch (option) {
-    case 'price_asc':
-      arr.sort((a, b) => (a.price > b.price ? 1 : -1));
-      break;
-    case 'price_desc':
-      arr.sort((a, b) => (a.price < b.price ? 1 : -1));
-      break;
-    case 'rating_asc':
-      arr.sort((a, b) => (a.rating > b.rating ? 1 : -1));
-      break;
-    case 'rating_desc':
-      arr.sort((a, b) => (a.rating < b.rating ? 1 : -1));
-      break;
-    case 'discount_asc':
-      arr.sort((a, b) => (a.discountPercentage > b.discountPercentage ? 1 : -1));
-      break;
-    case 'discount_desc':
-      arr.sort((a, b) => (a.discountPercentage < b.discountPercentage ? 1 : -1));
-      break;
-  }
+  if (!sortOptions.includes(option.replace('_', ' '))) return;
+  const [k, order] = option.split('_');
+  const key = k === 'discount' ? 'discountPercentage' : k;
+  order === 'asc'
+    ? arr.sort((a, b) => (a[key as keyof Product] > b[key as keyof Product] ? 1 : -1))
+    : arr.sort((a, b) => (a[key as keyof Product] < b[key as keyof Product] ? 1 : -1));
 }
 
 export function setQueryString(key: string, value: string): void {
@@ -80,9 +62,6 @@ function filterByRange(
 export function filterProducts(arr: Readonly<Product>[]): Readonly<Product>[] {
   let filteredArray = [...arr];
   const params = getParams();
-  ///////////////
-  delete params['sort'];
-  ///////////////
 
   Object.keys(params).forEach((key) => {
     if (key === 'category' || key === 'brand') {
@@ -101,6 +80,7 @@ export function filterProducts(arr: Readonly<Product>[]): Readonly<Product>[] {
     }
     if (params.search)
       filteredArray = filteredArray.filter((el) => searchProducts(el, params.search as string));
+    if (params.sort) sortProducts(params.sort, filteredArray);
   });
 
   return filteredArray;

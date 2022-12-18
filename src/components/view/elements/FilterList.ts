@@ -19,7 +19,7 @@ class FilterList {
     return el('ul.filters__list', { onclick: handleClick }, elements);
   }
 
-  item(item: string): HTMLElement {
+  private item(item: string): HTMLElement {
     return el('li.filters__item', [
       el('label.checkbox', [
         el(`input.checkbox__input#${item}`, { type: 'checkbox' }),

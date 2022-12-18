@@ -31,14 +31,6 @@ export type MinAndMax = {
   max: number;
 };
 
-export type SortOptions =
-  | 'price_asc'
-  | 'price_desc'
-  | 'rating_asc'
-  | 'rating_desc'
-  | 'discount_asc'
-  | 'discount_desc';
-
 export type QueryParams = {
   price: string;
   category: string;
