@@ -59,7 +59,7 @@ function filterByRange(
 ): Readonly<Product>[] {
   return arr.filter((el) => el[key as keyof Product] >= min && el[key as keyof Product] <= max);
 }
-export function filterProducts(arr: Readonly<Product>[]): Readonly<Product>[] {
+export function filterAndSortProducts(arr: Readonly<Product>[]): Readonly<Product>[] {
   let filteredArray = [...arr];
   const params = getParams();
 

@@ -1,6 +1,6 @@
 import { el, setChildren } from 'redom';
 import { Product } from '../../../types';
-import { filterProducts } from '../../utils';
+import { filterAndSortProducts } from '../../utils';
 import Pagination from '../elements/pagination';
 import { productCard } from '../elements/productCard';
 
@@ -64,7 +64,7 @@ class Catalog {
   }
 
   filterAndSort() {
-    const filtered = filterProducts(this.productsData);
+    const filtered = filterAndSortProducts(this.productsData);
     this.filteredData = filtered;
     this.setPages(this.filteredData.length);
     this.render(1, this.filteredData);
