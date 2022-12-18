@@ -1,104 +1,108 @@
-import { el } from 'redom';
+import { el, setChildren } from 'redom';
 import { Product } from '../../../types';
 import { router } from '../../router';
+import { Modal } from './Modal';
 
 export class Cart {
-  constructor(
-    private products: Readonly<Product>[] = [
-      {
-        id: 1,
-        title: 'iPhone 9',
-        description: 'An apple mobile which is nothing like apple',
-        price: 549,
-        discountPercentage: 12.96,
-        rating: 4.69,
-        stock: 94,
-        brand: 'Apple',
-        category: 'smartphones',
-        thumbnail: 'https://i.dummyjson.com/data/products/1/thumbnail.jpg',
-        images: [
-          'https://i.dummyjson.com/data/products/1/1.jpg',
-          'https://i.dummyjson.com/data/products/1/2.jpg',
-          'https://i.dummyjson.com/data/products/1/3.jpg',
-          'https://i.dummyjson.com/data/products/1/4.jpg',
-          'https://i.dummyjson.com/data/products/1/thumbnail.jpg',
-        ],
-      },
-      {
-        id: 2,
-        title: 'iPhone X',
-        description:
-          'SIM-Free, Model A19211 6.5-inch Super Retina HD display with OLED technology A12 Bionic chip with ...',
-        price: 899,
-        discountPercentage: 17.94,
-        rating: 4.44,
-        stock: 34,
-        brand: 'Apple',
-        category: 'smartphones',
-        thumbnail: 'https://i.dummyjson.com/data/products/2/thumbnail.jpg',
-        images: [
-          'https://i.dummyjson.com/data/products/2/1.jpg',
-          'https://i.dummyjson.com/data/products/2/2.jpg',
-          'https://i.dummyjson.com/data/products/2/3.jpg',
-          'https://i.dummyjson.com/data/products/2/thumbnail.jpg',
-        ],
-      },
-      {
-        id: 3,
-        title: 'Samsung Universe 9',
-        description: "Samsung's new variant which goes beyond Galaxy to the Universe",
-        price: 1249,
-        discountPercentage: 15.46,
-        rating: 4.09,
-        stock: 36,
-        brand: 'Samsung',
-        category: 'smartphones',
-        thumbnail: 'https://i.dummyjson.com/data/products/3/thumbnail.jpg',
-        images: ['https://i.dummyjson.com/data/products/3/1.jpg'],
-      },
-      {
-        id: 4,
-        title: 'OPPOF19',
-        description: 'OPPO F19 is officially announced on April 2021.',
-        price: 280,
-        discountPercentage: 17.91,
-        rating: 4.3,
-        stock: 123,
-        brand: 'OPPO',
-        category: 'smartphones',
-        thumbnail: 'https://i.dummyjson.com/data/products/4/thumbnail.jpg',
-        images: [
-          'https://i.dummyjson.com/data/products/4/1.jpg',
-          'https://i.dummyjson.com/data/products/4/2.jpg',
-          'https://i.dummyjson.com/data/products/4/3.jpg',
-          'https://i.dummyjson.com/data/products/4/4.jpg',
-          'https://i.dummyjson.com/data/products/4/thumbnail.jpg',
-        ],
-      },
-      {
-        id: 5,
-        title: 'Huawei P30',
-        description:
-          'Huawei’s re-badged P30 Pro New Edition was officially unveiled yesterday in Germany and now the device has made its way to the UK.',
-        price: 499,
-        discountPercentage: 10.58,
-        rating: 4.09,
-        stock: 32,
-        brand: 'Huawei',
-        category: 'smartphones',
-        thumbnail: 'https://i.dummyjson.com/data/products/5/thumbnail.jpg',
-        images: [
-          'https://i.dummyjson.com/data/products/5/1.jpg',
-          'https://i.dummyjson.com/data/products/5/2.jpg',
-          'https://i.dummyjson.com/data/products/5/3.jpg',
-        ],
-      },
-    ],
-    private amount: number = 0,
-    private sum: number = 0
-  ) {}
+  private products: Readonly<Product>[] = [
+    {
+      id: 1,
+      title: 'iPhone 9',
+      description: 'An apple mobile which is nothing like apple',
+      price: 549,
+      discountPercentage: 12.96,
+      rating: 4.69,
+      stock: 94,
+      brand: 'Apple',
+      category: 'smartphones',
+      thumbnail: 'https://i.dummyjson.com/data/products/1/thumbnail.jpg',
+      images: [
+        'https://i.dummyjson.com/data/products/1/1.jpg',
+        'https://i.dummyjson.com/data/products/1/2.jpg',
+        'https://i.dummyjson.com/data/products/1/3.jpg',
+        'https://i.dummyjson.com/data/products/1/4.jpg',
+        'https://i.dummyjson.com/data/products/1/thumbnail.jpg',
+      ],
+    },
+    {
+      id: 2,
+      title: 'iPhone X',
+      description:
+        'SIM-Free, Model A19211 6.5-inch Super Retina HD display with OLED technology A12 Bionic chip with ...',
+      price: 899,
+      discountPercentage: 17.94,
+      rating: 4.44,
+      stock: 34,
+      brand: 'Apple',
+      category: 'smartphones',
+      thumbnail: 'https://i.dummyjson.com/data/products/2/thumbnail.jpg',
+      images: [
+        'https://i.dummyjson.com/data/products/2/1.jpg',
+        'https://i.dummyjson.com/data/products/2/2.jpg',
+        'https://i.dummyjson.com/data/products/2/3.jpg',
+        'https://i.dummyjson.com/data/products/2/thumbnail.jpg',
+      ],
+    },
+    {
+      id: 3,
+      title: 'Samsung Universe 9',
+      description: "Samsung's new variant which goes beyond Galaxy to the Universe",
+      price: 1249,
+      discountPercentage: 15.46,
+      rating: 4.09,
+      stock: 36,
+      brand: 'Samsung',
+      category: 'smartphones',
+      thumbnail: 'https://i.dummyjson.com/data/products/3/thumbnail.jpg',
+      images: ['https://i.dummyjson.com/data/products/3/1.jpg'],
+    },
+    {
+      id: 4,
+      title: 'OPPOF19',
+      description: 'OPPO F19 is officially announced on April 2021.',
+      price: 280,
+      discountPercentage: 17.91,
+      rating: 4.3,
+      stock: 123,
+      brand: 'OPPO',
+      category: 'smartphones',
+      thumbnail: 'https://i.dummyjson.com/data/products/4/thumbnail.jpg',
+      images: [
+        'https://i.dummyjson.com/data/products/4/1.jpg',
+        'https://i.dummyjson.com/data/products/4/2.jpg',
+        'https://i.dummyjson.com/data/products/4/3.jpg',
+        'https://i.dummyjson.com/data/products/4/4.jpg',
+        'https://i.dummyjson.com/data/products/4/thumbnail.jpg',
+      ],
+    },
+    {
+      id: 5,
+      title: 'Huawei P30',
+      description:
+        'Huawei’s re-badged P30 Pro New Edition was officially unveiled yesterday in Germany and now the device has made its way to the UK.',
+      price: 499,
+      discountPercentage: 10.58,
+      rating: 4.09,
+      stock: 32,
+      brand: 'Huawei',
+      category: 'smartphones',
+      thumbnail: 'https://i.dummyjson.com/data/products/5/thumbnail.jpg',
+      images: [
+        'https://i.dummyjson.com/data/products/5/1.jpg',
+        'https://i.dummyjson.com/data/products/5/2.jpg',
+        'https://i.dummyjson.com/data/products/5/3.jpg',
+      ],
+    },
+  ];
+  private modal: Modal = new Modal();
+  private amount = 0;
+  private sum = 0;
+  private buyBtn = el('button.btn.btn-fill', 'buy now');
+  private modalWrap = el('.cart__modal');
 
   testTemplate(items?: Readonly<Product>[]): HTMLElement {
+    setChildren(this.modalWrap, [this.modal.render()]);
+    document.querySelector('.wrapper')?.append(this.modalWrap);
     if (items) this.products = items; //! тестовые входные данные
     if (!this.products || !this.products.length) {
       return this.renderEmpty();
@@ -108,6 +112,8 @@ export class Cart {
   }
 
   renderTable(list: Readonly<Product>[]): HTMLElement {
+    this.showModal(this.buyBtn);
+    this.closeModal(this.modalWrap);
     const table = el('section.cart', [
       el(
         '.container.cart__container',
@@ -136,7 +142,6 @@ export class Cart {
                 el('.table-header__item', 'Total'),
               ]),
               el('ul.table__body', this.renderItems(list)),
-              //el('.table__promo'),
               el('.table__reset'),
             ]),
           ]),
@@ -149,7 +154,7 @@ export class Cart {
               el('.order__header', `Total`),
               el('.order__amount', `Amount: ${this.products.length}`),
               el('.order__sum', 'Total cost: ??'),
-              el('.order__go', [el('button.btn.btn-fill', 'buy now')]),
+              el('.order__go', [this.buyBtn]),
             ]),
           ]),
         ]
@@ -198,9 +203,35 @@ export class Cart {
     return prods;
   }
 
+  showModal(btn: HTMLElement): void {
+    btn.addEventListener('click', () => {
+      window.scrollTo(0, 0);
+      document.body.style.overflow = 'hidden';
+      if (!this.modalWrap.classList.contains('cart__modal_active')) {
+        this.modalWrap.classList.add('cart__modal_active');
+      }
+    });
+  }
+
+  closeModal(elem: HTMLElement): void {
+    elem.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement;
+      if (
+        target?.className === 'cart__modal cart__modal_active' ||
+        target?.className === 'modal__close'
+      ) {
+        if (this.modalWrap.classList.contains('cart__modal_active')) {
+          document.body.style.overflow = 'auto';
+          this.modalWrap.classList.remove('cart__modal_active');
+        }
+      }
+    });
+  }
+
   reset(): void {
     console.log('');
   }
+
   update(): void {
     console.log('');
   }
