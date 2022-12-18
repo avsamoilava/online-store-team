@@ -1,7 +1,7 @@
 import { setChildren } from 'redom';
 import { Elements, Product } from '../../types';
 import { Home } from './pages/home';
-import { Cart } from './pages/Cart';
+import { Cart } from './pages/cart';
 import { details } from './pages/details';
 import { page404 } from './pages/page-404';
 import CatalogPage from './pages/CatalogPage';
