@@ -10,30 +10,99 @@
   }
 
   &__title {
-
+    font-size: 2.5rem;
+    font-weight: 500;
+    margin-bottom: 10px;
   }
 
   &__desc {
-
+    margin: 20px 0;
+    font-style: italic;
   }
 
   &__price {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+  
 
+    &_full {
+     text-decoration: line-through;
+     color: $placeholders;
+     font-size: 1.5rem;
+    }
+
+    &_final {
+      font-size: 3rem;
+      font-weight: 500;
+      color: $accent-extra;
+    }
   }
 
   &__brand {
-    
+    margin-bottom: 10px;
+    span:first-child {
+      color: $placeholders;
+    }
+
+    span:last-child {
+      font-size: 1.5rem;
+      padding-left: 5px;
+    }
   }
 
   &__rate {
-
+    margin-bottom: 10px;
+    span:first-child {
+      color: $placeholders;
+    }
+    span:last-child {
+      font-size: 1.5rem;
+      padding-left: 5px;
+    }
   }
 
   &__category {
+    margin-bottom: 10px;
+    span:first-child {
+      color: $placeholders;
+    }
+    span:last-child {
+      font-size: 1.5rem;
+      padding-left: 5px;
+    }
+  }
 
+  &__discount {
+    margin-bottom: 10px;
+    span:first-child {
+      color: $placeholders;
+    }
+    span:last-child {
+      font-size: 1.5rem;
+      padding-left: 5px;
+    }
   }
 
   &__slider {
 
+  }
+
+  &__buy-info {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 60%;
+    margin: 30px auto 0;
+    box-shadow: 0 0 20px rgb(0 0 0 / 10%);
+  }
+  
+  &__btn {
+   width: 100%;
+   &.card__btn {
+    height: 70px;
+    margin-bottom: 20px;
+   }
   }
 }
