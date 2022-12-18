@@ -41,6 +41,7 @@
   "dependencies": {
     "navigo": "^8.11.1",
     "nouislider": "^15.6.1",
-    "redom": "^3.29.1"
+    "redom": "^3.29.1",
+    "swiper": "^8.4.5"
   }
 }
