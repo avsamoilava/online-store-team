@@ -1,6 +1,5 @@
 import { el, setChildren } from 'redom';
 import { MinAndMax } from '../../../types';
-import { getParams } from '../../utils';
 import FilterList from './FilterList';
 import RangeInput from './RangeInput';
 
@@ -10,11 +9,12 @@ class Filters {
   private stockInput: RangeInput;
   private categoriesList: FilterList;
   private brandsList: FilterList;
+
   constructor(fn: () => void) {
-    this.priceInput = new RangeInput(fn);
-    this.stockInput = new RangeInput(fn);
-    this.categoriesList = new FilterList(fn);
-    this.brandsList = new FilterList(fn);
+    this.priceInput = new RangeInput(fn, 'price', 'Price:');
+    this.stockInput = new RangeInput(fn, 'stock', 'Stock:');
+    this.categoriesList = new FilterList(fn, 'category', 'Categories:');
+    this.brandsList = new FilterList(fn, 'brand', 'Brands:');
   }
 
   element() {
@@ -28,21 +28,18 @@ class Filters {
 
   setFilters(categoriesArr: string[], brandsArr: string[], prices: MinAndMax, stock: MinAndMax) {
     setChildren(this.filtersContent, [
-      this.block('Categories:', this.categoriesList.element(categoriesArr, 'category')),
-      this.block('Brands:', this.brandsList.element(brandsArr, 'brand')),
-      this.block('Price:', this.priceInput.element(prices, 'price')),
-      this.block('Stock:', this.stockInput.element(stock, 'stock')),
+      this.block(this.categoriesList.title, this.categoriesList.element(categoriesArr)),
+      this.block(this.brandsList.title, this.brandsList.element(brandsArr)),
+      this.block(this.priceInput.title, this.priceInput.element(prices)),
+      this.block(this.stockInput.title, this.stockInput.element(stock)),
     ]);
     this.restoreState();
   }
 
   private restoreState() {
-    const { price, stock, category, brand } = getParams();
-
-    if (price) this.priceInput.restoreState(price);
-    if (stock) this.stockInput.restoreState(stock);
-    if (category) this.categoriesList.restoreState(category);
-    if (brand) this.brandsList.restoreState(brand);
+    [this.priceInput, this.stockInput, this.categoriesList, this.brandsList].forEach((elem) =>
+      elem.restoreState()
+    );
   }
 }
 

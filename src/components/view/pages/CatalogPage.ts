@@ -8,8 +8,8 @@ import { viewControls } from '../elements/viewControls';
 import Catalog from './catalog';
 
 class CatalogPage extends Catalog {
-  private dropdown: Dropdown = new Dropdown(this.filterAndSort.bind(this));
-  private searchInput: SearchInput = new SearchInput(this.filterAndSort.bind(this));
+  private dropdown: Dropdown = new Dropdown(this.filterAndSort.bind(this), 'sort');
+  private searchInput: SearchInput = new SearchInput(this.filterAndSort.bind(this), 'search');
   private filters: Filters = new Filters(this.filterAndSort.bind(this));
 
   constructor() {
