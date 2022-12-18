@@ -7,15 +7,17 @@ import AddToCartBtn from './addToCartBtn';
 class ProductCard {
   private product: Readonly<Product>;
   private addToCartBtn: AddToCartBtn;
+  private addBtn: HTMLElement;
+  private buyBtn = el('button.card__btn.btn.btn-fill', 'Buy now');
   constructor(product: Readonly<Product>) {
     this.product = product;
     this.addToCartBtn = new AddToCartBtn();
+    this.addBtn = this.addToCartBtn.element();
   }
 
   element() {
     this.restoreState();
-    const addBtn = this.addToCartBtn.element();
-    addBtn.addEventListener('click', () => this.addToCart());
+    this.addBtn.addEventListener('click', () => this.addToCart());
     const cardInfo = el(
       '.card__info',
       { onclick: () => router.navigate(`/details/${this.product.id}`) },
@@ -36,7 +38,7 @@ class ProductCard {
       el('.card__top', [el('img.card__image', { src: this.product.images[0] }), cardInfo]),
       el('h4.card__title', this.product.title),
       el('span.card__price', `$${this.product.price}`),
-      el('.card__buttons', [addBtn, el('button.card__btn.btn.btn-fill', 'Buy now')]),
+      el('.card__buttons', [this.addBtn, this.buyBtn]),
     ]);
   }
 

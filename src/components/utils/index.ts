@@ -96,3 +96,7 @@ export const getProductsInCart = (): ProductInCart[] =>
 
 export const getPriceWithDiscount = (product: Product) =>
   (product.price * (100 - product.discountPercentage)) / 100;
+
+export const addToCartEvent = new CustomEvent('hello', {
+  detail: { name: 'hello event' },
+});

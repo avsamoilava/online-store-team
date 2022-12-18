@@ -7,16 +7,15 @@ import { Modal } from './Modal';
 export class Cart {
   private products: Readonly<ProductInCart>[];
   private modal: Modal = new Modal();
-  private amount = 0;
-  private sum = 0;
   private buyBtn = el('button.btn.btn-fill', 'buy now');
 
   constructor() {
     this.products = getProductsInCart();
   }
 
-  testTemplate(): HTMLElement {
+  element(): HTMLElement {
     document.querySelector('.wrapper')?.append(this.modal.render());
+    this.products = getProductsInCart();
     if (!this.products || !this.products.length) return this.renderEmpty();
     return this.renderTable();
   }

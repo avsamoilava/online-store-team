@@ -14,7 +14,6 @@ class View {
   private elements: Elements = {
     '/': this.home.content,
     '/catalog': this.catalog.element(),
-    '/cart': this.cart.testTemplate(),
     '404': page404,
   };
 
@@ -24,6 +23,10 @@ class View {
 
   renderCatalog(data: Readonly<Product>[]): void {
     this.catalog.draw(data);
+  }
+
+  renderCart() {
+    setChildren(this.rootElement, [this.cart.element()]);
   }
 
   renderDetails(product: Readonly<Product>) {
