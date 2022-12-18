@@ -38,3 +38,11 @@ export type SortOptions =
   | 'rating_desc'
   | 'discount_asc'
   | 'discount_desc';
+
+export type QueryParams = {
+  price: string;
+  category: string;
+  brand: string;
+  stock: string;
+  sort: string;
+};

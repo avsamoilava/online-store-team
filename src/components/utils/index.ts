@@ -73,6 +73,8 @@ export function filterProducts(arr: Readonly<Product>[]): Readonly<Product>[] {
 
   ///////////////
   delete paramsObject['sort'];
+  delete paramsObject['price'];
+  delete paramsObject['stock'];
   ///////////////
 
   Object.keys(paramsObject).forEach((key) => {

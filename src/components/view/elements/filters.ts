@@ -1,5 +1,5 @@
 import { el, setChildren } from 'redom';
-import { MinAndMax } from '../../../types';
+import { MinAndMax, QueryParams } from '../../../types';
 import { setQueryString } from '../../utils';
 import RangeInput from './RangeInput';
 
@@ -55,10 +55,13 @@ class Filters {
   }
 
   private restoreState() {
-    const params = new URLSearchParams(location.search);
-    const [categories, brands] = [params.get('category'), params.get('brand')];
-    this.markCheckedElements(categories);
-    this.markCheckedElements(brands);
+    const params: Partial<QueryParams> = Object.fromEntries(
+      new URLSearchParams(location.search).entries()
+    );
+    if (params.price) this.restoreRanges(params.price, 'price');
+    if (params.stock) this.restoreRanges(params.stock, 'stock');
+    if (params.category) this.markCheckedElements(params.category);
+    if (params.brand) this.markCheckedElements(params.brand);
   }
 
   private markCheckedElements(query: string | null) {
@@ -68,6 +71,13 @@ class Filters {
         if (elem instanceof HTMLInputElement) elem.checked = true;
       });
     }
+  }
+
+  private restoreRanges(query: string, key: 'price' | 'stock') {
+    const minAndMax = query.split('-').map(Number);
+    key === 'price'
+      ? this.priceInput.setRange(minAndMax[0], minAndMax[1])
+      : this.stockInput.setRange(minAndMax[0], minAndMax[1]);
   }
 }
 
