@@ -1,6 +1,11 @@
 import { el } from 'redom';
 import { ProductInCart } from '../../../types';
-import { getPriceWithDiscount, getProductsInCart } from '../../utils';
+import {
+  getPriceWithDiscount,
+  getProductsCount,
+  getProductsInCart,
+  getTotalAmount,
+} from '../../utils';
 import { breadCrumbs } from '../elements/breadCrumbs';
 import { Modal } from './Modal';
 
@@ -49,8 +54,8 @@ export class Cart {
             ]),
             el('.cart__order.order', [
               el('.order__header', `Total`),
-              el('.order__amount', `Amount: ${this.products.length}`),
-              el('.order__sum', `Total cost: ${this.totalAmount().toFixed(2)}€`),
+              el('.order__amount', `Amount: ${getProductsCount(this.products)}`),
+              el('.order__sum', `Total cost: ${getTotalAmount(this.products).toFixed(2)}€`),
               el('.order__go', [this.buyBtn]),
             ]),
           ]),
@@ -88,10 +93,6 @@ export class Cart {
       el('.product__stock', product.stock),
       el('.product__total', `${(priceWithDiscount * product.count).toFixed(2)}€`),
     ]);
-  }
-
-  totalAmount() {
-    return this.products.reduce((a, b) => a + getPriceWithDiscount(b) * b.count, 0);
   }
 
   reset(): void {

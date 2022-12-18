@@ -9,10 +9,12 @@ class ProductCard {
   private addToCartBtn: AddToCartBtn;
   private addBtn: HTMLElement;
   private buyBtn = el('button.card__btn.btn.btn-fill', 'Buy now');
-  constructor(product: Readonly<Product>) {
+  private updateCart: () => void;
+  constructor(product: Readonly<Product>, fn: () => void) {
     this.product = product;
     this.addToCartBtn = new AddToCartBtn();
     this.addBtn = this.addToCartBtn.element();
+    this.updateCart = fn;
   }
 
   element() {
@@ -47,6 +49,7 @@ class ProductCard {
     const cart = getProductsInCart().filter((item) => item.title !== itemToAdd.title);
     if (this.addToCartBtn.count) cart.push(itemToAdd);
     localStorage.setItem('cart', JSON.stringify(cart));
+    this.updateCart();
   }
 
   private restoreState() {

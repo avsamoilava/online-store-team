@@ -100,3 +100,8 @@ export const getPriceWithDiscount = (product: Product) =>
 export const addToCartEvent = new CustomEvent('hello', {
   detail: { name: 'hello event' },
 });
+
+export const getTotalAmount = (arr: ProductInCart[]) =>
+  arr.reduce((a, b) => a + getPriceWithDiscount(b) * b.count, 0);
+
+export const getProductsCount = (arr: ProductInCart[]) => arr.reduce((a, b) => a + b.count, 0);
