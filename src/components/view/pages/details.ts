@@ -1,15 +1,19 @@
 import { el, setChildren } from 'redom';
 import { Product } from '../../../types';
-import Swiper from 'swiper';
-import 'swiper/css/bundle';
+import AddToCartBtn from '../elements/addToCartBtn';
+import Swiper, { Navigation, Pagination } from 'swiper';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 
 export class Details {
   private slider1: HTMLElement = el('.swiper.mySwiper', {
     thumbsSlider: '',
   });
   private slider2: HTMLElement = el('.swiper.mySwiper2');
+  private addToCart = new AddToCartBtn();
 
-  fillSlider(wrap: HTMLElement, urls: string[]): HTMLElement {
+  private fillSlider(wrap: HTMLElement, urls: string[]): HTMLElement {
     urls.forEach((e) => wrap.append(el('.swiper-slide', [el('img', { src: e })])));
     return wrap;
   }
@@ -21,7 +25,12 @@ export class Details {
       el('.swiper-button-next'),
       el('.swiper-button-prev'),
     ]);
+
+    const addBtn = this.addToCart.element();
+    addBtn.classList.add('details__btn', 'details__btn_addCart');
+
     const swiper = new Swiper(this.slider1, {
+      modules: [Navigation, Pagination],
       loop: true,
       spaceBetween: 10,
       slidesPerView: 4,
@@ -29,6 +38,7 @@ export class Details {
       watchSlidesProgress: true,
     });
     const swiper2 = new Swiper(this.slider2, {
+      modules: [Navigation, Pagination],
       loop: true,
       spaceBetween: 10,
       navigation: {
@@ -45,10 +55,27 @@ export class Details {
         el('.details__content', [
           el('.details__title', product.title),
           el('.details__desc', product.description),
-          el('.details__price', product.price),
-          el('.details__brand', product.brand),
-          el('.details__rate', product.rating),
-          el('.details__category', product.category),
+
+          el('.details__brand', el('span', 'Manufacturer: '), el('span', `${product.brand}`)),
+          el('.details__rate', el('span', 'Rating: '), el('span', `${product.rating}`)),
+          el('.details__category', el('span', 'Category: '), el('span', `${product.category}`)),
+          el(
+            '.details__discount',
+            el('span', 'Discount: '),
+            el('span', `${product.discountPercentage}%`)
+          ),
+          el(
+            '.details__buy-info',
+            el('.details__price', [
+              el(
+                '.details__price_final',
+                `${((product.price * (100 - product.discountPercentage)) / 100).toFixed(2)}€`
+              ),
+              el('.details__price_full', `${product.price}€`),
+            ]),
+            addBtn,
+            el('button.details__btn.details__btn_buy.btn.btn-fill', 'Buy now')
+          ),
         ]),
       ]),
     ]);
