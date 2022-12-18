@@ -1,38 +1,20 @@
-import { FilterFn, Product } from '../../types';
+import { FilterFn, MinAndMax, Product, QueryParams } from '../../types';
 import { router } from '../router';
-
+export const sortOptions = [
+  'price asc',
+  'price desc',
+  'rating asc',
+  'rating desc',
+  'discount asc',
+  'discount desc',
+];
 export function sortProducts(option: string, arr: Product[]) {
-  if (
-    ![
-      'price_asc',
-      'price_desc',
-      'rating_asc',
-      'rating_desc',
-      'discount_asc',
-      'discount_desc',
-    ].includes(option)
-  )
-    return;
-  switch (option) {
-    case 'price_asc':
-      arr.sort((a, b) => (a.price > b.price ? 1 : -1));
-      break;
-    case 'price_desc':
-      arr.sort((a, b) => (a.price < b.price ? 1 : -1));
-      break;
-    case 'rating_asc':
-      arr.sort((a, b) => (a.rating > b.rating ? 1 : -1));
-      break;
-    case 'rating_desc':
-      arr.sort((a, b) => (a.rating < b.rating ? 1 : -1));
-      break;
-    case 'discount_asc':
-      arr.sort((a, b) => (a.discountPercentage > b.discountPercentage ? 1 : -1));
-      break;
-    case 'discount_desc':
-      arr.sort((a, b) => (a.discountPercentage < b.discountPercentage ? 1 : -1));
-      break;
-  }
+  if (!sortOptions.includes(option.replace('_', ' '))) return;
+  const [k, order] = option.split('_');
+  const key = k === 'discount' ? 'discountPercentage' : k;
+  order === 'asc'
+    ? arr.sort((a, b) => (a[key as keyof Product] > b[key as keyof Product] ? 1 : -1))
+    : arr.sort((a, b) => (a[key as keyof Product] < b[key as keyof Product] ? 1 : -1));
 }
 
 export function setQueryString(key: string, value: string): void {
@@ -66,29 +48,49 @@ export const filterBy: FilterFn = (el, query, key) => {
   return el[key].toLowerCase() === query.toLowerCase();
 };
 
+export const getParams = (): Partial<QueryParams> =>
+  Object.fromEntries(new URLSearchParams(location.search).entries());
+
+function filterByRange(
+  arr: Readonly<Product>[],
+  min: number,
+  max: number,
+  key: string
+): Readonly<Product>[] {
+  return arr.filter((el) => el[key as keyof Product] >= min && el[key as keyof Product] <= max);
+}
 export function filterProducts(arr: Readonly<Product>[]): Readonly<Product>[] {
   let filteredArray = [...arr];
-  const params = new URLSearchParams(location.search);
-  const paramsObject = Object.fromEntries(params.entries());
+  const params = getParams();
 
-  ///////////////
-  delete paramsObject['sort'];
-  ///////////////
-
-  Object.keys(paramsObject).forEach((key) => {
+  Object.keys(params).forEach((key) => {
     if (key === 'category' || key === 'brand') {
-      filteredArray = paramsObject[key]
+      filteredArray = (params[key] as string)
         .split('*')
         .map((c) => filteredArray.filter((el) => filterBy(el, c, key)))
         .flat();
-    } else {
-      filteredArray = filteredArray.filter((el) => searchProducts(el, paramsObject[key]));
     }
+    if (params.price) {
+      const [min, max] = params.price.split('-').map(Number);
+      filteredArray = filterByRange(filteredArray, min, max, 'price');
+    }
+    if (params.stock) {
+      const [min, max] = params.stock.split('-').map(Number);
+      filteredArray = filterByRange(filteredArray, min, max, 'stock');
+    }
+    if (params.search)
+      filteredArray = filteredArray.filter((el) => searchProducts(el, params.search as string));
+    if (params.sort) sortProducts(params.sort, filteredArray);
   });
 
   return filteredArray;
 }
+
 export function getInfo(key: 'brand' | 'category', arr: Product[]): string[] {
   const items = arr.map((el) => el[key]);
   return Array.from(new Set(items));
+}
+export function getMinAndMax(key: 'price' | 'stock', arr: Product[]): MinAndMax {
+  const items = arr.map((el) => el[key]).sort((a, b) => (a > b ? 1 : -1));
+  return { min: items[0], max: items[items.length - 1] };
 }

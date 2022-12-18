@@ -1,14 +1,17 @@
 import { el } from 'redom';
-import { setQueryString } from '../../utils';
+import { getParams, setQueryString } from '../../utils';
 
 class SearchInput {
   private searchInput: HTMLElement = el('input.catalog__search', {
     placeholder: 'Search product...',
   });
-  element(fn: () => void) {
-    const params = new URLSearchParams(location.search);
-    const searchOption = params.get('search');
-    if (searchOption) this.setValue(searchOption);
+  private search: () => void;
+  constructor(fn: () => void) {
+    this.search = fn;
+  }
+  element() {
+    const { search } = getParams();
+    if (search) this.setValue(search);
 
     let timer: ReturnType<typeof setTimeout>;
     this.searchInput.addEventListener('input', () => {
@@ -16,7 +19,7 @@ class SearchInput {
       timer = setTimeout(() => {
         const searchQuery = (this.searchInput as HTMLInputElement).value.trim().toLowerCase();
         setQueryString('search', searchQuery);
-        fn();
+        this.search();
       }, 500);
     });
     return this.searchInput;

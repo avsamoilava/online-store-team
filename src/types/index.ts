@@ -26,10 +26,16 @@ export type ApiResponse = {
   total: number;
 };
 
-export type SortOptions =
-  | 'price_asc'
-  | 'price_desc'
-  | 'rating_asc'
-  | 'rating_desc'
-  | 'discount_asc'
-  | 'discount_desc';
+export type MinAndMax = {
+  min: number;
+  max: number;
+};
+
+export type QueryParams = {
+  price: string;
+  category: string;
+  brand: string;
+  stock: string;
+  sort: string;
+  search: string;
+};
