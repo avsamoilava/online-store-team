@@ -11,10 +11,10 @@ class Filters {
   private brandsList: FilterList;
 
   constructor(fn: () => void) {
-    this.priceInput = new RangeInput(fn, 'price', 'Price:');
-    this.stockInput = new RangeInput(fn, 'stock', 'Stock:');
-    this.categoriesList = new FilterList(fn, 'category', 'Categories:');
-    this.brandsList = new FilterList(fn, 'brand', 'Brands:');
+    this.priceInput = new RangeInput(fn, 'price');
+    this.stockInput = new RangeInput(fn, 'stock');
+    this.categoriesList = new FilterList(fn, 'category');
+    this.brandsList = new FilterList(fn, 'brand');
   }
 
   element() {
@@ -28,10 +28,10 @@ class Filters {
 
   setFilters(categoriesArr: string[], brandsArr: string[], prices: MinAndMax, stock: MinAndMax) {
     setChildren(this.filtersContent, [
-      this.block(this.categoriesList.title, this.categoriesList.element(categoriesArr)),
-      this.block(this.brandsList.title, this.brandsList.element(brandsArr)),
-      this.block(this.priceInput.title, this.priceInput.element(prices)),
-      this.block(this.stockInput.title, this.stockInput.element(stock)),
+      this.block('Categories:', this.categoriesList.element(categoriesArr)),
+      this.block('Brands:', this.brandsList.element(brandsArr)),
+      this.block('Price:', this.priceInput.element(prices)),
+      this.block('Stock:', this.stockInput.element(stock)),
     ]);
     this.restoreState();
   }
