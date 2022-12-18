@@ -2,7 +2,7 @@ import { el, setChildren } from 'redom';
 import { Product } from '../../../types';
 import { filterAndSortProducts } from '../../utils';
 import Pagination from '../elements/pagination';
-import { productCard } from '../elements/productCard';
+import ProductCard from '../elements/productCard';
 
 class Catalog {
   constructor(
@@ -46,7 +46,7 @@ class Catalog {
         ? productsArray.filter((_, idx) => idx >= 0 + coef && idx < this.limit + coef)
         : productsArray;
 
-    const products: HTMLElement[] = filteredProducts.map((item) => productCard(item));
+    const products: HTMLElement[] = filteredProducts.map((item) => new ProductCard(item).element());
     setChildren(this.productsList, products);
   }
 
