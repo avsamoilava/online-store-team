@@ -1,10 +1,10 @@
 import { el, setChildren } from 'redom';
 import { Product } from '../../../types';
 import AddToCartBtn from '../elements/addToCartBtn';
-import Swiper, { Navigation } from 'swiper';
+import Swiper, { Navigation, Thumbs } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/navigation';
-import 'swiper/css/pagination';
+import 'swiper/css/thumbs';
 
 export class Details {
   private slider1: HTMLElement = el('.swiper.mySwiper', {
@@ -30,8 +30,7 @@ export class Details {
 
     const addBtn = this.addToCart.element();
     addBtn.classList.add('details__btn', 'details__btn_addCart');
-
-    const swiper = new Swiper(this.slider1, {
+    const swiper1 = new Swiper(this.slider1, {
       modules: [Navigation],
       loop: true,
       spaceBetween: 10,
@@ -40,7 +39,7 @@ export class Details {
       watchSlidesProgress: true,
     });
     const swiper2 = new Swiper(this.slider2, {
-      modules: [Navigation],
+      modules: [Navigation, Thumbs],
       navigation: {
         nextEl: this.nextBtn,
         prevEl: this.prevBtn,
@@ -48,10 +47,9 @@ export class Details {
       loop: true,
       spaceBetween: 10,
       thumbs: {
-        swiper: swiper,
+        swiper: swiper1,
       },
     });
-
     return el('section.details', [
       el('.container.details__container', [
         el('.details__slider', [this.slider2, this.slider1]),
