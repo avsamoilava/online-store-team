@@ -12,7 +12,9 @@ class ProductCard extends BaseProduct<Product> {
 
   element() {
     this.restoreState();
-    this.addBtn.addEventListener('click', () => this.addToCart());
+    this.addBtn.addEventListener('click', () =>
+      this.addToCart({ ...this.product, count: this.addToCartBtn.count })
+    );
     const cardInfo = el(
       '.card__info',
       { onclick: () => router.navigate(`/details/${this.product.id}`) },
@@ -35,11 +37,6 @@ class ProductCard extends BaseProduct<Product> {
       el('span.card__price', `$${this.product.price}`),
       el('.card__buttons', [this.addBtn, this.buyBtn]),
     ]);
-  }
-
-  addToCart() {
-    const itemToAdd = { ...this.product, count: this.addToCartBtn.count };
-    super.addToCart(itemToAdd);
   }
 
   private restoreState() {

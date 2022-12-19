@@ -6,12 +6,10 @@ import BaseProduct from './Product';
 class ProductInCart extends BaseProduct<ProductInCartType> {
   private totalSum: number;
   private totalSumElement: HTMLElement;
-  // private updateCart: () => void;
   constructor(product: ProductInCartType) {
     super(product);
     this.totalSum = getPriceWithDiscount(this.product) * this.product.count;
     this.totalSumElement = el('.product__total', `${this.totalSum.toFixed(2)}€`);
-    // this.updateCart = fn;
   }
 
   element(index: number) {
