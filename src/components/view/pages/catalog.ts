@@ -27,7 +27,7 @@ class Catalog {
     this.render();
   }
 
-  render(page?: number, data?: Readonly<Product>[]): void {
+  render(page = 1, data?: Readonly<Product>[]): void {
     if (data && !data.length) {
       this.setNoItemsTitle();
       return;
@@ -58,7 +58,7 @@ class Catalog {
 
   changeView(columns: number) {
     this.limit = columns ** 2;
-    this.setPages(this.productsData.length);
+    this.setPages(this.filteredData.length ? this.filteredData.length : this.productsData.length);
     this.render();
     this.productsList.id = `columns${columns}`;
   }
