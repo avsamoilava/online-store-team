@@ -1,6 +1,12 @@
 import { el, setChildren } from 'redom';
+import IMask from 'imask';
+
 export class Modal {
   private modalWrap = el('.cart__modal');
+  private cardNum = el('input.credit__num', { type: 'text', placeholder: '0000 0000 0000 0000' });
+  private year = el('input.credit__valid', { type: 'text', placeholder: '00/00' });
+  private code = el('input.credit__cvv', { type: 'text', placeholder: '000' });
+
   render(): HTMLElement {
     this.modalWrap.addEventListener('click', (e) => this.close(e));
     setChildren(this.modalWrap, [
@@ -18,9 +24,9 @@ export class Modal {
           el(
             '.form__card.credit',
             el('.credit__wrapper', [
-              el('input.credit__num', { type: 'number', placeholder: '0000 0000 0000 0000' }),
-              el('input.credit__valid', { type: 'number', placeholder: '00/00' }),
-              el('input.credit__cvv', { type: 'number', placeholder: '000' }),
+              this.setMask(this.cardNum, '0000 0000 0000 0000'),
+              this.setMask(this.year, '00/00'),
+              this.setMask(this.code, '000'),
             ])
           ),
           el('button.form__btn.btn.btn-fill', 'CONFIRM')
@@ -29,6 +35,7 @@ export class Modal {
     ]);
     return this.modalWrap;
   }
+
   show() {
     window.scrollTo(0, 0);
     document.body.style.overflow = 'hidden';
@@ -36,7 +43,8 @@ export class Modal {
       this.modalWrap.classList.add('cart__modal_active');
     }
   }
-  close(e: MouseEvent): void {
+
+  close(e: Event): void {
     const target = e.target as HTMLElement;
     if (
       target.className === 'cart__modal cart__modal_active' ||
@@ -47,5 +55,12 @@ export class Modal {
         this.modalWrap.classList.remove('cart__modal_active');
       }
     }
+  }
+
+  private setMask(el: HTMLElement, mask: string): HTMLElement {
+    const m = IMask(el, {
+      mask,
+    });
+    return el;
   }
 }
