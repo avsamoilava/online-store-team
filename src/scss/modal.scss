@@ -32,6 +32,16 @@
     display: block;
     outline: none;
     padding: 6px 12px;
+    &.invalid {
+      color: red;
+      border: 1px solid red;
+    }
+  }
+  span {
+    display: block;
+    color: red;
+    font-size: 0.8rem;
+    padding-bottom: 10px;
   }
 
   &__wrapper {}
@@ -102,5 +112,9 @@
   &__cvv {
     width: 30%;
     height: 30px;
+  }
+
+  &__spans {
+    margin-top: 10px;
   }
 }
