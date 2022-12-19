@@ -7,6 +7,7 @@ import {
   getTotalAmount,
 } from '../../utils';
 import { breadCrumbs } from '../elements/breadCrumbs';
+import ProductCart from '../elements/ProductInCart';
 import { Modal } from './Modal';
 
 export class Cart {
@@ -42,7 +43,7 @@ export class Cart {
               ),
               el(
                 'ul.table__body',
-                this.products.map((item, i) => this.item(item, i))
+                this.products.map((item, i) => new ProductCart(item).element(i))
               ),
               el('.table__reset'),
             ]),

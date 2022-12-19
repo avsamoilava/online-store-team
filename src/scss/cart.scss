@@ -167,7 +167,16 @@ padding: 20px 5px;
   }
 
   &__amount {
-
+    .card__btn {
+      width: 70%;
+      padding: 0;
+      border: none;
+      &-small {
+        width: 28px;
+        height: 28px;
+        background-size: 28px;
+      }
+    }
   }
 
   &__stock {

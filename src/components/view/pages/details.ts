@@ -11,7 +11,7 @@ export class Details {
     thumbsSlider: '',
   });
   private slider2: HTMLElement = el('.swiper.mySwiper2');
-  private addToCart = new AddToCartBtn();
+  // private addToCart = new AddToCartBtn();
   private nextBtn = el('.swiper-button-next');
   private prevBtn = el('.swiper-button-prev');
 
@@ -28,8 +28,8 @@ export class Details {
       this.prevBtn,
     ]);
 
-    const addBtn = this.addToCart.element();
-    addBtn.classList.add('details__btn', 'details__btn_addCart');
+    // const addBtn = this.addToCart.element();
+    // addBtn.classList.add('details__btn', 'details__btn_addCart');
     const swiper1 = new Swiper(this.slider1, {
       modules: [Navigation],
       loop: true,
@@ -74,7 +74,7 @@ export class Details {
               ),
               el('.details__price_full', `${product.price}€`),
             ]),
-            addBtn,
+            // addBtn,
             el('button.details__btn.details__btn_buy.btn.btn-fill', 'Buy now')
           ),
         ]),

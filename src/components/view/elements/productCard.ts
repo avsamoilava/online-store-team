@@ -12,7 +12,7 @@ class ProductCard {
   private updateCart: () => void;
   constructor(product: Readonly<Product>, fn: () => void) {
     this.product = product;
-    this.addToCartBtn = new AddToCartBtn();
+    this.addToCartBtn = new AddToCartBtn(this.product.stock);
     this.addBtn = this.addToCartBtn.element();
     this.updateCart = fn;
   }
