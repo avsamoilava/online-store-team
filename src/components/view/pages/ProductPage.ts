@@ -6,6 +6,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/thumbs';
 import BaseProduct from '../elements/BaseProduct';
 import { getPriceWithDiscount } from '../../utils';
+import { stars } from '../elements/stars';
 
 class ProductPage extends BaseProduct<Product> {
   private slider1: HTMLElement = el('.swiper.mySwiper', {
@@ -34,6 +35,7 @@ class ProductPage extends BaseProduct<Product> {
 
           el('.details__brand', el('span', 'Brand: '), el('span', `${this.product.brand}`)),
           el('.details__rate', el('span', 'Rating: '), el('span', `${this.product.rating}`)),
+          stars(this.product.rating),
           el(
             '.details__category',
             el('span', 'Category: '),
@@ -82,7 +84,6 @@ class ProductPage extends BaseProduct<Product> {
   }
 
   private fillSlider(slider: HTMLElement, btns: HTMLElement[] = []) {
-    console.log(btns);
     setChildren(slider, [
       el(
         '.swiper-wrapper',
