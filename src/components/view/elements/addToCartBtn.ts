@@ -21,16 +21,25 @@ class AddToCartBtn {
     }
     this.countElement.textContent = String(this.counter);
   }
-  private startCounter() {
-    this.counter++;
-    this.countElement.textContent = '1';
+  private startCounter(count?: number) {
+    this.counter = count ? count : this.counter + 1;
+    this.countElement.textContent = `${this.counter}`;
     setChildren(this.wrapper, [this.minusBtn, this.countElement, this.plusBtn]);
+  }
+  get count() {
+    return this.counter;
+  }
+  set count(count: number) {
+    this.startCounter(count);
   }
   element() {
     this.addBtn.addEventListener('click', () => this.startCounter());
     this.plusBtn.addEventListener('click', () => this.increaseCounter());
     this.minusBtn.addEventListener('click', () => this.decreaseCounter());
-    setChildren(this.wrapper, [this.addBtn]);
+    setChildren(
+      this.wrapper,
+      this.counter > 0 ? [this.minusBtn, this.countElement, this.plusBtn] : [this.addBtn]
+    );
     return this.wrapper;
   }
 }

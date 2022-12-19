@@ -1,6 +1,6 @@
 .header {
   padding: 20px;
-  
+
   // .header__container
 
   &__container {
@@ -39,13 +39,43 @@
 
   // .header__cart
 
+  &__cart-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 300px;
+  }
+
   &__cart {
+    position: relative;
+    &-count {
+      position: absolute;
+      width: 25px;
+      height: 25px;
+      border-radius: 100%;
+      left: -20px;
+      top: -10px;
+      background-color: $accent;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: $light;
+      font-weight: 600;
+    }
     a {
       display: block;
       height: 24px;
       width: 24px;
-      background: url(./assets/images/icons/cart.png) center/cover no-repeat;
+      background: url(./assets/images/icons/cart.svg) center/cover no-repeat;
       cursor: pointer;
+      &::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+      }
     }
   }
 }
@@ -68,7 +98,7 @@
       line-height: 1.4;
       text-transform: capitalize;
       transition: color linear 0.36s;
-      
+
       &:hover {
         color: $accent-interactive;
       }

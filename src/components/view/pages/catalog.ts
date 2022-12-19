@@ -1,8 +1,9 @@
 import { el, setChildren } from 'redom';
 import { Product } from '../../../types';
 import { filterAndSortProducts } from '../../utils';
+import CartAmount from '../elements/CartAmount';
 import Pagination from '../elements/pagination';
-import { productCard } from '../elements/productCard';
+import ProductCard from '../elements/productCard';
 
 class Catalog {
   constructor(
@@ -12,7 +13,8 @@ class Catalog {
     protected page: number = 1,
     protected limit: number = 9,
     protected pagination: Pagination = new Pagination(100, 9),
-    protected pagesContainer: HTMLElement = el('.catalog__pagination')
+    protected pagesContainer: HTMLElement = el('.catalog__pagination'),
+    protected cartAmount: CartAmount = new CartAmount()
   ) {}
 
   draw(data: Readonly<Product>[]) {
@@ -22,7 +24,7 @@ class Catalog {
       this.setNoItemsTitle();
       return;
     }
-
+    this.cartAmount.setElement();
     this.setPages(this.productsData.length);
     this.render();
   }
@@ -45,8 +47,10 @@ class Catalog {
       productsArray.length >= this.limit
         ? productsArray.filter((_, idx) => idx >= 0 + coef && idx < this.limit + coef)
         : productsArray;
-
-    const products: HTMLElement[] = filteredProducts.map((item) => productCard(item));
+    const updateCart = this.cartAmount.renderAmount.bind(this.cartAmount);
+    const products: HTMLElement[] = filteredProducts.map((item) =>
+      new ProductCard(item, updateCart).element()
+    );
     setChildren(this.productsList, products);
   }
 
