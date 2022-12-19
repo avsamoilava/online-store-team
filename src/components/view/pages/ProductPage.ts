@@ -5,6 +5,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/thumbs';
 import BaseProduct from '../elements/BaseProduct';
+import { getPriceWithDiscount } from '../../utils';
 
 class ProductPage extends BaseProduct<Product> {
   private slider1: HTMLElement = el('.swiper.mySwiper', {
@@ -31,7 +32,7 @@ class ProductPage extends BaseProduct<Product> {
           el('.details__title', this.product.title),
           el('.details__desc', this.product.description),
 
-          el('.details__brand', el('span', 'Manufacturer: '), el('span', `${this.product.brand}`)),
+          el('.details__brand', el('span', 'Brand: '), el('span', `${this.product.brand}`)),
           el('.details__rate', el('span', 'Rating: '), el('span', `${this.product.rating}`)),
           el(
             '.details__category',
@@ -46,12 +47,7 @@ class ProductPage extends BaseProduct<Product> {
           el(
             '.details__buy-info',
             el('.details__price', [
-              el(
-                '.details__price_final',
-                `${((this.product.price * (100 - this.product.discountPercentage)) / 100).toFixed(
-                  2
-                )}€`
-              ),
+              el('.details__price_final', `${getPriceWithDiscount(this.product).toFixed(2)}€`),
               el('.details__price_full', `${this.product.price}€`),
             ]),
             this.addBtn,
