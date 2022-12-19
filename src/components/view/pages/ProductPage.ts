@@ -21,33 +21,9 @@ class ProductPage extends BaseProduct<Product> {
   createDetails(): HTMLElement {
     this.restoreState();
     this.addBtn.addEventListener('click', () => this.addToCart());
-    setChildren(this.slider1, [this.fillSlider(el('.swiper-wrapper'), this.product.images)]);
-    setChildren(this.slider2, [
-      this.fillSlider(el('.swiper-wrapper'), this.product.images),
-      this.nextBtn,
-      this.prevBtn,
-    ]);
-
-    const swiper1 = new Swiper(this.slider1, {
-      modules: [Navigation],
-      loop: true,
-      spaceBetween: 10,
-      slidesPerView: 4,
-      freeMode: true,
-      watchSlidesProgress: true,
-    });
-    const swiper2 = new Swiper(this.slider2, {
-      modules: [Navigation, Thumbs],
-      navigation: {
-        nextEl: this.nextBtn,
-        prevEl: this.prevBtn,
-      },
-      loop: true,
-      spaceBetween: 10,
-      thumbs: {
-        swiper: swiper1,
-      },
-    });
+    this.fillSlider(this.slider1);
+    this.fillSlider(this.slider2, [this.nextBtn, this.prevBtn]);
+    this.initSlider();
     return el('section.details', [
       el('.container.details__container', [
         el('.details__slider', [this.slider2, this.slider1]),
@@ -86,9 +62,38 @@ class ProductPage extends BaseProduct<Product> {
     ]);
   }
 
-  private fillSlider(wrap: HTMLElement, urls: string[]): HTMLElement {
-    urls.forEach((e) => wrap.append(el('.swiper-slide', [el('img', { src: e })])));
-    return wrap;
+  private initSlider() {
+    const swiper1 = new Swiper(this.slider1, {
+      modules: [Navigation],
+      loop: true,
+      spaceBetween: 10,
+      slidesPerView: 4,
+      freeMode: true,
+      watchSlidesProgress: true,
+    });
+    const swiper2 = new Swiper(this.slider2, {
+      modules: [Navigation, Thumbs],
+      navigation: {
+        nextEl: this.nextBtn,
+        prevEl: this.prevBtn,
+      },
+      loop: true,
+      spaceBetween: 10,
+      thumbs: {
+        swiper: swiper1,
+      },
+    });
+  }
+
+  private fillSlider(slider: HTMLElement, btns: HTMLElement[] = []) {
+    console.log(btns);
+    setChildren(slider, [
+      el(
+        '.swiper-wrapper',
+        this.product.images.map((url) => el('.swiper-slide', [el('img', { src: url })]))
+      ),
+      ...btns,
+    ]);
   }
 }
 export default ProductPage;
