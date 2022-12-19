@@ -1,7 +1,7 @@
 import { el, setChildren } from 'redom';
 import { ProductInCartType } from '../../../types';
 import { getPriceWithDiscount } from '../../utils';
-import BaseProduct from './Product';
+import BaseProduct from './BaseProduct';
 
 class ProductInCart extends BaseProduct<ProductInCartType> {
   private totalSum: number;

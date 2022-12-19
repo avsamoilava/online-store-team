@@ -1,8 +1,7 @@
 import { el } from 'redom';
 import { Product } from '../../../types';
 import { router } from '../../router';
-import { getProductsInCart } from '../../utils';
-import BaseProduct from './Product';
+import BaseProduct from './BaseProduct';
 
 class ProductCard extends BaseProduct<Product> {
   private buyBtn = el('button.card__btn.btn.btn-fill', 'Buy now');
@@ -12,9 +11,7 @@ class ProductCard extends BaseProduct<Product> {
 
   element() {
     this.restoreState();
-    this.addBtn.addEventListener('click', () =>
-      this.addToCart({ ...this.product, count: this.addToCartBtn.count })
-    );
+    this.addBtn.addEventListener('click', () => this.addToCart());
     const cardInfo = el(
       '.card__info',
       { onclick: () => router.navigate(`/details/${this.product.id}`) },
@@ -37,11 +34,6 @@ class ProductCard extends BaseProduct<Product> {
       el('span.card__price', `$${this.product.price}`),
       el('.card__buttons', [this.addBtn, this.buyBtn]),
     ]);
-  }
-
-  private restoreState() {
-    const prod = getProductsInCart().find((item) => item.title === this.product.title);
-    if (prod) this.addToCartBtn.count = prod.count;
   }
 }
 
