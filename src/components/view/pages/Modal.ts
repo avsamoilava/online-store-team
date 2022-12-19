@@ -94,35 +94,13 @@ export class Modal {
     if (v.slice(0, 1) === '2') return mir;
     else if (v.slice(0, 1) === '4') return visa;
     else {
-      switch (v.slice(0, 2)) {
-        case '30':
-        case '36':
-        case '38':
-          return dinersClub;
-        case '31':
-        case '35':
-          return jcb;
-        case '34':
-        case '37':
-          return amex;
-        case '50':
-        case '56':
-        case '57':
-        case '58':
-        case '63':
-        case '67':
-          return maestro;
-        case '51':
-        case '52':
-        case '53':
-        case '54':
-        case '55':
-          return masterCard;
-        case '60':
-          return discover;
-        case '62':
-          return union;
-      }
+      if (['30', '36', '38'].includes(v.slice(0, 2))) return dinersClub;
+      if (['31', '35'].includes(v.slice(0, 2))) return jcb;
+      if (['34', '37'].includes(v.slice(0, 2))) return amex;
+      if (['50', '56', '57', '58', '63', '67'].includes(v.slice(0, 2))) return maestro;
+      if (['51', '52', '53', '54', '55'].includes(v.slice(0, 2))) return masterCard;
+      if ('60' === v.slice(0, 2)) return discover;
+      if ('62' === v.slice(0, 2)) return union;
     }
     return placeholder;
   }
