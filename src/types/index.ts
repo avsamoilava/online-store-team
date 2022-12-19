@@ -1,4 +1,4 @@
-export type Product = {
+export interface Product {
   brand: string;
   category: string;
   description: string;
@@ -10,7 +10,11 @@ export type Product = {
   stock: number;
   thumbnail: string;
   title: string;
-};
+}
+
+export interface ProductInCart extends Product {
+  count: number;
+}
 
 export interface Elements {
   [key: string]: HTMLElement;

@@ -13,11 +13,12 @@ class App {
   }
 
   start() {
+    if (!localStorage.getItem('cart')) localStorage.setItem('cart', '[]');
     this.controller.getAll((data) => this.view.renderCatalog(data.products));
 
     router
       .on('/', () => this.view.render('/'))
-      .on('/cart', () => this.view.render('/cart'))
+      .on('/cart', () => this.view.renderCart())
       .on('/catalog', () => this.view.render('/catalog'))
       .on('/details/:id', (data) => {
         if (data?.data) {

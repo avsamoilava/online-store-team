@@ -1,10 +1,10 @@
 import { el, setChildren } from 'redom';
 import { Product } from '../../../types';
 import AddToCartBtn from '../elements/addToCartBtn';
-import Swiper, { Navigation, Pagination } from 'swiper';
+import Swiper, { Navigation, Thumbs } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/navigation';
-import 'swiper/css/pagination';
+import 'swiper/css/thumbs';
 
 export class Details {
   private slider1: HTMLElement = el('.swiper.mySwiper', {
@@ -12,6 +12,8 @@ export class Details {
   });
   private slider2: HTMLElement = el('.swiper.mySwiper2');
   private addToCart = new AddToCartBtn();
+  private nextBtn = el('.swiper-button-next');
+  private prevBtn = el('.swiper-button-prev');
 
   private fillSlider(wrap: HTMLElement, urls: string[]): HTMLElement {
     urls.forEach((e) => wrap.append(el('.swiper-slide', [el('img', { src: e })])));
@@ -22,15 +24,14 @@ export class Details {
     setChildren(this.slider1, [this.fillSlider(el('.swiper-wrapper'), product.images)]);
     setChildren(this.slider2, [
       this.fillSlider(el('.swiper-wrapper'), product.images),
-      el('.swiper-button-next'),
-      el('.swiper-button-prev'),
+      this.nextBtn,
+      this.prevBtn,
     ]);
 
     const addBtn = this.addToCart.element();
     addBtn.classList.add('details__btn', 'details__btn_addCart');
-
-    const swiper = new Swiper(this.slider1, {
-      modules: [Navigation, Pagination],
+    const swiper1 = new Swiper(this.slider1, {
+      modules: [Navigation],
       loop: true,
       spaceBetween: 10,
       slidesPerView: 4,
@@ -38,15 +39,15 @@ export class Details {
       watchSlidesProgress: true,
     });
     const swiper2 = new Swiper(this.slider2, {
-      modules: [Navigation, Pagination],
+      modules: [Navigation, Thumbs],
+      navigation: {
+        nextEl: this.nextBtn,
+        prevEl: this.prevBtn,
+      },
       loop: true,
       spaceBetween: 10,
-      navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
-      },
       thumbs: {
-        swiper: swiper,
+        swiper: swiper1,
       },
     });
     return el('section.details', [
