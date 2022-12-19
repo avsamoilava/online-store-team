@@ -1,23 +1,23 @@
 import { el } from 'redom';
-import { ProductInCart } from '../../../types';
+import { ProductInCartType } from '../../../types';
 import { getPriceWithDiscount } from '../../utils';
-import AddToCartBtn from './addToCartBtn';
+import BaseProduct from './Product';
 
-class ProductCart {
-  private product: Readonly<ProductInCart>;
-  private addToCartBtn: AddToCartBtn;
-  private addBtn: HTMLElement;
+class ProductInCart extends BaseProduct<ProductInCartType> {
+  private totalSum: number;
+  private totalSumElement: HTMLElement;
   // private updateCart: () => void;
-  constructor(product: Readonly<ProductInCart>) {
-    this.product = product;
-    this.addToCartBtn = new AddToCartBtn(this.product.stock);
-    this.addBtn = this.addToCartBtn.element();
+  constructor(product: ProductInCartType) {
+    super(product);
+    this.totalSum = getPriceWithDiscount(this.product) * this.product.count;
+    this.totalSumElement = el('.product__total', `${this.totalSum.toFixed(2)}€`);
     // this.updateCart = fn;
   }
 
   element(index: number) {
     const priceWithDiscount = getPriceWithDiscount(this.product);
     this.addToCartBtn.count = this.product.count;
+    this.addBtn.addEventListener('click', () => this.addToCart());
 
     return el('li.table__row.product', [
       el('.product__preview', [
@@ -32,8 +32,14 @@ class ProductCart {
       ]),
       el('.product__amount.amount', [this.addBtn]),
       el('.product__stock', this.product.stock),
-      el('.product__total', `${(priceWithDiscount * this.product.count).toFixed(2)}€`),
+      this.totalSumElement,
     ]);
   }
+  addToCart() {
+    this.product.count = this.addToCartBtn.count;
+    this.totalSum = getPriceWithDiscount(this.product) * this.product.count;
+    this.totalSumElement.textContent = `${this.totalSum.toFixed(2)}€`;
+    super.addToCart(this.product);
+  }
 }
-export default ProductCart;
+export default ProductInCart;

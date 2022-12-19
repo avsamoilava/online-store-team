@@ -30,6 +30,7 @@ class AddToCartBtn {
     this.counter = count ? count : this.counter + 1;
     this.countElement.textContent = `${this.counter}`;
     setChildren(this.wrapper, [this.minusBtn, this.countElement, this.plusBtn]);
+    if (count && count === this.maxCount) this.disable();
   }
   get count() {
     return this.counter;
