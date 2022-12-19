@@ -14,10 +14,16 @@ abstract class BaseProduct<T extends Product> {
   }
 
   addToCart(itemToAdd?: ProductInCartType) {
+    if (!itemToAdd) itemToAdd = { ...this.product, count: this.addToCartBtn.count };
     const cart = getProductsInCart().filter((item) => item.title !== itemToAdd?.title);
     if (itemToAdd && this.addToCartBtn.count) cart.push(itemToAdd);
     localStorage.setItem('cart', JSON.stringify(cart));
     updateAmount();
+  }
+
+  protected restoreState() {
+    const prod = getProductsInCart().find((item) => item.title === this.product.title);
+    if (prod) this.addToCartBtn.count = prod.count;
   }
 }
 export default BaseProduct;

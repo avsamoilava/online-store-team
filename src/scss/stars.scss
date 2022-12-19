@@ -1,0 +1,32 @@
+.stars {
+  position: relative;
+  height: 35px;
+  width: 200px;
+}
+
+.stars svg {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.stars progress {
+  appearance: none;
+  position: absolute;
+  z-index: 0;
+  top: 1px;
+  left: 1px;
+  height: 99%;
+  width: 99%;
+}
+
+.stars progress::-webkit-progress-bar {
+  background: #fcecb3;
+}
+
+.stars progress::-webkit-progress-value {
+  background: #ebb800;
+}

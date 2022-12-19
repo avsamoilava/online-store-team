@@ -6,6 +6,7 @@ const baseConfig = {
   entry: path.resolve(__dirname, './src/index.ts'),
   output: {
     filename: 'index.js',
+    publicPath: '/',
     path: path.resolve(__dirname, 'dist'),
   },
   mode: 'development',
