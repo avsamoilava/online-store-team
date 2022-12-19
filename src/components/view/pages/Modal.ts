@@ -1,5 +1,6 @@
 import { el, setChildren } from 'redom';
 import IMask from 'imask';
+import { Validation } from '../elements/Validation';
 import maestro from '../../../assets/images/icons/maestro.png';
 import mir from '../../../assets/images/icons/mir.png';
 import amex from '../../../assets/images/icons/amex.png';
@@ -12,7 +13,9 @@ import discover from '../../../assets/images/icons/discover.png';
 import placeholder from '../../../assets/images/icons/card-placeholder.png';
 
 export class Modal {
+  private validation = new Validation();
   private modalWrap = el('.cart__modal');
+  private cardSpans = el('.credit__spans');
   private form = {
     fullName: el('input.form__name', {
       type: 'text',
@@ -41,6 +44,7 @@ export class Modal {
   private payIcon = el('.credit__pay-icon');
 
   render(): HTMLElement {
+    this.addListeners();
     this.modalWrap.addEventListener('click', (e) => this.close(e));
     setChildren(this.modalWrap, [
       el('.modal', [
@@ -55,7 +59,8 @@ export class Modal {
             el('span'),
             this.form.address,
             el('span'),
-            el('input.form__email', { type: 'email', placeholder: 'enter your email' }),
+            this.form.email,
+            el('span'),
           ]),
           el(
             '.form__card.credit',
@@ -66,21 +71,12 @@ export class Modal {
               this.payIcon,
             ])
           ),
+          this.cardSpans,
           this.form.confirm
         ),
       ]),
     ]);
     return this.modalWrap;
-  }
-
-  private cardInputHandler(): void {
-    this.form.cardNum.addEventListener('blur', () => {
-      console.log(this.form.cardNum.value);
-    });
-    this.form.cardNum.addEventListener('input', () => {
-      console.log(this.checkNum(this.form.cardNum.value));
-      this.setPayIcon(this.form.cardNum.value);
-    });
   }
 
   private setPayIcon(val: string): void {
@@ -105,8 +101,7 @@ export class Modal {
     return placeholder;
   }
 
-  show() {
-    this.cardInputHandler();
+  show(): void {
     window.scrollTo(0, 0);
     document.body.style.overflow = 'hidden';
     if (!this.modalWrap.classList.contains('cart__modal_active')) {
@@ -132,5 +127,65 @@ export class Modal {
       mask,
     });
     return el;
+  }
+
+  private addListeners(): void {
+    this.form.fullName.addEventListener('blur', () => {
+      this.validation.checkName(this.form.fullName);
+    });
+    this.form.fullName.addEventListener('keyup', () => {
+      this.form.fullName.value = this.form.fullName.value.replace(/[^\[A-Za-zА-Яа-яЁё\s]/g, '');
+    });
+
+    this.form.phoneNum.addEventListener('blur', () => {
+      this.validation.checkPhoneNum(this.form.phoneNum);
+    });
+    this.form.phoneNum.addEventListener('input', () => {
+      this.form.phoneNum.value = this.form.phoneNum.value.replace(/[^\d\+]/g, '');
+    });
+
+    this.form.address.addEventListener('blur', () => {
+      this.validation.checkAddress(this.form.address);
+    });
+
+    this.form.email.addEventListener('blur', () => {
+      this.validation.checkEmail(this.form.email);
+    });
+
+    this.cardInputHandler();
+
+    this.form.confirm.addEventListener('click', (e) => {
+      e.preventDefault();
+      const status: boolean[] = [
+        this.validation.checkName(this.form.fullName),
+        this.validation.checkPhoneNum(this.form.phoneNum),
+        this.validation.checkAddress(this.form.address),
+        this.validation.checkEmail(this.form.email),
+        this.validation.validateCardNum(this.form.cardNum, this.cardSpans),
+        this.validation.validateCardYear(this.form.year, this.cardSpans),
+        this.validation.validateCardCode(this.form.code, this.cardSpans),
+      ];
+      if (status.every((elem) => elem)) {
+        setChildren(this.modalWrap, [el('.modal__complete', 'Order completed successfully!')]);
+        setTimeout(() => (window.location.href = '/'), 3000);
+      }
+    });
+  }
+
+  private cardInputHandler(): void {
+    this.form.cardNum.addEventListener('blur', () => {
+      this.validation.validateCardNum(this.form.cardNum, this.cardSpans);
+    });
+    this.form.cardNum.addEventListener('input', () => {
+      this.setPayIcon(this.form.cardNum.value);
+    });
+
+    this.form.year.addEventListener('blur', () => {
+      this.validation.validateCardYear(this.form.year, this.cardSpans);
+    });
+
+    this.form.code.addEventListener('blur', () => {
+      this.validation.validateCardCode(this.form.code, this.cardSpans);
+    });
   }
 }
