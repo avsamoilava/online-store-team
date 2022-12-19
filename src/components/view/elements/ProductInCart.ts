@@ -1,4 +1,4 @@
-import { el } from 'redom';
+import { el, setChildren } from 'redom';
 import { ProductInCartType } from '../../../types';
 import { getPriceWithDiscount } from '../../utils';
 import BaseProduct from './Product';
@@ -6,6 +6,7 @@ import BaseProduct from './Product';
 class ProductInCart extends BaseProduct<ProductInCartType> {
   private totalSum: number;
   private totalSumElement: HTMLElement;
+  private container = el('li.table__row.product');
   constructor(product: ProductInCartType) {
     super(product);
     this.totalSum = getPriceWithDiscount(this.product) * this.product.count;
@@ -17,7 +18,7 @@ class ProductInCart extends BaseProduct<ProductInCartType> {
     this.addToCartBtn.count = this.product.count;
     this.addBtn.addEventListener('click', () => this.addToCart());
 
-    return el('li.table__row.product', [
+    setChildren(this.container, [
       el('.product__preview', [
         el('.product_num', `${index + 1}`),
         el('img', { src: this.product.thumbnail }),
@@ -32,8 +33,11 @@ class ProductInCart extends BaseProduct<ProductInCartType> {
       el('.product__stock', this.product.stock),
       this.totalSumElement,
     ]);
+
+    return this.container;
   }
   addToCart() {
+    if (!this.addToCartBtn.count) this.container.remove();
     this.product.count = this.addToCartBtn.count;
     this.totalSum = getPriceWithDiscount(this.product) * this.product.count;
     this.totalSumElement.textContent = `${this.totalSum.toFixed(2)}€`;
