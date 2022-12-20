@@ -39,6 +39,7 @@
     "webpack-dev-server": "^3.11.2"
   },
   "dependencies": {
+    "imask": "^6.4.3",
     "navigo": "^8.11.1",
     "nouislider": "^15.6.1",
     "redom": "^3.29.1",

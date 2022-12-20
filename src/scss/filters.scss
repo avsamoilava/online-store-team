@@ -7,10 +7,11 @@
   }
   &__block {
     margin-bottom: 20px;
+    ;
   }
   &__list {
     overflow-y: auto;
-    max-height: 250px;
+    max-height: 130px;
     &::-webkit-scrollbar {
       width: 8px;
       box-shadow: -5px -5px 5px -5px rgba(#000, 0.7) inset;
