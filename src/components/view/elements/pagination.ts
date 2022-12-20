@@ -18,6 +18,10 @@ class Pagination implements IPagination {
   }
 
   pages(page: number): number[] {
+    if (this.pageCount <= 5)
+      return Array(this.pageCount)
+        .fill(0)
+        .map((_, i) => i + 1);
     const lastPage: number = this.pageCount;
     let arr: [number, number, number] = this.setPages(page);
     if (page <= 2) arr = this.setPages(3);
