@@ -1,6 +1,13 @@
 import { el, setChildren } from 'redom';
 import { ProductInCartType } from '../../../types';
-import { getProductsCount, getProductsInCart, getTotalAmount } from '../../utils';
+import {
+  getParams,
+  getProductsByPage,
+  getProductsCount,
+  getProductsInCart,
+  getTotalAmount,
+  setQueryString,
+} from '../../utils';
 import { amountElement, countElement } from '../../utils/updateCart';
 import { breadCrumbs } from '../elements/breadCrumbs';
 import Pagination from '../elements/pagination';
@@ -14,26 +21,26 @@ export class Cart {
   private totalSumElement: HTMLElement;
   private amountElement: HTMLElement;
   private limit = 4;
-  private page = 1;
+  private page;
   private pagesContainer = el('.cart__pagination');
   private productsList = el('ul.table__body');
-
+  private pagination: Pagination;
   constructor() {
     this.products = getProductsInCart();
     this.totalSumElement = amountElement;
     this.amountElement = countElement;
+    this.pagination = new Pagination(this.products.length, this.limit);
+    this.page = Number(getParams()['page']) || 1;
   }
 
   element(): HTMLElement {
+    if (!this.products || !this.products.length) return this.renderEmpty();
     this.buyBtn.addEventListener('click', () => this.modal.show());
     document.querySelector('.wrapper')?.append(this.modal.render());
-    this.products = getProductsInCart();
-    if (!this.products || !this.products.length) return this.renderEmpty();
     this.totalSumElement.textContent = `Total cost: ${getTotalAmount(this.products).toFixed(2)}€`;
     this.amountElement.textContent = `Amount: ${getProductsCount(this.products)}`;
-    const pagination = new Pagination(this.products.length, this.limit);
-    setChildren(this.pagesContainer, [pagination.element(this.page, this.renderTable.bind(this))]);
-    return el('section.cart', [
+    this.renderProducts();
+    const element = el('section.cart', [
       el(
         '.container.cart__container',
         [el('.cart__title', 'Cart'), breadCrumbs('Cart')],
@@ -47,7 +54,7 @@ export class Cart {
                   el('.table-header__item', item)
                 )
               ),
-              this.renderTable(),
+              this.productsList,
               el('.table__reset'),
             ]),
           ]),
@@ -66,21 +73,26 @@ export class Cart {
         ]
       ),
     ]);
+    return element;
   }
 
-  renderTable(page = 1) {
+  renderTable(page?: number) {
     if (page) this.page = page;
-    const coef: number = this.limit * (this.page - 1);
 
-    const filteredProducts =
-      this.products.length >= this.limit
-        ? this.products.filter((_, idx) => idx >= 0 + coef && idx < this.limit + coef)
-        : this.products;
-    setChildren(
-      this.productsList,
-      filteredProducts.map((item, i) => new ProductInCart(item).element(i))
-    );
-    return this.productsList;
+    this.renderProducts();
+    if (location.pathname === '/cart') setQueryString('page', `${this.page}`);
+  }
+  renderProducts() {
+    this.products = getProductsInCart();
+    this.setPages();
+    const filteredProducts = getProductsByPage(this.products, this.page, this.limit);
+    const products = filteredProducts.map((item, i) => new ProductInCart(item).element(i));
+    setChildren(this.productsList, products);
+  }
+  setPages() {
+    this.pagination = new Pagination(this.products.length, this.limit);
+    const paginationEl = this.pagination.element(this.page, this.renderTable.bind(this));
+    setChildren(this.pagesContainer, [paginationEl]);
   }
 
   renderEmpty(): HTMLElement {
