@@ -62,7 +62,7 @@ class Dropdown extends BaseElement {
   }
 
   reset() {
-    setQueryString(this.key, '');
+    super.reset();
     this.text.textContent = 'Sort by';
     this.closeIcon.classList.remove('dropdown__close--active');
   }
