@@ -43,3 +43,8 @@ export type QueryParams = {
   sort: string;
   search: string;
 };
+
+export type Links = {
+  category: string;
+  brand: string;
+};

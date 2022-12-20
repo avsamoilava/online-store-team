@@ -1,4 +1,4 @@
-import { el, setChildren } from 'redom';
+import { el, setChildren, mount } from 'redom';
 import { Product } from '../../../types';
 import Swiper, { Navigation, Thumbs } from 'swiper';
 import 'swiper/css';
@@ -7,6 +7,8 @@ import 'swiper/css/thumbs';
 import BaseProduct from '../elements/BaseProduct';
 import { getPriceWithDiscount } from '../../utils';
 import { stars } from '../elements/stars';
+import { breadCrumbs } from '../elements/breadCrumbs';
+import { Links } from '../../../types';
 
 class ProductPage extends BaseProduct<Product> {
   private slider1: HTMLElement = el('.swiper.mySwiper', {
@@ -26,7 +28,12 @@ class ProductPage extends BaseProduct<Product> {
     this.fillSlider(this.slider1);
     this.fillSlider(this.slider2, [this.nextBtn, this.prevBtn]);
     this.initSlider();
+    this.modalSlide();
     return el('section.details', [
+      el(
+        '.details__header.container',
+        breadCrumbs(this.product.title, this.createLinks(this.product))
+      ),
       el('.container.details__container', [
         el('.details__slider', [this.slider2, this.slider1]),
         el('.details__content', [
@@ -91,6 +98,34 @@ class ProductPage extends BaseProduct<Product> {
       ),
       ...btns,
     ]);
+  }
+
+  private modalSlide() {
+    this.slider2.addEventListener('click', (e) => {
+      if (e.target instanceof HTMLImageElement) {
+        console.log('!!!!');
+        const wrap = document.body.querySelector('.wrapper');
+        const modal = el('.details__modal', el('img', { src: e.target.getAttribute('src') }));
+        modal.addEventListener('click', (e) => {
+          if (!(e.target instanceof HTMLImageElement)) {
+            modal.remove();
+          }
+        });
+        if (wrap) {
+          mount(wrap, modal);
+        }
+      }
+    });
+  }
+
+  createLinks(product: Product): Links {
+    const res: Links = { category: '', brand: '' };
+    Object.keys(product).forEach((item) => {
+      if (item === 'category' || item === 'brand') {
+        res[item] = product[item];
+      }
+    });
+    return res;
   }
 }
 export default ProductPage;
