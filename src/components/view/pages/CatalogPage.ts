@@ -25,7 +25,7 @@ class CatalogPage extends Catalog {
               this.filters.searchInput.element(),
             ]),
             this.productsInfo,
-            this.productsList,
+            this.productsListEl(),
             this.pagesContainer,
           ]),
         ]),

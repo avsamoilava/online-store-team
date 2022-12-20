@@ -51,8 +51,19 @@ class Catalog {
       productsArray.length >= this.limit
         ? productsArray.filter((_, idx) => idx >= 0 + coef && idx < this.limit + coef)
         : productsArray;
-    const products: HTMLElement[] = filteredProducts.map((item) => new ProductCard(item).element());
-    setChildren(this.productsList, products);
+    this.productsListEl(filteredProducts);
+  }
+
+  productsListEl(filteredProducts?: Readonly<Product>[]) {
+    if (filteredProducts) {
+      const products: HTMLElement[] = filteredProducts.map((item) =>
+        new ProductCard(item).element()
+      );
+      setChildren(this.productsList, products);
+    } else {
+      this.render();
+    }
+    return this.productsList;
   }
 
   setPages(itemsCount: number) {

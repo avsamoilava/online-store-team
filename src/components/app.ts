@@ -18,7 +18,7 @@ class App {
 
     router
       .on('/', () => this.view.render('/'))
-      .on('/cart', () => this.view.renderCart())
+      .on('/cart', () => this.view.render('/cart'))
       .on('/catalog', () => this.view.render('/catalog'))
       .on('/details/:id', (data) => {
         if (data?.data) {

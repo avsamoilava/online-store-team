@@ -1,3 +1,8 @@
+import { Cart } from '../components/view/pages/cart';
+import CatalogPage from '../components/view/pages/CatalogPage';
+import { Home } from '../components/view/pages/home';
+import { Page404 } from '../components/view/pages/page-404';
+
 export interface Product {
   brand: string;
   category: string;
@@ -17,7 +22,10 @@ export interface ProductInCartType extends Product {
 }
 
 export interface Elements {
-  [key: string]: HTMLElement;
+  '/': Home;
+  '/catalog': CatalogPage;
+  '/cart': Cart;
+  '404': Page404;
 }
 
 export type CatalogRenderFn = (page?: number, data?: Readonly<Product>[]) => void;
