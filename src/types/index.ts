@@ -42,4 +42,5 @@ export type QueryParams = {
   stock: string;
   sort: string;
   search: string;
+  view: string;
 };
