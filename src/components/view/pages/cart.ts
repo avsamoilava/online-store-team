@@ -76,7 +76,6 @@ export class Cart {
       this.products.length >= this.limit
         ? this.products.filter((_, idx) => idx >= 0 + coef && idx < this.limit + coef)
         : this.products;
-    console.log(filteredProducts);
     setChildren(
       this.productsList,
       filteredProducts.map((item, i) => new ProductInCart(item).element(i))
