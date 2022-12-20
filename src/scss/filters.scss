@@ -22,4 +22,12 @@
       background: linear-gradient(#9cd3d6, $accent);
     }
   }
+  &__btns {
+    .btn:first-child {
+      flex-grow: 1;
+    }
+    gap: 16px;
+    display: flex;
+    align-items: center;
+  }
 }

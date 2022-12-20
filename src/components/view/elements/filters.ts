@@ -1,5 +1,6 @@
 import { el, setChildren } from 'redom';
 import { MinAndMax } from '../../../types';
+import { copyBtnEl } from './copyBtn';
 import Dropdown from './dropdown';
 import FilterList from './FilterList';
 import RangeInput from './RangeInput';
@@ -38,8 +39,10 @@ class Filters {
       this.block('Brands:', this.brandsList.element(brandsArr)),
       this.block('Price:', this.priceInput.element(prices)),
       this.block('Stock:', this.stockInput.element(stock)),
-      el('button.btn', { onclick: () => this.reset() }, 'Reset filters'),
-      el('button.btn', 'Copy'),
+      el('.filters__btns', [
+        el('button.btn', { onclick: () => this.reset() }, 'Reset filters'),
+        copyBtnEl(),
+      ]),
     ]);
     this.restoreState();
   }
@@ -57,6 +60,10 @@ class Filters {
     this.stockInput.reset();
     this.categoriesList.reset();
     this.brandsList.reset();
+  }
+
+  copy() {
+    navigator.clipboard.writeText(location.href);
   }
 }
 
