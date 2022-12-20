@@ -31,7 +31,7 @@ class SearchInput extends BaseElement {
 
   reset() {
     super.reset();
-    this.searchInput.textContent = '';
+    (this.searchInput as HTMLInputElement).value = '';
   }
 }
 

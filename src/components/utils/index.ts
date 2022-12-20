@@ -19,7 +19,7 @@ export function sortProducts(option: string, arr: Product[]) {
 
 export function setQueryString(key: string, value: string): void {
   const params = new URLSearchParams(location.search);
-  if (key === 'brand' || key === 'category') {
+  if ((key === 'brand' || key === 'category') && value) {
     const currentValue = params.get(key);
     if (currentValue) {
       if (currentValue.split('*').includes(value)) return;

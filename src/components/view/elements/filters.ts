@@ -38,7 +38,7 @@ class Filters {
       this.block('Brands:', this.brandsList.element(brandsArr)),
       this.block('Price:', this.priceInput.element(prices)),
       this.block('Stock:', this.stockInput.element(stock)),
-      el('button.btn', 'Reset filters'),
+      el('button.btn', { onclick: () => this.reset() }, 'Reset filters'),
       el('button.btn', 'Copy'),
     ]);
     this.restoreState();
@@ -48,6 +48,15 @@ class Filters {
     [this.priceInput, this.stockInput, this.categoriesList, this.brandsList].forEach((elem) =>
       elem.restoreState()
     );
+  }
+
+  reset() {
+    this.searchInput.reset();
+    this.dropdown.reset();
+    this.priceInput.reset();
+    this.stockInput.reset();
+    this.categoriesList.reset();
+    this.brandsList.reset();
   }
 }
 

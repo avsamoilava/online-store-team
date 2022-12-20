@@ -16,6 +16,7 @@ abstract class BaseElement {
   }
   reset() {
     setQueryString(this.key, '');
+    this.selectItemsByQuery();
   }
 }
 export default BaseElement;
