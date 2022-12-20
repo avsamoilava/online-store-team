@@ -24,6 +24,7 @@ class CatalogPage extends Catalog {
               viewControls(this.changeView.bind(this)),
               this.filters.searchInput.element(),
             ]),
+            this.productsInfo,
             this.productsList,
             this.pagesContainer,
           ]),
