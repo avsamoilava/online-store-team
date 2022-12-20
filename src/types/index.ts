@@ -12,7 +12,7 @@ export interface Product {
   title: string;
 }
 
-export interface ProductInCart extends Product {
+export interface ProductInCartType extends Product {
   count: number;
 }
 

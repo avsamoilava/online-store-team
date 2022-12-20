@@ -1,20 +1,12 @@
 import { el } from 'redom';
 import { Product } from '../../../types';
 import { router } from '../../router';
-import { getProductsInCart } from '../../utils';
-import AddToCartBtn from './addToCartBtn';
+import BaseProduct from './BaseProduct';
 
-class ProductCard {
-  private product: Readonly<Product>;
-  private addToCartBtn: AddToCartBtn;
-  private addBtn: HTMLElement;
+class ProductCard extends BaseProduct<Product> {
   private buyBtn = el('button.card__btn.btn.btn-fill', 'Buy now');
-  private updateCart: () => void;
-  constructor(product: Readonly<Product>, fn: () => void) {
-    this.product = product;
-    this.addToCartBtn = new AddToCartBtn();
-    this.addBtn = this.addToCartBtn.element();
-    this.updateCart = fn;
+  constructor(product: Readonly<Product>) {
+    super(product);
   }
 
   element() {
@@ -42,19 +34,6 @@ class ProductCard {
       el('span.card__price', `$${this.product.price}`),
       el('.card__buttons', [this.addBtn, this.buyBtn]),
     ]);
-  }
-
-  addToCart() {
-    const itemToAdd = { ...this.product, count: this.addToCartBtn.count };
-    const cart = getProductsInCart().filter((item) => item.title !== itemToAdd.title);
-    if (this.addToCartBtn.count) cart.push(itemToAdd);
-    localStorage.setItem('cart', JSON.stringify(cart));
-    this.updateCart();
-  }
-
-  private restoreState() {
-    const prod = getProductsInCart().find((item) => item.title === this.product.title);
-    if (prod) this.addToCartBtn.count = prod.count;
   }
 }
 

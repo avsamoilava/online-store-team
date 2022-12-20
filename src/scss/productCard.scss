@@ -88,6 +88,13 @@
   &__btn {
     flex-grow: 1;
     width: 50%;
+    &--disabled {
+      .card__btn-small.plus {
+        opacity: 0.6;
+        filter:hue-rotate(45deg);
+        pointer-events: none;
+      }
+    }
   }
   &__btn-wrapper {
     position: relative;

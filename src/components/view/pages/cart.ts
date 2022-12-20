@@ -1,21 +1,22 @@
 import { el } from 'redom';
-import { ProductInCart } from '../../../types';
-import {
-  getPriceWithDiscount,
-  getProductsCount,
-  getProductsInCart,
-  getTotalAmount,
-} from '../../utils';
+import { ProductInCartType } from '../../../types';
+import { getProductsCount, getProductsInCart, getTotalAmount } from '../../utils';
+import { amountElement, countElement } from '../../utils/updateCart';
 import { breadCrumbs } from '../elements/breadCrumbs';
+import ProductInCart from '../elements/ProductInCart';
 import { Modal } from './Modal';
 
 export class Cart {
-  private products: Readonly<ProductInCart>[];
+  private products: Readonly<ProductInCartType>[];
   private modal: Modal = new Modal();
   private buyBtn = el('button.btn.btn-fill', 'buy now');
+  private totalSumElement: HTMLElement;
+  private amountElement: HTMLElement;
 
   constructor() {
     this.products = getProductsInCart();
+    this.totalSumElement = amountElement;
+    this.amountElement = countElement;
   }
 
   element(): HTMLElement {
@@ -27,6 +28,8 @@ export class Cart {
 
   renderTable(): HTMLElement {
     this.buyBtn.addEventListener('click', () => this.modal.show());
+    this.totalSumElement.textContent = `Total cost: ${getTotalAmount(this.products).toFixed(2)}€`;
+    this.amountElement.textContent = `Amount: ${getProductsCount(this.products)}`;
     const table = el('section.cart', [
       el(
         '.container.cart__container',
@@ -42,7 +45,7 @@ export class Cart {
               ),
               el(
                 'ul.table__body',
-                this.products.map((item, i) => this.item(item, i))
+                this.products.map((item, i) => new ProductInCart(item).element(i))
               ),
               el('.table__reset'),
             ]),
@@ -54,8 +57,8 @@ export class Cart {
             ]),
             el('.cart__order.order', [
               el('.order__header', `Total`),
-              el('.order__amount', `Amount: ${getProductsCount(this.products)}`),
-              el('.order__sum', `Total cost: ${getTotalAmount(this.products).toFixed(2)}€`),
+              this.amountElement,
+              this.totalSumElement,
               el('.order__go', [this.buyBtn]),
             ]),
           ]),
@@ -70,36 +73,5 @@ export class Cart {
       '.cart__empty',
       'Cart is empty. Please return to the catalog to choose the products you like.'
     );
-  }
-
-  item(product: Readonly<ProductInCart>, index: number) {
-    const priceWithDiscount = getPriceWithDiscount(product);
-    return el('li.table__row.product', [
-      el('.product__preview', [
-        el('.product_num', `${index + 1}`),
-        el('img', { src: product.thumbnail }),
-        el('span', product.title),
-      ]),
-      el('.product__disc', `${product.discountPercentage}%`),
-      el('.product_price.price', [
-        el('.price__item.price__item_base', `${product.price}€`),
-        el('.price__item.price__item_disc', `${priceWithDiscount.toFixed(2)}€`),
-      ]),
-      el('.product__amount.amount', [
-        el('button.amount__item.amount__item_down', '-', { 'data-id': product.id }),
-        el('span.amount__item.amount__item_value', product.count),
-        el('button.amount__item.amount__item_up', '+', { 'data-id': product.id }),
-      ]),
-      el('.product__stock', product.stock),
-      el('.product__total', `${(priceWithDiscount * product.count).toFixed(2)}€`),
-    ]);
-  }
-
-  reset(): void {
-    console.log('');
-  }
-
-  update(): void {
-    console.log('');
   }
 }
