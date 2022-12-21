@@ -1,16 +1,21 @@
 import { el, setChildren } from 'redom';
+import { Modal } from '../pages/Modal';
+import { router } from '../../router';
 
 class AddToCartBtn {
   private wrapper: HTMLElement = el('.card__btn.card__btn-wrapper');
+  private buyNowBtn: HTMLElement = el('button.card__btn.card__buy-now.btn.btn-fill', 'Buy now');
   private addBtn = el('button.card__add-btn.btn', 'Add to cart');
   private countElement = el('span.card__counter', '1');
   private plusBtn = el('button.card__btn-small.plus');
   private minusBtn = el('button.card__btn-small.minus');
   private counter = 0;
   private disabled = false;
+  private modal: Modal;
   private maxCount: number;
   constructor(maxCount: number) {
     this.maxCount = maxCount;
+    this.modal = new Modal();
   }
   private increaseCounter() {
     this.counter++;
@@ -38,14 +43,24 @@ class AddToCartBtn {
   set count(count: number) {
     this.startCounter(count);
   }
-  element() {
+  element(btnName?: string) {
     this.addBtn.addEventListener('click', () => this.startCounter());
     this.plusBtn.addEventListener('click', () => this.increaseCounter());
     this.minusBtn.addEventListener('click', () => this.decreaseCounter());
-    setChildren(
-      this.wrapper,
-      this.counter > 0 ? [this.minusBtn, this.countElement, this.plusBtn] : [this.addBtn]
-    );
+    this.buyNowBtn.addEventListener('click', () => {
+      if (this.counter === 0) this.increaseCounter;
+      router.navigate('/cart');
+      document.querySelector('.wrapper')?.append(this.modal.render());
+      this.modal.show();
+    });
+    if (btnName === 'BuyNow') {
+      return this.buyNowBtn;
+    } else {
+      setChildren(
+        this.wrapper,
+        this.counter > 0 ? [this.minusBtn, this.countElement, this.plusBtn] : [this.addBtn]
+      );
+    }
     return this.wrapper;
   }
   private disable() {

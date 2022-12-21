@@ -1,4 +1,4 @@
-import { el, setChildren } from 'redom';
+import { el, setChildren, mount } from 'redom';
 import { Product } from '../../../types';
 import Swiper, { Navigation, Thumbs } from 'swiper';
 import 'swiper/css';
@@ -7,6 +7,8 @@ import 'swiper/css/thumbs';
 import BaseProduct from '../elements/BaseProduct';
 import { getPriceWithDiscount } from '../../utils';
 import { stars } from '../elements/stars';
+import { breadCrumbs } from '../elements/breadCrumbs';
+import { Links } from '../../../types';
 
 class ProductPage extends BaseProduct<Product> {
   private slider1: HTMLElement = el('.swiper.mySwiper', {
@@ -23,10 +25,16 @@ class ProductPage extends BaseProduct<Product> {
   createDetails(): HTMLElement {
     this.restoreState();
     this.addBtn.addEventListener('click', () => this.addToCart());
+    this.buyNowBtn.addEventListener('click', () => this.addToCart());
     this.fillSlider(this.slider1);
     this.fillSlider(this.slider2, [this.nextBtn, this.prevBtn]);
     this.initSlider();
+    this.modalSlide();
     return el('section.details', [
+      el(
+        '.details__header.container',
+        breadCrumbs(this.product.title, this.createLinks(this.product))
+      ),
       el('.container.details__container', [
         el('.details__slider', [this.slider2, this.slider1]),
         el('.details__content', [
@@ -53,7 +61,7 @@ class ProductPage extends BaseProduct<Product> {
               el('.details__price_full', `${this.product.price}€`),
             ]),
             this.addBtn,
-            el('button.card__btn.btn.btn-fill', 'Buy now')
+            this.buyNowBtn
           ),
         ]),
       ]),
@@ -63,7 +71,7 @@ class ProductPage extends BaseProduct<Product> {
   private initSlider() {
     const swiper1 = new Swiper(this.slider1, {
       modules: [Navigation],
-      loop: true,
+      loop: this.product.images.length > 4,
       spaceBetween: 10,
       slidesPerView: 4,
       freeMode: true,
@@ -75,7 +83,7 @@ class ProductPage extends BaseProduct<Product> {
         nextEl: this.nextBtn,
         prevEl: this.prevBtn,
       },
-      loop: true,
+      loop: this.product.images.length > 4,
       spaceBetween: 10,
       thumbs: {
         swiper: swiper1,
@@ -91,6 +99,35 @@ class ProductPage extends BaseProduct<Product> {
       ),
       ...btns,
     ]);
+  }
+
+  private modalSlide() {
+    this.slider2.addEventListener('click', (e) => {
+      if (e.target instanceof HTMLImageElement) {
+        const wrap = document.body.querySelector('.wrapper');
+        const modal = el('.details__modal', el('img', { src: e.target.getAttribute('src') }));
+        modal.addEventListener('click', (e) => {
+          if (!(e.target instanceof HTMLImageElement)) {
+            modal.remove();
+            document.body.style.overflow = 'auto';
+          }
+        });
+        if (wrap) {
+          mount(wrap, modal);
+          document.body.style.overflow = 'hidden';
+        }
+      }
+    });
+  }
+
+  createLinks(product: Product): Links {
+    const res: Links = { category: '', brand: '' };
+    Object.keys(product).forEach((item) => {
+      if (item === 'category' || item === 'brand') {
+        res[item] = product[item];
+      }
+    });
+    return res;
   }
 }
 export default ProductPage;
