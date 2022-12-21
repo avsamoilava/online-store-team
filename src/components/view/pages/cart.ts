@@ -52,8 +52,10 @@ export class Cart {
         [el('.cart__title', 'Cart'), breadCrumbs('Cart')],
         [
           el('.cart__content', [
-            el('.cart__limit', `Limit: `, [this.limitInput]),
-            this.pagesContainer,
+            el('.cart__controls', [
+              el('.cart__limit', `Limit: `, [this.limitInput]),
+              this.pagesContainer,
+            ]),
             el('.cart__table.table', [
               el(
                 '.table__header.table-header',
@@ -95,7 +97,9 @@ export class Cart {
     this.setPages();
     const filteredProducts = getProductsByPage(this.products, this.page, this.limit);
     const products = filteredProducts.map((item, i) =>
-      new ProductInCart(item, this.renderProducts.bind(this)).element(i)
+      new ProductInCart(item, this.renderProducts.bind(this)).element(
+        i + this.limit * (this.page - 1)
+      )
     );
     setChildren(this.productsList, products);
   }

@@ -39,6 +39,17 @@
     align-items: center;
     white-space: break-spaces;
   }
+  &__controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  &__limit {
+    font-size: 22px;
+    input {
+      font-size: inherit;
+    }
+  }
 
   &__promo {
     display: flex;
