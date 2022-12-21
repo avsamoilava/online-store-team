@@ -25,12 +25,16 @@ export class Cart {
   private pagesContainer = el('.cart__pagination');
   private productsList = el('ul.table__body');
   private pagination: Pagination;
+  private limitInput = el('input', { type: 'number', min: 3, max: 10 });
+
   constructor() {
     this.products = getProductsInCart();
     this.totalSumElement = amountElement;
     this.amountElement = countElement;
     this.pagination = new Pagination(this.products.length, this.limit);
     this.page = Number(getParams()['page']) || 1;
+    this.limit = Number(getParams()['limit']) || 4;
+    this.limitInput.value = `${this.limit}`;
   }
 
   element(): HTMLElement {
@@ -39,13 +43,16 @@ export class Cart {
     this.totalSumElement.textContent = `Total cost: ${getTotalAmount(this.products).toFixed(2)}€`;
     this.amountElement.textContent = `Amount: ${getProductsCount(this.products)}`;
     this.renderProducts();
+    this.limitInput.addEventListener('change', () =>
+      this.changeLimit(Number(this.limitInput.value))
+    );
     const element = el('section.cart', [
       el(
         '.container.cart__container',
         [el('.cart__title', 'Cart'), breadCrumbs('Cart')],
         [
           el('.cart__content', [
-            el('p', `Limit: ${this.limit}`),
+            el('.cart__limit', `Limit: `, [this.limitInput]),
             this.pagesContainer,
             el('.cart__table.table', [
               el(
@@ -57,17 +64,17 @@ export class Cart {
               this.productsList,
               el('.table__reset'),
             ]),
-          ]),
-          el('.cart__footer', [
-            el('.cart__promo', [
-              el('input.cart__input', { placeholder: 'enter promo code' }),
-              el('button.btn', 'apply'),
-            ]),
-            el('.cart__order.order', [
-              el('.order__header', `Total`),
-              this.amountElement,
-              this.totalSumElement,
-              el('.order__go', [this.buyBtn]),
+            el('.cart__footer', [
+              el('.cart__promo', [
+                el('input.cart__input', { placeholder: 'enter promo code' }),
+                el('button.btn', 'apply'),
+              ]),
+              el('.cart__order.order', [
+                el('.order__header', `Total`),
+                this.amountElement,
+                this.totalSumElement,
+                el('.order__go', [this.buyBtn]),
+              ]),
             ]),
           ]),
         ]
@@ -111,5 +118,12 @@ export class Cart {
       ),
     ]);
     setChildren(this.pagesContainer, []);
+  }
+
+  changeLimit(value: number) {
+    if (value > 10 || value < 3) return (this.limitInput.value = `${this.limit}`);
+    this.limit = value;
+    setQueryString('limit', `${this.limit}`);
+    this.renderProducts();
   }
 }

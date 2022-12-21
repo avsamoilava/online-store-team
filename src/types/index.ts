@@ -52,4 +52,5 @@ export type QueryParams = {
   search: string;
   view: string;
   page: string;
+  limit: string;
 };
