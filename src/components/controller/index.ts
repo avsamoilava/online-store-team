@@ -25,8 +25,8 @@ class Controller {
       .then((res) => this.errorHandler(res))
       .then((res) => res.json())
       .then((data) => cb(data))
-      .catch((err) => console.error(`There is an error: ${err}`))
-      .finally(() => Loader.delete());
+      .catch((err) => console.error(`There is an error: ${err}`));
+    // .finally(() => Loader.delete());
   }
 }
 
