@@ -34,7 +34,6 @@ export class Cart {
   }
 
   element(): HTMLElement {
-    if (!this.products || !this.products.length) return this.renderEmpty();
     this.buyBtn.addEventListener('click', () => this.modal.show());
     document.querySelector('.wrapper')?.append(this.modal.render());
     this.totalSumElement.textContent = `Total cost: ${getTotalAmount(this.products).toFixed(2)}€`;
@@ -46,6 +45,7 @@ export class Cart {
         [el('.cart__title', 'Cart'), breadCrumbs('Cart')],
         [
           el('.cart__content', [
+            el('p', `Limit: ${this.limit}`),
             this.pagesContainer,
             el('.cart__table.table', [
               el(
@@ -78,27 +78,38 @@ export class Cart {
 
   renderTable(page?: number) {
     if (page) this.page = page;
-
     this.renderProducts();
     if (location.pathname === '/cart') setQueryString('page', `${this.page}`);
   }
+
   renderProducts() {
     this.products = getProductsInCart();
+    if (!this.products || !this.products.length) return this.renderEmpty();
     this.setPages();
     const filteredProducts = getProductsByPage(this.products, this.page, this.limit);
-    const products = filteredProducts.map((item, i) => new ProductInCart(item).element(i));
+    const products = filteredProducts.map((item, i) =>
+      new ProductInCart(item, this.renderProducts.bind(this)).element(i)
+    );
     setChildren(this.productsList, products);
   }
+
   setPages() {
     this.pagination = new Pagination(this.products.length, this.limit);
+    if (this.page > this.pagination.pageCount) {
+      this.page = this.pagination.pageCount;
+      setQueryString('page', `${this.page}`);
+    }
     const paginationEl = this.pagination.element(this.page, this.renderTable.bind(this));
     setChildren(this.pagesContainer, [paginationEl]);
   }
 
-  renderEmpty(): HTMLElement {
-    return el(
-      '.cart__empty',
-      'Cart is empty. Please return to the catalog to choose the products you like.'
-    );
+  renderEmpty() {
+    setChildren(this.productsList, [
+      el(
+        '.cart__empty',
+        'Cart is empty.\nPlease return to the catalog to choose the products you like.'
+      ),
+    ]);
+    setChildren(this.pagesContainer, []);
   }
 }
