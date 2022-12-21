@@ -70,7 +70,7 @@ class ProductPage extends BaseProduct<Product> {
   private initSlider() {
     const swiper1 = new Swiper(this.slider1, {
       modules: [Navigation],
-      loop: true,
+      loop: this.product.images.length > 4,
       spaceBetween: 10,
       slidesPerView: 4,
       freeMode: true,
@@ -82,7 +82,7 @@ class ProductPage extends BaseProduct<Product> {
         nextEl: this.nextBtn,
         prevEl: this.prevBtn,
       },
-      loop: true,
+      loop: this.product.images.length > 4,
       spaceBetween: 10,
       thumbs: {
         swiper: swiper1,
@@ -103,16 +103,17 @@ class ProductPage extends BaseProduct<Product> {
   private modalSlide() {
     this.slider2.addEventListener('click', (e) => {
       if (e.target instanceof HTMLImageElement) {
-        console.log('!!!!');
         const wrap = document.body.querySelector('.wrapper');
         const modal = el('.details__modal', el('img', { src: e.target.getAttribute('src') }));
         modal.addEventListener('click', (e) => {
           if (!(e.target instanceof HTMLImageElement)) {
             modal.remove();
+            document.body.style.overflow = 'auto';
           }
         });
         if (wrap) {
           mount(wrap, modal);
+          document.body.style.overflow = 'hidden';
         }
       }
     });
