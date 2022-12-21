@@ -1,39 +1,28 @@
 import { el } from 'redom';
 import { setQueryString, sortOptions } from '../../utils';
-import CloseIcon from '../../../assets/images/icons/close.svg';
-import BaseElement from './BaseElement';
+import BaseElement from '../classes/BaseElement';
 import { QueryParams } from '../../../types';
+import { router } from '../../router';
 
 class Dropdown extends BaseElement {
   public text: HTMLElement = el('span.dropdown__text', 'Sort by');
-  public closeIcon = el('img.dropdown__close', { src: CloseIcon });
   private top: HTMLElement = el('.dropdown__top', [this.text]);
   public list: HTMLElement = el(
     'ul.dropdown__list',
     sortOptions.map((val) => el('li.dropdown__item', val))
   );
-  constructor(fn: () => void, key: keyof QueryParams) {
-    super(fn, key);
+  constructor(key: keyof QueryParams) {
+    super(key);
   }
 
   element() {
-    this.restoreState();
-
-    this.closeIcon.addEventListener('click', (e) => {
-      e.stopPropagation();
-      this.reset();
-      this.selectItemsByQuery();
-    });
     const handleClick = (e: Event) => {
       const element = e.target as HTMLElement;
       if (!(element instanceof HTMLLIElement)) return;
       if (element.textContent) {
         this.text.textContent = element.textContent;
-        this.closeIcon.classList.add('dropdown__close--active');
         const option = element.textContent.replace(' ', '_');
-        setQueryString(this.key, option);
-
-        this.selectItemsByQuery();
+        router.navigate(setQueryString(this.key, option));
       }
     };
     this.list.addEventListener('click', handleClick);
@@ -48,23 +37,16 @@ class Dropdown extends BaseElement {
           this.top.classList.toggle('dropdown__top--active');
         },
       },
-      [this.top, this.list, this.closeIcon]
+      [this.top, this.list]
     );
     return dropdown;
   }
 
   restoreState() {
-    super.restoreState((query: string) => {
-      if (!sortOptions.includes(query.replace('_', ' '))) return;
-      this.text.textContent = query.replace('_', ' ');
-      this.closeIcon.classList.add('dropdown__close--active');
+    super.restoreState((query: string | undefined) => {
+      if (query && !sortOptions.includes(query.replace('_', ' '))) return;
+      this.text.textContent = query ? query.replace('_', ' ') : 'Sort by';
     });
-  }
-
-  reset() {
-    super.reset();
-    this.text.textContent = 'Sort by';
-    this.closeIcon.classList.remove('dropdown__close--active');
   }
 }
 export default Dropdown;

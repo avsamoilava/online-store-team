@@ -1,5 +1,6 @@
 import { el, setChildren } from 'redom';
 import { MinAndMax } from '../../../types';
+import { navigate } from '../../utils';
 import { copyBtnEl } from './copyBtn';
 import Dropdown from './dropdown';
 import FilterList from './FilterList';
@@ -15,18 +16,17 @@ class Filters {
   public searchInput: SearchInput;
   public dropdown: Dropdown;
 
-  constructor(fn: () => void) {
-    this.priceInput = new RangeInput(fn, 'price');
-    this.stockInput = new RangeInput(fn, 'stock');
-    this.categoriesList = new FilterList(fn, 'category');
-    this.brandsList = new FilterList(fn, 'brand');
-    this.searchInput = new SearchInput(fn, 'search');
-    this.dropdown = new Dropdown(fn, 'sort');
+  constructor() {
+    this.priceInput = new RangeInput('price');
+    this.stockInput = new RangeInput('stock');
+    this.categoriesList = new FilterList('category');
+    this.brandsList = new FilterList('brand');
+    this.searchInput = new SearchInput('search');
+    this.dropdown = new Dropdown('sort');
   }
 
   element() {
-    const filters: HTMLElement = el('aside.catalog__filters.filters', [this.filtersContent]);
-    return filters;
+    return el('aside.catalog__filters.filters', [this.filtersContent]);
   }
 
   block(title: string, element: HTMLElement) {
@@ -48,18 +48,18 @@ class Filters {
   }
 
   restoreState() {
-    [this.priceInput, this.stockInput, this.categoriesList, this.brandsList].forEach((elem) =>
-      elem.restoreState()
-    );
+    [
+      this.priceInput,
+      this.stockInput,
+      this.categoriesList,
+      this.brandsList,
+      this.dropdown,
+      this.searchInput,
+    ].forEach((elem) => elem.restoreState());
   }
 
   reset() {
-    this.searchInput.reset();
-    this.dropdown.reset();
-    this.priceInput.reset();
-    this.stockInput.reset();
-    this.categoriesList.reset();
-    this.brandsList.reset();
+    navigate(location.pathname);
   }
 }
 

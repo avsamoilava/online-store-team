@@ -6,13 +6,15 @@ import { viewControls } from '../elements/viewControls';
 import Catalog from './catalog';
 
 class CatalogPage extends Catalog {
-  filters: Filters = new Filters(this.filterAndSort.bind(this));
+  filters: Filters = new Filters();
 
   constructor() {
     super();
   }
 
   element() {
+    console.log('ELEMENT');
+
     const element: HTMLElement = el('section.catalog', [
       el('.container.catalog__container', [
         el('.catalog__content', [

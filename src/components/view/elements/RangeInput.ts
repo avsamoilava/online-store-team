@@ -3,15 +3,16 @@ import * as noUiSlider from 'nouislider';
 import 'nouislider/dist/nouislider.css';
 import { MinAndMax, QueryParams } from '../../../types';
 import { setQueryString } from '../../utils';
-import BaseElement from './BaseElement';
+import BaseElement from '../classes/BaseElement';
+import { router } from '../../router';
 
 class RangeInput extends BaseElement {
   private rangeInput: HTMLElement = el('.range__input');
   private min: number;
   private max: number;
 
-  constructor(fn: () => void, key: keyof QueryParams) {
-    super(fn, key);
+  constructor(key: keyof QueryParams) {
+    super(key);
     this.min = 0;
     this.max = 0;
   }
@@ -22,9 +23,8 @@ class RangeInput extends BaseElement {
     this.createRange(this.min, this.max);
     const range = el('.range', [this.rangeInput]);
 
-    (this.rangeInput as noUiSlider.target).noUiSlider?.on('set', (values) => {
-      setQueryString(this.key, values.join('-'));
-      this.selectItemsByQuery();
+    (this.rangeInput as noUiSlider.target).noUiSlider?.on('change', (values) => {
+      router.navigate(setQueryString(this.key, values.join('-')));
     });
     return range;
   }
@@ -45,14 +45,12 @@ class RangeInput extends BaseElement {
     });
   }
   restoreState() {
-    super.restoreState((query: string) => this.setRange(query.split('-')));
+    super.restoreState((query: string | undefined) =>
+      this.setRange(query ? query.split('-') : [this.min, this.max])
+    );
   }
   setRange(range: (string | number)[]) {
     (this.rangeInput as noUiSlider.target).noUiSlider?.set(range);
-  }
-  reset() {
-    this.setRange([this.min, this.max]);
-    super.reset();
   }
 }
 

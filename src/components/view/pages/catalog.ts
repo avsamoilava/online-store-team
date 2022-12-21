@@ -1,43 +1,45 @@
 import { el, setChildren } from 'redom';
 import { Product } from '../../../types';
 import { filterAndSortProducts, getProductsByPage } from '../../utils';
+import BasePage from '../classes/BasePage';
 import HeaderCart from '../elements/HeaderCart';
 import Pagination from '../elements/pagination';
 import ProductCard from '../elements/productCard';
 
-class Catalog {
-  constructor(
-    public productsData: Readonly<Product>[] = [],
-    public filteredData: Readonly<Product>[] = [],
-    protected productsList: HTMLElement = el('.products#columns3'),
-    protected page: number = 1,
-    protected limit: number = 9,
-    protected pagination: Pagination = new Pagination(100, 9),
-    protected pagesContainer: HTMLElement = el('.catalog__pagination'),
-    protected headerCart: HeaderCart = new HeaderCart(),
-    protected productsInfo = el('.catalog__info')
-  ) {}
+class Catalog extends BasePage {
+  public productsData: Readonly<Product>[] = [];
+  public filteredData: Readonly<Product>[] = [];
+  protected headerCart: HeaderCart = new HeaderCart();
+  protected productsInfo = el('.catalog__info');
+  constructor() {
+    super(
+      el('.products#columns3'),
+      el('.catalog__pagination'),
+      1,
+      9,
+      el('h1.empty', 'No products found...')
+    );
+  }
 
   draw(data: Readonly<Product>[]) {
     this.productsData = data;
 
-    if (!this.productsData.length) {
-      this.setNoItemsTitle();
-      return;
-    }
+    if (!this.productsData.length) return this.renderEmpty();
     this.headerCart.setElement();
     this.setPages(this.productsData.length);
     this.render();
   }
 
   render(page = 1, data?: Readonly<Product>[]): void {
+    console.log('RENDER');
+
     setChildren(
       this.productsInfo,
       this.filteredData.length && this.filteredData.length < this.productsData.length
         ? [el('span', `Products found: ${this.filteredData.length}`)]
         : []
     );
-    if (data && !data.length) return this.setNoItemsTitle();
+    if (data && !data.length) return this.renderEmpty();
     if (page) this.page = page;
 
     const productsArray = data
@@ -51,6 +53,8 @@ class Catalog {
   }
 
   productsListEl(filteredProducts?: Readonly<Product>[]) {
+    console.log('RENDER productsListEl');
+
     if (filteredProducts) {
       const products: HTMLElement[] = filteredProducts.map((item) =>
         new ProductCard(item).element()
@@ -80,11 +84,6 @@ class Catalog {
     this.filteredData = filtered;
     this.setPages(this.filteredData.length);
     this.render(1, this.filteredData);
-  }
-
-  setNoItemsTitle() {
-    setChildren(this.productsList, [el('h1.products__no-items', 'No products found...')]);
-    setChildren(this.pagesContainer, []);
   }
 }
 

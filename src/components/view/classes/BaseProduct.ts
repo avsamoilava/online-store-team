@@ -1,20 +1,30 @@
 import { Product, ProductInCartType } from '../../../types';
-import { getProductsInCart } from '../../utils';
+import { getProductsInCart, navigate } from '../../utils';
 import { updateAmount } from '../../utils/updateCart';
-import AddToCartBtn from './addToCartBtn';
+import Payment from '../pages/Payment';
+import AddToCartBtn from '../elements/addToCartBtn';
 
 abstract class BaseProduct<T extends Product> {
   protected product: T;
   protected addToCartBtn: AddToCartBtn;
-  protected buyNow: AddToCartBtn;
   protected addBtn: HTMLElement;
   protected buyNowBtn: HTMLElement;
   constructor(product: T) {
     this.product = product;
     this.addToCartBtn = new AddToCartBtn(this.product.stock);
     this.addBtn = this.addToCartBtn.element();
-    this.buyNow = new AddToCartBtn(this.product.stock);
-    this.buyNowBtn = this.buyNow.element('BuyNow');
+    this.buyNowBtn = this.addToCartBtn.buyNowElement();
+  }
+
+  element(index?: number) {
+    this.restoreState();
+    this.addBtn.addEventListener('click', () => this.addToCart());
+    this.buyNowBtn.addEventListener('click', () => {
+      console.log('event from BaseProduct');
+      this.addToCart();
+      navigate('/cart');
+      new Payment().render().show();
+    });
   }
 
   addToCart(itemToAdd?: ProductInCartType) {

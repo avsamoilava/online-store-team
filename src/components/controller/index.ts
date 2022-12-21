@@ -1,5 +1,5 @@
 import { Product, ApiResponse } from '../../types';
-
+import Loader from '../view/elements/Loader';
 class Controller {
   url = 'https://dummyjson.com/products';
 
@@ -20,11 +20,13 @@ class Controller {
   }
 
   getAll(cb: (data: ApiResponse) => void) {
+    Loader.set();
     fetch(`${this.url}?limit=100`)
       .then((res) => this.errorHandler(res))
       .then((res) => res.json())
       .then((data) => cb(data))
-      .catch((err) => console.error(`There is an error: ${err}`));
+      .catch((err) => console.error(`There is an error: ${err}`))
+      .finally(() => Loader.delete());
   }
 }
 

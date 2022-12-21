@@ -1,13 +1,14 @@
-import { el, setChildren, mount } from 'redom';
+import { el, setChildren } from 'redom';
 import { Product } from '../../../types';
 import Swiper, { Navigation, Thumbs } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/thumbs';
-import BaseProduct from '../elements/BaseProduct';
+import BaseProduct from '../classes/BaseProduct';
 import { getPriceWithDiscount } from '../../utils';
 import { stars } from '../elements/stars';
 import { breadCrumbs } from '../elements/breadCrumbs';
+import Modal from '../elements/Modal';
 
 class ProductPage extends BaseProduct<Product> {
   private slider1: HTMLElement = el('.swiper.mySwiper', {
@@ -21,10 +22,8 @@ class ProductPage extends BaseProduct<Product> {
     super(product);
   }
 
-  createDetails(): HTMLElement {
-    this.restoreState();
-    this.addBtn.addEventListener('click', () => this.addToCart());
-    this.buyNowBtn.addEventListener('click', () => this.addToCart());
+  element(): HTMLElement {
+    super.element();
     this.fillSlider(this.slider1);
     this.fillSlider(this.slider2, [this.nextBtn, this.prevBtn]);
     this.initSlider();
@@ -85,6 +84,7 @@ class ProductPage extends BaseProduct<Product> {
         swiper: swiper1,
       },
     });
+    swiper2.init();
   }
 
   private fillSlider(slider: HTMLElement, btns: HTMLElement[] = []) {
@@ -100,18 +100,7 @@ class ProductPage extends BaseProduct<Product> {
   private modalSlide() {
     this.slider2.addEventListener('click', (e) => {
       if (e.target instanceof HTMLImageElement) {
-        const wrap = document.body.querySelector('.wrapper');
-        const modal = el('.details__modal', el('img', { src: e.target.getAttribute('src') }));
-        modal.addEventListener('click', (e) => {
-          if (!(e.target instanceof HTMLImageElement)) {
-            modal.remove();
-            document.body.style.overflow = 'auto';
-          }
-        });
-        if (wrap) {
-          mount(wrap, modal);
-          document.body.style.overflow = 'hidden';
-        }
+        new Modal().render(el('img.modal__image', { src: e.target.src })).show();
       }
     });
   }

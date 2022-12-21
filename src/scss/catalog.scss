@@ -50,7 +50,7 @@
   &#columns4 {
     grid-template-columns: repeat(4, 1fr);
   }
-  &__no-items {
+  .empty {
     grid-column: span 3;
     text-align: center;
     font-size: 46px;
