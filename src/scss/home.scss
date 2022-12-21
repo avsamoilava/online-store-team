@@ -60,9 +60,10 @@
     border-radius: 50%;
     background: $accent-interactive;
     cursor: pointer;
-    transition: all linear 0.5s;
+    transition: all linear 0.3s;
     display: flex;
     align-items: center;
+    position: relative;
     justify-content: center;
 
     &:hover {
@@ -72,9 +73,16 @@
 
     a {
       color: $light;
-      position: relative;
       margin-left: -60px;
       margin-top: -20px;
+      &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+      }
 
       &::after {
         position: absolute;
@@ -82,8 +90,8 @@
         width: 79px;
         height: 10px;
         background: url(./assets/images/icons/thin-arrow.svg) center/contain no-repeat;
-        top: 30px;
-        left: 40px;
+        top: 52%;
+        left: 35%;
       }
     }
   }

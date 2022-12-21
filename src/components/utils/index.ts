@@ -32,6 +32,7 @@ export function setQueryString(key: string, value: string): void {
   if (params.has(key)) params.delete(key);
   if (value) params.set(key, value);
   const queryString = params.toString();
+  history.pushState({}, '', location.pathname + `${queryString ? `?${queryString}` : ''}`);
   router.navigate(location.pathname + `${queryString ? `?${queryString}` : ''}`);
 }
 

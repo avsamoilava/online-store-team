@@ -50,7 +50,7 @@ export class Cart {
     const element = el('section.cart', [
       el(
         '.container.cart__container',
-        [el('.cart__title', 'Cart'), breadCrumbs('Cart')],
+        [el('.cart__title', 'Cart'), breadCrumbs([{ name: 'Cart', href: '' }])],
         [
           el('.cart__content', [
             el('.cart__controls', [

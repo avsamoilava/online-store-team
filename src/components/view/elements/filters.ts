@@ -47,7 +47,7 @@ class Filters {
     this.restoreState();
   }
 
-  private restoreState() {
+  restoreState() {
     [this.priceInput, this.stockInput, this.categoriesList, this.brandsList].forEach((elem) =>
       elem.restoreState()
     );
@@ -60,10 +60,6 @@ class Filters {
     this.stockInput.reset();
     this.categoriesList.reset();
     this.brandsList.reset();
-  }
-
-  copy() {
-    navigator.clipboard.writeText(location.href);
   }
 }
 

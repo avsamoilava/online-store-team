@@ -19,6 +19,7 @@ export class Home {
               href: '/catalog',
               onclick: (e: Event) => {
                 e.preventDefault();
+                history.pushState({}, '', '/catalog');
                 router.navigate('/catalog');
               },
             }),
