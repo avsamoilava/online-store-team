@@ -1,5 +1,5 @@
 import { el } from 'redom';
-import { router } from '../../router';
+import { navigate } from '../../utils';
 
 export const breadCrumbs = (links: { name: string; href: string }[]) => {
   return el(
@@ -11,10 +11,6 @@ export const breadCrumbs = (links: { name: string; href: string }[]) => {
 function link(href: string, name: string) {
   return el('a.breadcrumbs__link', name, {
     href: href,
-    onclick: (e: Event) => {
-      e.preventDefault();
-      history.pushState({}, '', href);
-      router.navigate(href);
-    },
+    onclick: (e: Event) => navigate(href, e),
   });
 }

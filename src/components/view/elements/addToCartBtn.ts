@@ -1,6 +1,6 @@
 import { el, setChildren } from 'redom';
 import { Modal } from '../pages/Modal';
-import { router } from '../../router';
+import { navigate } from '../../utils';
 
 class AddToCartBtn {
   private wrapper: HTMLElement = el('.card__btn.card__btn-wrapper');
@@ -49,7 +49,7 @@ class AddToCartBtn {
     this.minusBtn.addEventListener('click', () => this.decreaseCounter());
     this.buyNowBtn.addEventListener('click', () => {
       if (this.counter === 0) this.increaseCounter;
-      router.navigate('/cart');
+      navigate('/cart');
       document.querySelector('.wrapper')?.append(this.modal.render());
       this.modal.show();
     });

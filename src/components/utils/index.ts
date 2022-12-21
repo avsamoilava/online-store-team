@@ -1,5 +1,10 @@
 import { FilterFn, MinAndMax, Product, ProductInCartType, QueryParams } from '../../types';
 import { router } from '../router';
+export const navigate = (path: string, e?: Event) => {
+  if (e) e.preventDefault();
+  history.pushState({}, '', path);
+  router.navigate(path);
+};
 export const sortOptions = [
   'price asc',
   'price desc',
@@ -32,8 +37,9 @@ export function setQueryString(key: string, value: string): void {
   if (params.has(key)) params.delete(key);
   if (value) params.set(key, value);
   const queryString = params.toString();
-  history.pushState({}, '', location.pathname + `${queryString ? `?${queryString}` : ''}`);
-  router.navigate(location.pathname + `${queryString ? `?${queryString}` : ''}`);
+  navigate(location.pathname + `${queryString ? `?${queryString}` : ''}`);
+  // history.pushState({}, '', location.pathname + `${queryString ? `?${queryString}` : ''}`);
+  // router.navigate(location.pathname + `${queryString ? `?${queryString}` : ''}`);
 }
 
 export const searchProducts = (el: Product, query: string) =>
