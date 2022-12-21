@@ -1,4 +1,4 @@
-import { el, setChildren, mount } from 'redom';
+import { el, setChildren } from 'redom';
 import { ProductInCartType } from '../../../types';
 import {
   getParams,
