@@ -25,6 +25,7 @@ class ProductPage extends BaseProduct<Product> {
   createDetails(): HTMLElement {
     this.restoreState();
     this.addBtn.addEventListener('click', () => this.addToCart());
+    this.buyNowBtn.addEventListener('click', () => this.addToCart());
     this.fillSlider(this.slider1);
     this.fillSlider(this.slider2, [this.nextBtn, this.prevBtn]);
     this.initSlider();
@@ -60,7 +61,7 @@ class ProductPage extends BaseProduct<Product> {
               el('.details__price_full', `${this.product.price}€`),
             ]),
             this.addBtn,
-            el('button.card__btn.btn.btn-fill', 'Buy now')
+            this.buyNowBtn
           ),
         ]),
       ]),

@@ -6,11 +6,15 @@ import AddToCartBtn from './addToCartBtn';
 abstract class BaseProduct<T extends Product> {
   protected product: T;
   protected addToCartBtn: AddToCartBtn;
+  protected buyNow: AddToCartBtn;
   protected addBtn: HTMLElement;
+  protected buyNowBtn: HTMLElement;
   constructor(product: T) {
     this.product = product;
     this.addToCartBtn = new AddToCartBtn(this.product.stock);
     this.addBtn = this.addToCartBtn.element();
+    this.buyNow = new AddToCartBtn(this.product.stock);
+    this.buyNowBtn = this.buyNow.element('BuyNow');
   }
 
   addToCart(itemToAdd?: ProductInCartType) {
