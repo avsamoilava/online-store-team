@@ -41,6 +41,5 @@ const crumbs = (links: Links): HTMLElement[] => {
     });
     linksList.push(link);
   });
-  console.log(linksList);
   return linksList;
 };
