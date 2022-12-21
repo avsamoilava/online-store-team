@@ -1,5 +1,5 @@
 import { el, setChildren } from 'redom';
-import { router } from '../../router';
+import { navigate } from '../../utils';
 import { headerAmountElement, headerCountElement, updateAmount } from '../../utils/updateCart';
 
 class HeaderCart {
@@ -13,10 +13,7 @@ class HeaderCart {
         this.countElement,
         el('a', {
           href: '/cart',
-          onclick: (e: Event) => {
-            e.preventDefault();
-            router.navigate('/cart');
-          },
+          onclick: (e: Event) => navigate('/cart', e),
         }),
       ]),
     ];

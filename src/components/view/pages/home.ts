@@ -1,5 +1,5 @@
 import { el } from 'redom';
-import { router } from '../../router';
+import { navigate } from '../../utils';
 
 export class Home {
   element() {
@@ -17,10 +17,7 @@ export class Home {
           el('.home__btn', [
             el('a', 'Catalog', {
               href: '/catalog',
-              onclick: (e: Event) => {
-                e.preventDefault();
-                router.navigate('/catalog');
-              },
+              onclick: (e: Event) => navigate('/catalog', e),
             }),
           ]),
         ]),

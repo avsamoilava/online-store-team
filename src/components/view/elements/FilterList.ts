@@ -32,6 +32,7 @@ class FilterList extends BaseElement {
   }
 
   restoreState() {
+    this.clearElements();
     super.restoreState((query: string) =>
       query.split('*').forEach((val) => {
         const elem = document.getElementById(val);
@@ -39,11 +40,14 @@ class FilterList extends BaseElement {
       })
     );
   }
-  reset() {
-    super.reset();
+  clearElements() {
     this.elements.forEach((elem) => {
       (elem.querySelector('.checkbox__input') as HTMLInputElement).checked = false;
     });
+  }
+  reset() {
+    super.reset();
+    this.clearElements();
   }
 }
 export default FilterList;

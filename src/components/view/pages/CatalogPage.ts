@@ -6,7 +6,7 @@ import { viewControls } from '../elements/viewControls';
 import Catalog from './catalog';
 
 class CatalogPage extends Catalog {
-  private filters: Filters = new Filters(this.filterAndSort.bind(this));
+  filters: Filters = new Filters(this.filterAndSort.bind(this));
 
   constructor() {
     super();

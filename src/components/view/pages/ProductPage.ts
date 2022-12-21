@@ -8,7 +8,6 @@ import BaseProduct from '../elements/BaseProduct';
 import { getPriceWithDiscount } from '../../utils';
 import { stars } from '../elements/stars';
 import { breadCrumbs } from '../elements/breadCrumbs';
-import { Links } from '../../../types';
 
 class ProductPage extends BaseProduct<Product> {
   private slider1: HTMLElement = el('.swiper.mySwiper', {
@@ -31,10 +30,7 @@ class ProductPage extends BaseProduct<Product> {
     this.initSlider();
     this.modalSlide();
     return el('section.details', [
-      el(
-        '.details__header.container',
-        breadCrumbs(this.product.title, this.createLinks(this.product))
-      ),
+      el('.details__header.container', breadCrumbs(this.createLinks())),
       el('.container.details__container', [
         el('.details__slider', [this.slider2, this.slider1]),
         el('.details__content', [
@@ -120,14 +116,14 @@ class ProductPage extends BaseProduct<Product> {
     });
   }
 
-  createLinks(product: Product): Links {
-    const res: Links = { category: '', brand: '' };
-    Object.keys(product).forEach((item) => {
-      if (item === 'category' || item === 'brand') {
-        res[item] = product[item];
-      }
-    });
-    return res;
+  createLinks() {
+    const { category, brand, title } = this.product;
+    return [
+      { name: 'Catalog > ', href: '/catalog' },
+      { name: `${category} > `, href: `/catalog/?category=${category}` },
+      { name: `${brand} > `, href: `/catalog/?category=${category}&brand=${brand}` },
+      { name: title, href: '' },
+    ];
   }
 }
 export default ProductPage;

@@ -4,12 +4,16 @@
     font-weight: 500;
     font-size: 17px;
     line-height: 140%;
-  }
-
-  &__current {
-    font-weight: 500;
-    font-size: 17px;
-    line-height: 140%;
-    color: $current-point;
+    transition: all .3s ease-in-out;
+    &:hover {
+      color: $accent;
+    }
+    &:last-child {
+      font-weight: 500;
+      font-size: 17px;
+      line-height: 140%;
+      color: $current-point;
+      pointer-events: none;
+    }
   }
 }

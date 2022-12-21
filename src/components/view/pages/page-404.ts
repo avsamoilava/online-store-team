@@ -1,5 +1,5 @@
 import { el } from 'redom';
-import { router } from '../../router';
+import { navigate } from '../../utils';
 
 export class Page404 {
   element() {
@@ -13,10 +13,7 @@ export class Page404 {
         ),
         el('a.btn.btn-fill.error__btn', 'Back to home', {
           href: '/',
-          onclick: (e: Event) => {
-            e.preventDefault();
-            router.navigate('/');
-          },
+          onclick: (e: Event) => navigate('/', e),
         }),
       ]),
     ]);

@@ -21,6 +21,10 @@ class View {
 
   render(path: string): void {
     setChildren(this.rootElement, [this.elements[path as keyof Elements].element()]);
+    if (path === '/catalog') {
+      this.catalog.filters.restoreState();
+      this.catalog.filterAndSort();
+    }
   }
 
   renderCatalog(data: Readonly<Product>[]): void {

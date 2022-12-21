@@ -1,6 +1,6 @@
 import { el } from 'redom';
 import { Product } from '../../../types';
-import { router } from '../../router';
+import { navigate } from '../../utils';
 import BaseProduct from './BaseProduct';
 
 class ProductCard extends BaseProduct<Product> {
@@ -12,20 +12,16 @@ class ProductCard extends BaseProduct<Product> {
   element() {
     this.restoreState();
     this.addBtn.addEventListener('click', () => this.addToCart());
-    const cardInfo = el(
-      '.card__info',
-      { onclick: () => router.navigate(`/details/${this.product.id}`) },
-      [
-        el('span.card__info-title', 'Category: ', [el('span', this.product.category)]),
-        el('span.card__info-title', 'Brand: ', [el('span', this.product.brand)]),
-        el('span.card__info-title', 'Stock: ', [el('span', this.product.stock)]),
-        el('span.card__info-title', 'Rating: ', [el('span', this.product.rating)]),
-        el('span.card__info-title', 'Discount: ', [
-          el('span', `${this.product.discountPercentage}%`),
-        ]),
-        el('span.card__info-link', 'More info'),
-      ]
-    );
+    const cardInfo = el('.card__info', { onclick: () => navigate(`/details/${this.product.id}`) }, [
+      el('span.card__info-title', 'Category: ', [el('span', this.product.category)]),
+      el('span.card__info-title', 'Brand: ', [el('span', this.product.brand)]),
+      el('span.card__info-title', 'Stock: ', [el('span', this.product.stock)]),
+      el('span.card__info-title', 'Rating: ', [el('span', this.product.rating)]),
+      el('span.card__info-title', 'Discount: ', [
+        el('span', `${this.product.discountPercentage}%`),
+      ]),
+      el('span.card__info-link', 'More info'),
+    ]);
     cardInfo.setAttribute('data-navigo', '');
 
     return el('.card', [

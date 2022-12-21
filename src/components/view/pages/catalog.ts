@@ -7,8 +7,8 @@ import ProductCard from '../elements/productCard';
 
 class Catalog {
   constructor(
-    protected productsData: Readonly<Product>[] = [],
-    protected filteredData: Readonly<Product>[] = [],
+    public productsData: Readonly<Product>[] = [],
+    public filteredData: Readonly<Product>[] = [],
     protected productsList: HTMLElement = el('.products#columns3'),
     protected page: number = 1,
     protected limit: number = 9,
