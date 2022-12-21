@@ -38,6 +38,7 @@ export class Cart {
   }
 
   element(): HTMLElement {
+    this.products = getProductsInCart();
     this.buyBtn.addEventListener('click', () => this.modal.show());
     document.querySelector('.wrapper')?.append(this.modal.render());
     this.totalSumElement.textContent = `Total cost: ${getTotalAmount(this.products).toFixed(2)}€`;
