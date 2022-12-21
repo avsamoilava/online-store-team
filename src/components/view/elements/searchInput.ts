@@ -28,6 +28,11 @@ class SearchInput extends BaseElement {
   restoreState() {
     super.restoreState((query: string) => ((this.searchInput as HTMLInputElement).value = query));
   }
+
+  reset() {
+    super.reset();
+    (this.searchInput as HTMLInputElement).value = '';
+  }
 }
 
 export default SearchInput;

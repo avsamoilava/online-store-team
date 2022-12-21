@@ -1,7 +1,10 @@
 import { el, setChildren } from 'redom';
 import { MinAndMax } from '../../../types';
+import { copyBtnEl } from './copyBtn';
+import Dropdown from './dropdown';
 import FilterList from './FilterList';
 import RangeInput from './RangeInput';
+import SearchInput from './searchInput';
 
 class Filters {
   private filtersContent: HTMLElement = el('.filters__content');
@@ -9,12 +12,16 @@ class Filters {
   private stockInput: RangeInput;
   private categoriesList: FilterList;
   private brandsList: FilterList;
+  public searchInput: SearchInput;
+  public dropdown: Dropdown;
 
   constructor(fn: () => void) {
     this.priceInput = new RangeInput(fn, 'price');
     this.stockInput = new RangeInput(fn, 'stock');
     this.categoriesList = new FilterList(fn, 'category');
     this.brandsList = new FilterList(fn, 'brand');
+    this.searchInput = new SearchInput(fn, 'search');
+    this.dropdown = new Dropdown(fn, 'sort');
   }
 
   element() {
@@ -32,6 +39,10 @@ class Filters {
       this.block('Brands:', this.brandsList.element(brandsArr)),
       this.block('Price:', this.priceInput.element(prices)),
       this.block('Stock:', this.stockInput.element(stock)),
+      el('.filters__btns', [
+        el('button.btn', { onclick: () => this.reset() }, 'Reset filters'),
+        copyBtnEl(),
+      ]),
     ]);
     this.restoreState();
   }
@@ -40,6 +51,19 @@ class Filters {
     [this.priceInput, this.stockInput, this.categoriesList, this.brandsList].forEach((elem) =>
       elem.restoreState()
     );
+  }
+
+  reset() {
+    this.searchInput.reset();
+    this.dropdown.reset();
+    this.priceInput.reset();
+    this.stockInput.reset();
+    this.categoriesList.reset();
+    this.brandsList.reset();
+  }
+
+  copy() {
+    navigator.clipboard.writeText(location.href);
   }
 }
 

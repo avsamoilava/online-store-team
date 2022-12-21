@@ -7,13 +7,19 @@ import BaseElement from './BaseElement';
 
 class RangeInput extends BaseElement {
   private rangeInput: HTMLElement = el('.range__input');
+  private min: number;
+  private max: number;
 
   constructor(fn: () => void, key: keyof QueryParams) {
     super(fn, key);
+    this.min = 0;
+    this.max = 0;
   }
 
   element({ min, max }: MinAndMax) {
-    this.createRange(min, max);
+    this.min = min;
+    this.max = max;
+    this.createRange(this.min, this.max);
     const range = el('.range', [this.rangeInput]);
 
     (this.rangeInput as noUiSlider.target).noUiSlider?.on('set', (values) => {
@@ -39,9 +45,14 @@ class RangeInput extends BaseElement {
     });
   }
   restoreState() {
-    super.restoreState((query: string) =>
-      (this.rangeInput as noUiSlider.target).noUiSlider?.set(query.split('-'))
-    );
+    super.restoreState((query: string) => this.setRange(query.split('-')));
+  }
+  setRange(range: (string | number)[]) {
+    (this.rangeInput as noUiSlider.target).noUiSlider?.set(range);
+  }
+  reset() {
+    this.setRange([this.min, this.max]);
+    super.reset();
   }
 }
 

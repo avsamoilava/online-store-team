@@ -1,6 +1,6 @@
 import { el, setChildren } from 'redom';
 import { Product } from '../../../types';
-import { filterAndSortProducts } from '../../utils';
+import { filterAndSortProducts, getProductsByPage } from '../../utils';
 import HeaderCart from '../elements/HeaderCart';
 import Pagination from '../elements/pagination';
 import ProductCard from '../elements/productCard';
@@ -14,7 +14,8 @@ class Catalog {
     protected limit: number = 9,
     protected pagination: Pagination = new Pagination(100, 9),
     protected pagesContainer: HTMLElement = el('.catalog__pagination'),
-    protected headerCart: HeaderCart = new HeaderCart()
+    protected headerCart: HeaderCart = new HeaderCart(),
+    protected productsInfo = el('.catalog__info')
   ) {}
 
   draw(data: Readonly<Product>[]) {
@@ -30,12 +31,14 @@ class Catalog {
   }
 
   render(page = 1, data?: Readonly<Product>[]): void {
-    if (data && !data.length) {
-      this.setNoItemsTitle();
-      return;
-    }
+    setChildren(
+      this.productsInfo,
+      this.filteredData.length && this.filteredData.length < this.productsData.length
+        ? [el('span', `Products found: ${this.filteredData.length}`)]
+        : []
+    );
+    if (data && !data.length) return this.setNoItemsTitle();
     if (page) this.page = page;
-    const coef: number = this.limit * (this.page - 1);
 
     const productsArray = data
       ? data
@@ -43,12 +46,20 @@ class Catalog {
       ? this.filteredData
       : this.productsData;
 
-    const filteredProducts: Readonly<Product>[] =
-      productsArray.length >= this.limit
-        ? productsArray.filter((_, idx) => idx >= 0 + coef && idx < this.limit + coef)
-        : productsArray;
-    const products: HTMLElement[] = filteredProducts.map((item) => new ProductCard(item).element());
-    setChildren(this.productsList, products);
+    const filteredProducts = getProductsByPage(productsArray, this.page, this.limit);
+    this.productsListEl(filteredProducts);
+  }
+
+  productsListEl(filteredProducts?: Readonly<Product>[]) {
+    if (filteredProducts) {
+      const products: HTMLElement[] = filteredProducts.map((item) =>
+        new ProductCard(item).element()
+      );
+      setChildren(this.productsList, products);
+    } else {
+      this.render();
+    }
+    return this.productsList;
   }
 
   setPages(itemsCount: number) {

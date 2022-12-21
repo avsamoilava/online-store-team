@@ -1,5 +1,5 @@
 import { QueryParams } from '../../../types';
-import { getParams } from '../../utils';
+import { getParams, setQueryString } from '../../utils';
 
 abstract class BaseElement {
   protected selectItemsByQuery: () => void;
@@ -13,6 +13,10 @@ abstract class BaseElement {
   restoreState(fn: (s: string) => void): void {
     const paramsString = getParams()[this.key];
     if (paramsString) fn(paramsString);
+  }
+  reset() {
+    setQueryString(this.key, '');
+    this.selectItemsByQuery();
   }
 }
 export default BaseElement;

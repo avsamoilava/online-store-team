@@ -19,7 +19,7 @@ export function sortProducts(option: string, arr: Product[]) {
 
 export function setQueryString(key: string, value: string): void {
   const params = new URLSearchParams(location.search);
-  if (key === 'brand' || key === 'category') {
+  if ((key === 'brand' || key === 'category') && value) {
     const currentValue = params.get(key);
     if (currentValue) {
       if (currentValue.split('*').includes(value)) return;
@@ -101,3 +101,8 @@ export const getTotalAmount = (arr: ProductInCartType[]) =>
   arr.reduce((a, b) => a + getPriceWithDiscount(b) * b.count, 0);
 
 export const getProductsCount = (arr: ProductInCartType[]) => arr.reduce((a, b) => a + b.count, 0);
+
+export function getProductsByPage<T>(arr: T[], page: number, limit: number) {
+  const coef = limit * (page - 1);
+  return arr.length >= limit ? arr.filter((_, idx) => idx >= 0 + coef && idx < limit + coef) : arr;
+}

@@ -3,7 +3,7 @@ import { Elements, Product } from '../../types';
 import { Home } from './pages/home';
 import { Cart } from './pages/cart';
 import ProductPage from './pages/ProductPage';
-import { page404 } from './pages/page-404';
+import { Page404 } from './pages/page-404';
 import CatalogPage from './pages/CatalogPage';
 
 class View {
@@ -11,22 +11,20 @@ class View {
   private catalog: CatalogPage = new CatalogPage();
   private cart: Cart = new Cart();
   private home: Home = new Home();
+  private page404 = new Page404();
   private elements: Elements = {
-    '/': this.home.content,
-    '/catalog': this.catalog.element(),
-    '404': page404,
+    '/': this.home,
+    '/catalog': this.catalog,
+    '/cart': this.cart,
+    '404': this.page404,
   };
 
   render(path: string): void {
-    setChildren(this.rootElement, [this.elements[path as keyof Elements]]);
+    setChildren(this.rootElement, [this.elements[path as keyof Elements].element()]);
   }
 
   renderCatalog(data: Readonly<Product>[]): void {
     this.catalog.draw(data);
-  }
-
-  renderCart() {
-    setChildren(this.rootElement, [this.cart.element()]);
   }
 
   renderDetails(product: Readonly<Product>) {

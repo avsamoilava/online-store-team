@@ -4,8 +4,10 @@ import { setQueryString } from '../../utils';
 import BaseElement from './BaseElement';
 
 class FilterList extends BaseElement {
+  private elements: HTMLElement[];
   constructor(fn: () => void, key: keyof QueryParams) {
     super(fn, key);
+    this.elements = [];
   }
 
   element(arr: string[]) {
@@ -16,8 +18,8 @@ class FilterList extends BaseElement {
         this.selectItemsByQuery();
       }
     };
-    const elements = arr.map((el) => this.item(el));
-    return el('ul.filters__list', { onclick: handleClick }, elements);
+    this.elements = arr.map((el) => this.item(el));
+    return el('ul.filters__list', { onclick: handleClick }, this.elements);
   }
 
   private item(item: string): HTMLElement {
@@ -36,6 +38,12 @@ class FilterList extends BaseElement {
         if (elem instanceof HTMLInputElement) elem.checked = true;
       })
     );
+  }
+  reset() {
+    super.reset();
+    this.elements.forEach((elem) => {
+      (elem.querySelector('.checkbox__input') as HTMLInputElement).checked = false;
+    });
   }
 }
 export default FilterList;
