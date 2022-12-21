@@ -7,10 +7,12 @@ class ProductInCart extends BaseProduct<ProductInCartType> {
   private totalSum: number;
   private totalSumElement: HTMLElement;
   private container = el('li.table__row.product');
-  constructor(product: ProductInCartType) {
+  private updateCart: () => void;
+  constructor(product: ProductInCartType, fn: () => void) {
     super(product);
     this.totalSum = getPriceWithDiscount(this.product) * this.product.count;
     this.totalSumElement = el('.product__total', `${this.totalSum.toFixed(2)}€`);
+    this.updateCart = fn;
   }
 
   element(index: number) {
@@ -37,11 +39,18 @@ class ProductInCart extends BaseProduct<ProductInCartType> {
     return this.container;
   }
   addToCart() {
-    if (!this.addToCartBtn.count) this.container.remove();
+    if (!this.addToCartBtn.count) return this.removeFromCart();
     this.product.count = this.addToCartBtn.count;
     this.totalSum = getPriceWithDiscount(this.product) * this.product.count;
     this.totalSumElement.textContent = `${this.totalSum.toFixed(2)}€`;
     super.addToCart(this.product);
+  }
+
+  removeFromCart() {
+    this.container.remove();
+    this.product.count = this.addToCartBtn.count;
+    super.addToCart(this.product);
+    this.updateCart();
   }
 }
 export default ProductInCart;

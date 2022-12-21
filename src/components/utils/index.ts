@@ -101,3 +101,8 @@ export const getTotalAmount = (arr: ProductInCartType[]) =>
   arr.reduce((a, b) => a + getPriceWithDiscount(b) * b.count, 0);
 
 export const getProductsCount = (arr: ProductInCartType[]) => arr.reduce((a, b) => a + b.count, 0);
+
+export function getProductsByPage<T>(arr: T[], page: number, limit: number) {
+  const coef = limit * (page - 1);
+  return arr.length >= limit ? arr.filter((_, idx) => idx >= 0 + coef && idx < limit + coef) : arr;
+}

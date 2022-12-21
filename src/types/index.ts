@@ -51,4 +51,6 @@ export type QueryParams = {
   sort: string;
   search: string;
   view: string;
+  page: string;
+  limit: string;
 };
