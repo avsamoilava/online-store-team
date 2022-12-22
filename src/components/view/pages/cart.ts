@@ -9,34 +9,34 @@ import {
   setQueryString,
 } from '../../utils';
 import { amountElement, countElement, promoDiscountAmountElement } from '../../utils/updateCart';
+import BasePage from '../classes/BasePage';
 import { breadCrumbs } from '../elements/breadCrumbs';
 import Pagination from '../elements/pagination';
 import ProductInCart from '../elements/ProductInCart';
-import { Modal } from './Modal';
+import Payment from './Payment';
 import { Promocode } from '../elements/Promocode';
 
-export class Cart {
+export class Cart extends BasePage {
   private products: Readonly<ProductInCartType>[];
-  private modal: Modal = new Modal();
+  private modal: Payment = new Payment();
   private buyBtn = el('button.btn.btn-fill', 'buy now');
   private totalSumElement: HTMLElement;
   private amountElement: HTMLElement;
   private promoSumElement: HTMLElement;
-  private limit = 4;
-  private page;
-  private pagesContainer = el('.cart__pagination');
-  private productsList = el('ul.table__body');
-  private pagination: Pagination;
   private limitInput = el('input', { type: 'number', min: 3, max: 10 });
   private promo: Promocode;
 
   constructor() {
+    super(
+      el('ul.table__body'),
+      el('.cart__pagination'),
+      Number(getParams()['page']) || 1,
+      Number(getParams()['limit']) || 4,
+      el('.empty', 'Cart is empty.\nPlease return to the catalog to choose the products you like.')
+    );
     this.products = getProductsInCart();
     this.totalSumElement = amountElement;
     this.amountElement = countElement;
-    this.pagination = new Pagination(this.products.length, this.limit);
-    this.page = Number(getParams()['page']) || 1;
-    this.limit = Number(getParams()['limit']) || 4;
     this.limitInput.value = `${this.limit}`;
     this.promo = new Promocode();
     this.promoSumElement = promoDiscountAmountElement;
@@ -44,8 +44,8 @@ export class Cart {
 
   element(): HTMLElement {
     this.products = getProductsInCart();
+    this.modal.render();
     this.buyBtn.addEventListener('click', () => this.modal.show());
-    document.querySelector('.wrapper')?.append(this.modal.render());
     this.totalSumElement.textContent = `Total cost: ${getTotalAmount(this.products).toFixed(2)}€`;
     this.amountElement.textContent = `Amount: ${getProductsCount(this.products)}`;
     this.renderProducts();
@@ -89,12 +89,6 @@ export class Cart {
     return element;
   }
 
-  renderTable(page?: number) {
-    if (page) this.page = page;
-    this.renderProducts();
-    if (location.pathname === '/cart') setQueryString('page', `${this.page}`);
-  }
-
   renderProducts() {
     this.products = getProductsInCart();
     if (!this.products || !this.products.length) return this.renderEmpty();
@@ -109,23 +103,14 @@ export class Cart {
   }
 
   setPages() {
+    if (getParams().page) this.page = Number(getParams().page);
     this.pagination = new Pagination(this.products.length, this.limit);
     if (this.page > this.pagination.pageCount) {
       this.page = this.pagination.pageCount;
       setQueryString('page', `${this.page}`);
     }
-    const paginationEl = this.pagination.element(this.page, this.renderTable.bind(this));
+    const paginationEl = this.pagination.element(this.page);
     setChildren(this.pagesContainer, [paginationEl]);
-  }
-
-  renderEmpty() {
-    setChildren(this.productsList, [
-      el(
-        '.cart__empty',
-        'Cart is empty.\nPlease return to the catalog to choose the products you like.'
-      ),
-    ]);
-    setChildren(this.pagesContainer, []);
   }
 
   changeLimit(value: number) {

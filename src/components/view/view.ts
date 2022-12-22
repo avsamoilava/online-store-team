@@ -25,6 +25,10 @@ class View {
       this.catalog.filters.restoreState();
       this.catalog.filterAndSort();
     }
+    if (path === '/cart') {
+      console.log('RENDER from View');
+      // this.cart.renderTable();
+    }
   }
 
   renderCatalog(data: Readonly<Product>[]): void {
@@ -32,7 +36,7 @@ class View {
   }
 
   renderDetails(product: Readonly<Product>) {
-    setChildren(this.rootElement, [new ProductPage(product).createDetails()]);
+    setChildren(this.rootElement, [new ProductPage(product).element()]);
   }
 }
 

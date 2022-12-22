@@ -5,6 +5,11 @@ export const navigate = (path: string, e?: Event) => {
   history.pushState({}, '', path);
   router.navigate(path);
 };
+export const disableCurrent = (id?: string) => {
+  const activeClass = 'link--current';
+  document.querySelector(`.${activeClass}`)?.classList.remove(activeClass);
+  if (id) document.getElementById(id)?.classList.add(activeClass);
+};
 export const sortOptions = [
   'price asc',
   'price desc',
@@ -22,12 +27,12 @@ export function sortProducts(option: string, arr: Product[]) {
     : arr.sort((a, b) => (a[key as keyof Product] < b[key as keyof Product] ? 1 : -1));
 }
 
-export function setQueryString(key: string, value: string): void {
+export function setQueryString(key: string, value: string) {
   const params = new URLSearchParams(location.search);
   if ((key === 'brand' || key === 'category') && value) {
     const currentValue = params.get(key);
     if (currentValue) {
-      if (currentValue.split('*').includes(value)) return;
+      if (currentValue.split('*').includes(value)) return location.pathname + location.search;
       if (value.match(/-delete/)) {
         const arr = currentValue.split('*').filter((el) => el !== value.replace(/-delete/, ''));
         value = arr.join('*');
@@ -37,8 +42,10 @@ export function setQueryString(key: string, value: string): void {
   if (params.has(key)) params.delete(key);
   if (value) params.set(key, value);
   const queryString = params.toString();
-  navigate(location.pathname + `${queryString ? `?${queryString}` : ''}`);
-  // history.pushState({}, '', location.pathname + `${queryString ? `?${queryString}` : ''}`);
+  const newPath = location.pathname + `${queryString ? `?${queryString}` : ''}`;
+  // navigate(location.pathname + `${queryString ? `?${queryString}` : ''}`);
+  history.pushState({}, '', newPath);
+  return newPath;
   // router.navigate(location.pathname + `${queryString ? `?${queryString}` : ''}`);
 }
 

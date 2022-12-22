@@ -1,6 +1,7 @@
 import { Product } from '../types';
 import Controller from './controller';
 import { router } from './router';
+import { disableCurrent } from './utils';
 import View from './view/view';
 
 class App {
@@ -11,16 +12,25 @@ class App {
     this.controller = new Controller();
     this.view = new View();
   }
-
   start() {
     if (!localStorage.getItem('cart')) localStorage.setItem('cart', '[]');
     this.controller.getAll((data) => this.view.renderCatalog(data.products));
 
     router
-      .on('/', () => this.view.render('/'))
-      .on('/cart', () => this.view.render('/cart'))
-      .on('/catalog', () => this.view.render('/catalog'))
+      .on('/', () => {
+        disableCurrent('home');
+        this.view.render('/');
+      })
+      .on('/cart', () => {
+        disableCurrent('cart');
+        this.view.render('/cart');
+      })
+      .on('/catalog', () => {
+        disableCurrent('catalog');
+        this.view.render('/catalog');
+      })
       .on('/details/:id', (data) => {
+        disableCurrent();
         if (data?.data) {
           this.controller.getOne(data.data.id, (item: Readonly<Product>) =>
             this.view.renderDetails(item)

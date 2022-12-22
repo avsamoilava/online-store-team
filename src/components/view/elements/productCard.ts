@@ -1,17 +1,15 @@
 import { el } from 'redom';
 import { Product } from '../../../types';
 import { navigate } from '../../utils';
-import BaseProduct from './BaseProduct';
+import BaseProduct from '../classes/BaseProduct';
 
 class ProductCard extends BaseProduct<Product> {
-  private buyBtn = el('button.card__btn.btn.btn-fill', 'Buy now');
   constructor(product: Readonly<Product>) {
     super(product);
   }
 
   element() {
-    this.restoreState();
-    this.addBtn.addEventListener('click', () => this.addToCart());
+    super.element();
     const cardInfo = el('.card__info', { onclick: () => navigate(`/details/${this.product.id}`) }, [
       el('span.card__info-title', 'Category: ', [el('span', this.product.category)]),
       el('span.card__info-title', 'Brand: ', [el('span', this.product.brand)]),
@@ -28,7 +26,7 @@ class ProductCard extends BaseProduct<Product> {
       el('.card__top', [el('img.card__image', { src: this.product.images[0] }), cardInfo]),
       el('h4.card__title', this.product.title),
       el('span.card__price', `$${this.product.price}`),
-      el('.card__buttons', [this.addBtn, this.buyBtn]),
+      el('.card__buttons', [this.addBtn, this.buyNowBtn]),
     ]);
   }
 }

@@ -11,10 +11,12 @@ import masterCard from '../../../assets/images/icons/mastercard.png';
 import union from '../../../assets/images/icons/unionpa.png';
 import discover from '../../../assets/images/icons/discover.png';
 import placeholder from '../../../assets/images/icons/card-placeholder.png';
+import Modal from '../elements/Modal';
+import { navigate } from '../../utils';
+import { updateAmount } from '../../utils/updateCart';
 
-export class Modal {
+class Payment extends Modal {
   private validation = new Validation();
-  private modalWrap = el('.cart__modal');
   private cardSpans = el('.credit__spans');
   private form = {
     fullName: el('input.form__name', {
@@ -43,13 +45,11 @@ export class Modal {
   };
   private payIcon = el('.credit__pay-icon');
 
-  render(): HTMLElement {
-    this.addListeners();
-    this.modalWrap.addEventListener('click', (e) => this.close(e));
-    setChildren(this.modalWrap, [
-      el('.modal', [
+  render() {
+    super.render(
+      el('.modal__content', [
         el('.modal__title', 'Personal details'),
-        el('.modal__close', ''),
+        el('.modal__close'),
         el(
           'form.modal__form.form',
           el('.form__inputs', [
@@ -74,9 +74,10 @@ export class Modal {
           this.cardSpans,
           this.form.confirm
         ),
-      ]),
-    ]);
-    return this.modalWrap;
+      ])
+    );
+    this.addListeners();
+    return this;
   }
 
   private setPayIcon(val: string): void {
@@ -99,27 +100,6 @@ export class Modal {
       if ('62' === v.slice(0, 2)) return union;
     }
     return placeholder;
-  }
-
-  show(): void {
-    window.scrollTo(0, 0);
-    document.body.style.overflow = 'hidden';
-    if (!this.modalWrap.classList.contains('cart__modal_active')) {
-      this.modalWrap.classList.add('cart__modal_active');
-    }
-  }
-
-  close(e: Event): void {
-    const target = e.target as HTMLElement;
-    if (
-      target.className === 'cart__modal cart__modal_active' ||
-      target.className === 'modal__close'
-    ) {
-      if (this.modalWrap.classList.contains('cart__modal_active')) {
-        document.body.style.overflow = 'auto';
-        this.modalWrap.classList.remove('cart__modal_active');
-      }
-    }
   }
 
   private setMask(el: HTMLElement, mask: string): HTMLElement {
@@ -166,8 +146,14 @@ export class Modal {
         this.validation.validateCardCode(this.form.code, this.cardSpans),
       ];
       if (status.every((elem) => elem)) {
+        console.log('ok');
         setChildren(this.modalWrap, [el('.modal__complete', 'Order completed successfully!')]);
-        setTimeout(() => (window.location.href = '/'), 3000);
+        localStorage.setItem('cart', '[]');
+        updateAmount();
+        setTimeout(() => {
+          this.close();
+          navigate('/');
+        }, 3000);
       }
     });
   }
@@ -189,3 +175,4 @@ export class Modal {
     });
   }
 }
+export default Payment;

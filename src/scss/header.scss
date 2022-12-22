@@ -50,23 +50,21 @@
     position: relative;
     &-count {
       position: absolute;
-      width: 25px;
-      height: 25px;
+      width: 28px;
+      height: 28px;
       border-radius: 100%;
       left: -20px;
-      top: -10px;
+      top: -8px;
       background-color: $accent;
       display: flex;
       justify-content: center;
       align-items: center;
       color: $light;
+      z-index: 20;
       font-weight: 600;
     }
-    a {
+    &-link {
       display: block;
-      height: 24px;
-      width: 24px;
-      background: url(./assets/images/icons/cart.svg) center/cover no-repeat;
       cursor: pointer;
       &::after {
         content: "";
@@ -75,6 +73,17 @@
         left: 0;
         bottom: 0;
         right: 0;
+      }
+      svg {
+        width: 34px;
+        height: 34px;
+        transition: all .3s ease-in-out;
+      }
+      &:hover,
+      &.link--current {
+        svg {
+          fill: $accent;
+        }
       }
     }
   }
@@ -93,15 +102,34 @@
   // .nav__item
 
   &__item {
-    a {
-      font-size: 15px;
-      line-height: 1.4;
-      text-transform: capitalize;
-      transition: color linear 0.36s;
-
-      &:hover {
-        color: $accent-interactive;
+    position: relative;
+  }
+  &__link {
+    font-size: 18px;
+    line-height: 1.4;
+    text-transform: capitalize;
+    transition: all .3s ease-in-out;
+    &::after {
+      content: "";
+      position: absolute;
+      height: 2px;
+      background-color: $accent-interactive;
+      bottom: -2px;
+      left: 0;
+      right: 0;
+      transform: scale(0);
+      transition: all .3s ease-in-out;
+    }
+    &:hover,
+    &.link--current {
+      color: $accent-interactive;
+      &::after {
+        transform: scale(1);
       }
     }
   }
+}
+
+.link--current {
+  pointer-events: none;
 }

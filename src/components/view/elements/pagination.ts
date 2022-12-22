@@ -1,5 +1,7 @@
 import { el } from 'redom';
 import { CatalogRenderFn } from '../../../types';
+import { router } from '../../router';
+import { setQueryString } from '../../utils';
 
 interface IPagination {
   setPages: (n: number) => number[];
@@ -30,13 +32,13 @@ class Pagination implements IPagination {
     return pages.filter((el) => el > 0);
   }
 
-  element(page: number, fn: CatalogRenderFn) {
+  element(page: number, fn?: CatalogRenderFn) {
     const handleClick = (e: Event): void => {
       const element = e.target as HTMLElement;
       if (!(element instanceof HTMLButtonElement)) return;
       const page = Number(element.textContent);
       (element.parentElement as HTMLElement).replaceWith(this.element(page, fn));
-      fn(page);
+      fn ? fn(page) : router.navigate(setQueryString('page', `${page}`));
     };
 
     const pagination: HTMLElement = el('.pagination', { onclick: handleClick });

@@ -1,7 +1,7 @@
 import { el, setChildren } from 'redom';
 import { ProductInCartType } from '../../../types';
 import { getPriceWithDiscount } from '../../utils';
-import BaseProduct from './BaseProduct';
+import BaseProduct from '../classes/BaseProduct';
 
 class ProductInCart extends BaseProduct<ProductInCartType> {
   private totalSum: number;
@@ -16,9 +16,8 @@ class ProductInCart extends BaseProduct<ProductInCartType> {
   }
 
   element(index: number) {
+    super.element();
     const priceWithDiscount = getPriceWithDiscount(this.product);
-    this.addToCartBtn.count = this.product.count;
-    this.addBtn.addEventListener('click', () => this.addToCart());
 
     setChildren(this.container, [
       el('.product__preview', [
