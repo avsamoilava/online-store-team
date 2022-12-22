@@ -31,8 +31,6 @@ class Catalog extends BasePage {
   }
 
   render(page = 1, data?: Readonly<Product>[]): void {
-    console.log('RENDER');
-
     setChildren(
       this.productsInfo,
       this.filteredData.length && this.filteredData.length < this.productsData.length
@@ -53,8 +51,6 @@ class Catalog extends BasePage {
   }
 
   productsListEl(filteredProducts?: Readonly<Product>[]) {
-    console.log('RENDER productsListEl');
-
     if (filteredProducts) {
       const products: HTMLElement[] = filteredProducts.map((item) =>
         new ProductCard(item).element()
