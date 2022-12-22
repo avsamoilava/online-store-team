@@ -8,12 +8,13 @@ import {
   getTotalAmount,
   setQueryString,
 } from '../../utils';
-import { amountElement, countElement } from '../../utils/updateCart';
+import { amountElement, countElement, promoDiscountAmountElement } from '../../utils/updateCart';
 import BasePage from '../classes/BasePage';
 import { breadCrumbs } from '../elements/breadCrumbs';
 import Pagination from '../elements/pagination';
 import ProductInCart from '../elements/ProductInCart';
 import Payment from './Payment';
+import { Promocode } from '../elements/Promocode';
 
 export class Cart extends BasePage {
   private products: Readonly<ProductInCartType>[];
@@ -21,7 +22,9 @@ export class Cart extends BasePage {
   private buyBtn = el('button.btn.btn-fill', 'buy now');
   private totalSumElement: HTMLElement;
   private amountElement: HTMLElement;
+  private promoSumElement: HTMLElement;
   private limitInput = el('input', { type: 'number', min: 3, max: 10 });
+  private promo: Promocode;
 
   constructor() {
     super(
@@ -35,6 +38,8 @@ export class Cart extends BasePage {
     this.totalSumElement = amountElement;
     this.amountElement = countElement;
     this.limitInput.value = `${this.limit}`;
+    this.promo = new Promocode();
+    this.promoSumElement = promoDiscountAmountElement;
   }
 
   element(): HTMLElement {
@@ -68,14 +73,12 @@ export class Cart extends BasePage {
               el('.table__reset'),
             ]),
             el('.cart__footer', [
-              el('.cart__promo', [
-                el('input.cart__input', { placeholder: 'enter promo code' }),
-                el('button.btn', 'apply'),
-              ]),
+              this.promo.element(),
               el('.cart__order.order', [
                 el('.order__header', `Total`),
                 this.amountElement,
                 this.totalSumElement,
+                this.promoSumElement,
                 el('.order__go', [this.buyBtn]),
               ]),
             ]),
