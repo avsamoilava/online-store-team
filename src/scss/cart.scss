@@ -52,17 +52,15 @@
   &__promo {
     display: flex;
     align-items: end;
-    gap: 10px;
+    gap: 20px;
     input {
-      border-bottom: 1px solid $dark;
+      outline: none;
+      border: 1px solid $accent;
       align-self: end;
-      padding-bottom: 20px;
+      padding: 20px 10px;
     }
-
-    button {
-      width: 248px;
-      height: 68px;
-    }
+   
+    
   }
 
   &__footer {
@@ -92,7 +90,7 @@
 .order {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(3, auto);
+  grid-template-rows: repeat(4, auto);
   grid-gap: 15px;
 
   &__header {
@@ -118,11 +116,24 @@
     justify-self: center;
     background-color: $medium;
     padding: 10px;
+
+    &_cross {
+      text-decoration: line-through;
+    }
+  }
+
+  &__discount-sum {
+    grid-column: 1/3;
+    grid-row: 3/4;
+    font-size: 1.2rem;
+    color: $discount;
+    font-weight: 500;
+
   }
 
   &__go {
     grid-column: 1/3;
-    grid-row: 3/4;
+    grid-row: 4/5;
     justify-self: center;
     width: 100%;
 
@@ -231,7 +242,7 @@
     }
 
     &_disc {
-      color: rgb(170, 50, 50);
+      color: $discount;
       font-weight: 500;
     }
   }
@@ -267,5 +278,15 @@
       text-align: center;
       background: $accent-interactive;
     }
+  }
+}
+
+.promo {
+  &__item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-top: 10px;
   }
 }

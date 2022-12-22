@@ -8,11 +8,12 @@ import {
   getTotalAmount,
   setQueryString,
 } from '../../utils';
-import { amountElement, countElement } from '../../utils/updateCart';
+import { amountElement, countElement, promoDiscountAmountElement } from '../../utils/updateCart';
 import { breadCrumbs } from '../elements/breadCrumbs';
 import Pagination from '../elements/pagination';
 import ProductInCart from '../elements/ProductInCart';
 import { Modal } from './Modal';
+import { Promocode } from '../elements/Promocode';
 
 export class Cart {
   private products: Readonly<ProductInCartType>[];
@@ -20,12 +21,14 @@ export class Cart {
   private buyBtn = el('button.btn.btn-fill', 'buy now');
   private totalSumElement: HTMLElement;
   private amountElement: HTMLElement;
+  private promoSumElement: HTMLElement;
   private limit = 4;
   private page;
   private pagesContainer = el('.cart__pagination');
   private productsList = el('ul.table__body');
   private pagination: Pagination;
   private limitInput = el('input', { type: 'number', min: 3, max: 10 });
+  private promo: Promocode;
 
   constructor() {
     this.products = getProductsInCart();
@@ -35,6 +38,8 @@ export class Cart {
     this.page = Number(getParams()['page']) || 1;
     this.limit = Number(getParams()['limit']) || 4;
     this.limitInput.value = `${this.limit}`;
+    this.promo = new Promocode();
+    this.promoSumElement = promoDiscountAmountElement;
   }
 
   element(): HTMLElement {
@@ -68,14 +73,12 @@ export class Cart {
               el('.table__reset'),
             ]),
             el('.cart__footer', [
-              el('.cart__promo', [
-                el('input.cart__input', { placeholder: 'enter promo code' }),
-                el('button.btn', 'apply'),
-              ]),
+              this.promo.element(),
               el('.cart__order.order', [
                 el('.order__header', `Total`),
                 this.amountElement,
                 this.totalSumElement,
+                this.promoSumElement,
                 el('.order__go', [this.buyBtn]),
               ]),
             ]),
