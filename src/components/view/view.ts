@@ -25,10 +25,6 @@ class View {
       this.catalog.filters.restoreState();
       this.catalog.filterAndSort();
     }
-    if (path === '/cart') {
-      console.log('RENDER from View');
-      // this.cart.renderTable();
-    }
   }
 
   renderCatalog(data: Readonly<Product>[]): void {
