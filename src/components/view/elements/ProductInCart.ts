@@ -21,7 +21,7 @@ class ProductInCart extends BaseProduct<ProductInCartType> {
 
     setChildren(this.container, [
       el('.product__preview', [
-        el('.product_num', `${index + 1}`),
+        el('.product__num', `${index + 1}`),
         el('img', { src: this.product.thumbnail }),
         el('span', this.product.title),
       ]),
