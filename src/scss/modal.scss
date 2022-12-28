@@ -164,5 +164,11 @@
   }
   &__image {
     height: 80%;
+    @media (max-width: $l) {
+      height: 50%;
+    }
+    @media (max-width: $s) {
+      height: 35%;
+    }
   }
 }
