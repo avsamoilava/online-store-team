@@ -1,34 +1,66 @@
 .header {
-  padding: 20px;
-
   // .header__container
 
-  &__container {
+  &__container { 
+    padding: 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 20px;
+    
+    @media (max-width: $s) {
+     flex-wrap: wrap;
+     position: fixed;
+     top: 0;
+     left: 0;
+     right: 0;
+     z-index: 10;
+     background: $light;
+    }
   }
 
   // .header__logo
 
   &__logo {
+    display: flex;
+    align-items: center;
     font-family: Marker, fantasy;
     font-size: 2.5rem;
     transition: color linear 0.36s;
+    height: 42px;
+    background: url(./assets/images/icons/logo.png) 0 0/contain no-repeat;
+    padding-left: 48px;
 
     &:hover {
       color: $accent-interactive;
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: $l) {
       font-size: 2rem;
+    }
+    @media (max-width: $m) {
+      font-size: 1.6rem;
+    }
+    @media (max-width: $s) {
+      padding-left: 0;
+      a {
+        height: 42px;
+        width: 42px;
+      }
+      
+      span {
+        display: none;
+      }
     }
   }
 
   // .header__nav
 
   &__nav {
-    flex: 0 0 20%;
+    flex: 0 0 30%;
+    @media (max-width: $m) {
+      flex: 0 0 20%;
+    }
   }
 
   // .header__total
@@ -43,7 +75,11 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 300px;
+    gap: 40px;
+    
+    @media (max-width: $s) {
+     flex-grow: 1;
+    }
   }
 
   &__cart {
@@ -97,6 +133,7 @@
     width: 100%;
     display: flex;
     justify-content: space-between;
+    gap: 20px;
   }
 
   // .nav__item
@@ -125,6 +162,23 @@
       color: $accent-interactive;
       &::after {
         transform: scale(1);
+      }
+      svg {
+        fill: $accent;
+      }
+    }
+    svg {
+      display: none;
+      height: 34px;
+      width: 34px;
+    }
+
+    @media (max-width: $m) {
+      span {
+        display: none;
+      }
+      svg {
+        display: block;
       }
     }
   }
