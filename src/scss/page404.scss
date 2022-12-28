@@ -1,16 +1,29 @@
 .error {
-  background: url(./assets/images/404/404-2.svg) 90% 25%/auto no-repeat,
-  url(./assets/images/404/404-3.svg) 0% 0%/auto no-repeat,
-  url(./assets/images/404/404-4.svg) 15% 60%/auto no-repeat,
-  url(./assets/images/404/404-5.svg) 60% 22%/auto no-repeat,
-  url(./assets/images/404/404-6.svg) 80% 75%/auto no-repeat;
-
-  position: absolute;
+  background: $light;
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  display: flex;
+  z-index: 25;
+
+  &__wrapper {
+    background:
+      url(./assets/images/404/404-2.svg) 90% 25%/auto no-repeat,
+      url(./assets/images/404/404-3.svg) 0% 0%/auto no-repeat,
+      url(./assets/images/404/404-4.svg) 15% 60%/auto no-repeat,
+      url(./assets/images/404/404-5.svg) 60% 22%/auto no-repeat,
+      url(./assets/images/404/404-6.svg) 80% 75%/auto no-repeat;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 22;
+    display: flex;
+  }
+
 
   &__container {
     display: flex;
@@ -26,6 +39,10 @@
     text-align: center;
     margin-bottom: 40px;
     color: $accent;
+    @media (max-width: $s) {
+      font-size: 10rem;
+      margin-bottom: 20px;
+    }
   }
 
   &__text {
@@ -33,6 +50,10 @@
     font-weight: 500;
     text-align: center;
     margin-bottom: 20px;
+    @media (max-width: $s) {
+      font-size: 2rem;
+      margin-bottom: 15px;
+    }
   }
 
   &__subtext {
@@ -41,7 +62,4 @@
     margin-bottom: 20px;
   }
 
-  &__btn {
-
-  }
 }
