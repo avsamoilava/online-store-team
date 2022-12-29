@@ -19,14 +19,13 @@
     left: 0;
     right: 0;
     background-color: rgba($accent, 0.77);
-    padding: 28px;
+    padding: 3%;
     transform: translate(-100%, -100%);
     transition: all .3s ease-in-out;
     display: flex;
     flex-direction: column;
     &-title {
-      font-size: 22px;
-      line-height: 140%;
+      font-size: 1rem;
       color: $light;
       letter-spacing: 1px;
       font-weight: 600;
@@ -35,7 +34,14 @@
         font-weight: 400;
       }
       &:not(:last-child) {
-        margin-bottom: 12px;
+        margin-bottom: 10px;
+      }
+
+      @media (min-width: $s) and (max-width: 670px) {
+        font-size: 0.8rem;
+        &:not(:last-child) {
+          margin-bottom: 8px;
+        }
       }
     }
     &-link {
@@ -45,11 +51,10 @@
       background-position: right center;
       text-transform: uppercase;
       color: $light;
-      font-size: 24px;
+      font-size: 1.2rem;
       text-align: center;
       padding-right: 32px;
       margin: auto;
-      margin-bottom: 12px;
       transition: all .3s ease-in-out;
       &:hover {
         transform: scale(1.1);
