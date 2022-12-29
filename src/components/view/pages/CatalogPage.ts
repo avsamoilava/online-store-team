@@ -13,8 +13,6 @@ class CatalogPage extends Catalog {
   }
 
   element() {
-    console.log('ELEMENT');
-
     const element: HTMLElement = el('section.catalog', [
       el('.container.catalog__container', [
         el('.catalog__content', [

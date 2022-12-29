@@ -2,6 +2,7 @@ import { Product } from '../types';
 import Controller from './controller';
 import { router } from './router';
 import { disableCurrent } from './utils';
+import { promocodes } from './utils/promocodes';
 import View from './view/view';
 
 class App {
@@ -14,6 +15,9 @@ class App {
   }
   start() {
     if (!localStorage.getItem('cart')) localStorage.setItem('cart', '[]');
+    if (!localStorage.getItem('promocodes'))
+      localStorage.setItem('promocodes', JSON.stringify(promocodes));
+
     this.controller.getAll((data) => this.view.renderCatalog(data.products));
 
     router
