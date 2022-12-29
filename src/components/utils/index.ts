@@ -43,19 +43,17 @@ export function setQueryString(key: string, value: string) {
   if (value) params.set(key, value);
   const queryString = params.toString();
   const newPath = location.pathname + `${queryString ? `?${queryString}` : ''}`;
-  // navigate(location.pathname + `${queryString ? `?${queryString}` : ''}`);
   history.pushState({}, '', newPath);
   return newPath;
-  // router.navigate(location.pathname + `${queryString ? `?${queryString}` : ''}`);
 }
 
 export const searchProducts = (el: Product, query: string) =>
-  // el.brand.toLowerCase().includes(query) ||
-  // el.category.toLowerCase().includes(query) ||
-  // String(el.price).includes(query) ||
-  // el.description.toLowerCase().includes(query) ||
-  // String(el.rating).includes(query) ||
-  // String(el.stock).includes(query) ||
+  el.brand.toLowerCase().includes(query) ||
+  el.category.toLowerCase().includes(query) ||
+  String(el.price).includes(query) ||
+  el.description.toLowerCase().includes(query) ||
+  String(el.rating).includes(query) ||
+  String(el.stock).includes(query) ||
   el.title.toLowerCase().includes(query);
 
 export const filterBy: FilterFn = (el, query, key) => {
