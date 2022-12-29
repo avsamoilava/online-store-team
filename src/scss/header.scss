@@ -1,4 +1,7 @@
 .header {
+  @media (max-width: $s) {
+    
+  }
   // .header__container
 
   &__container { 
@@ -15,7 +18,7 @@
      left: 0;
      right: 0;
      z-index: 10;
-     background: $light;
+    background: linear-gradient($light, $medium);
     }
   }
 
@@ -67,6 +70,7 @@
 
   &__total {
     font-size: 15px;
+    font-weight: 500;
   }
 
   // .header__cart
