@@ -70,11 +70,11 @@
     letter-spacing: 0.02em;
   }
   &__title {
-    $lh: 1.4rem;
+    $lh: 140%;
     font-weight: 500;
     font-size: 20px;
     line-height: $lh;
-    height: calc(3 * $lh);
+    height: calc(4 * $lh);
     letter-spacing: 0.02em;
     color: $dark;
     text-align: center;
