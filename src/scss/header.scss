@@ -41,7 +41,7 @@
     @media (max-width: $m) {
       font-size: 1.6rem;
     }
-    @media (max-width: $s) {
+    @media (max-width: 630px) {
       padding-left: 0;
       a {
         height: 42px;
@@ -130,7 +130,7 @@
   // .nav__list
 
   &__list {
-    width: 100%;
+    width: 65%;
     display: flex;
     justify-content: space-between;
     gap: 20px;
