@@ -11,6 +11,7 @@
     position: relative;
     overflow: hidden;
     width: 100%;
+    padding-bottom: 100%;
   }
   &__info {
     cursor: pointer;
@@ -66,15 +67,18 @@
     letter-spacing: 0.02em;
   }
   &__title {
+    $lh: 1.4rem;
     font-weight: 500;
     font-size: 20px;
-    line-height: 140%;
+    line-height: $lh;
+    height: calc(3 * $lh);
     letter-spacing: 0.02em;
     color: $dark;
     text-align: center;
     margin: 0 15px 7px;
   }
   &__image {
+    position: absolute;
     object-fit: cover;
     width: 100%;
     height: 100%;
@@ -102,7 +106,9 @@
     border: 1px solid $accent;
     justify-content: space-between;
     align-items: center;
-    padding: 15px;
+    padding: 3%;
+    height: 70px;
+    
   }
   &__add-btn {
     position: absolute;
