@@ -24,6 +24,10 @@
   &-small {
     padding: 5px;
   }
+
+  @media (max-width: $s) {
+    padding: 15px;
+  }
 }
 
 .copy-btn {
