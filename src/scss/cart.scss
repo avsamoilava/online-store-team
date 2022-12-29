@@ -114,6 +114,12 @@
     padding-top: 20px;
   }
 
+  @media (max-width: $s) {
+   display: flex;
+   flex-direction: column;
+   text-align: right;
+  }
+
   &__header {
     grid-column: 1/3;
     grid-row: 1/2;
