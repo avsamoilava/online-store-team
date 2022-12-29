@@ -1,6 +1,11 @@
 .catalog {
   padding: 60px 0;
   height: 100%;
+
+  @media (max-width: $s) {
+    padding: 0 0 60px 0;
+  }
+
   &__container {
     max-width: 1310px;
   }
