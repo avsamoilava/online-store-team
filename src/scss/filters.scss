@@ -7,14 +7,17 @@
     position: absolute;
     top: 0;
     left: 0;
-    right: 0;
-    max-width: 100%;
+    right: 100%;
+    max-width: 0;
+   
     z-index: 1;
     background: $light;
-    padding: 35px;
-    display: none;
+    overflow: hidden;
+    transition: all 0.5s ease-in-out;
     &--active {
-      display: block;
+      max-width: 100%;
+      right: 0;
+      padding: 35px;
     }
   }
 
