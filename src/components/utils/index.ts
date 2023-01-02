@@ -63,7 +63,7 @@ export const filterBy: FilterFn = (el, query, key) => {
 export const getParams = (): Partial<QueryParams> =>
   Object.fromEntries(new URLSearchParams(location.search).entries());
 
-function filterByRange(
+export function filterByRange(
   arr: Readonly<Product>[],
   min: number,
   max: number,
