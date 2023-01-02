@@ -141,9 +141,9 @@ class Payment extends Modal {
         this.validation.checkPhoneNum(this.form.phoneNum),
         this.validation.checkAddress(this.form.address),
         this.validation.checkEmail(this.form.email),
-        this.validation.validateCardNum(this.form.cardNum, this.cardSpans),
-        this.validation.validateCardYear(this.form.year, this.cardSpans),
-        this.validation.validateCardCode(this.form.code, this.cardSpans),
+        this.validation.checkCardNum(this.form.cardNum, this.cardSpans),
+        this.validation.checkCardYear(this.form.year, this.cardSpans),
+        this.validation.checkCardCode(this.form.code, this.cardSpans),
       ];
       if (status.every((elem) => elem)) {
         console.log('ok');
@@ -160,18 +160,18 @@ class Payment extends Modal {
 
   private cardInputHandler(): void {
     this.form.cardNum.addEventListener('blur', () => {
-      this.validation.validateCardNum(this.form.cardNum, this.cardSpans);
+      this.validation.checkCardNum(this.form.cardNum, this.cardSpans);
     });
     this.form.cardNum.addEventListener('input', () => {
       this.setPayIcon(this.form.cardNum.value);
     });
 
     this.form.year.addEventListener('blur', () => {
-      this.validation.validateCardYear(this.form.year, this.cardSpans);
+      this.validation.checkCardYear(this.form.year, this.cardSpans);
     });
 
     this.form.code.addEventListener('blur', () => {
-      this.validation.validateCardCode(this.form.code, this.cardSpans);
+      this.validation.checkCardCode(this.form.code, this.cardSpans);
     });
   }
 }

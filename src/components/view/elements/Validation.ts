@@ -1,96 +1,77 @@
 import { mount, el } from 'redom';
+import { ValidateFn } from '../../utils/validation';
+import {
+  checkNameValue,
+  checkPhoneNumValue,
+  checkAddressValue,
+  checkEmailValue,
+  validateCardNumValue,
+  validateCardYearValue,
+  validateCardCodeValue,
+} from '../../utils/validation';
 
 export class Validation {
-  checkName(input: HTMLInputElement): boolean {
-    if (input.value.split(' ').length < 2 || !input.value.split(' ').every((e) => e.length >= 3)) {
-      this.setErrorStyle(input, 'incorrect name entry');
+  checkPersonInfo(input: HTMLInputElement, checkFn: ValidateFn, field: string): boolean {
+    if (!checkFn(input.value)) {
+      this.setErrorStyle(input, `incorrect ${field} entry`);
       return false;
     } else {
       this.backStyle(input);
       return true;
     }
+  }
+
+  checkCardFields(
+    input: HTMLInputElement,
+    wrapper: HTMLElement,
+    checkFn: ValidateFn,
+    spanSelector: string,
+    field: string
+  ): boolean {
+    if (!checkFn(input.value)) {
+      const span = el(`span.${spanSelector}`, `incorrect ${field} entry`);
+      if (wrapper.children.length < 3) mount(wrapper, span);
+      input.classList.add('invalid');
+      return false;
+    } else {
+      input.classList.remove('invalid');
+      const span = wrapper.querySelector(`.${spanSelector}`);
+      if (span) {
+        span.textContent = '';
+      }
+      return true;
+    }
+  }
+  checkName(input: HTMLInputElement): boolean {
+    return this.checkPersonInfo(input, checkNameValue, 'name');
   }
 
   checkPhoneNum(input: HTMLInputElement): boolean {
-    const reg = /\+375\d{9}/;
-    if (!reg.test(input.value)) {
-      this.setErrorStyle(input, 'incorrect phone number entry');
-      return false;
-    } else {
-      this.backStyle(input);
-      return true;
-    }
+    return this.checkPersonInfo(input, checkPhoneNumValue, 'phone number');
   }
 
   checkAddress(input: HTMLInputElement): boolean {
-    if (input.value.split(' ').length < 3 || !input.value.split(' ').every((e) => e.length >= 5)) {
-      this.setErrorStyle(input, 'incorrect delivery address entry');
-      return false;
-    } else {
-      this.backStyle(input);
-      return true;
-    }
+    return this.checkPersonInfo(input, checkAddressValue, 'delivery address');
   }
 
   checkEmail(input: HTMLInputElement): boolean {
-    const reg = /^[\w-\.]+@[\w-]+\.[a-z]{2,4}$/i;
-    if (!reg.test(input.value)) {
-      this.setErrorStyle(input, 'incorrect email entry');
-      return false;
-    } else {
-      this.backStyle(input);
-      return true;
-    }
+    return this.checkPersonInfo(input, checkEmailValue, 'email');
   }
-
-  validateCardNum(input: HTMLInputElement, wrapper: HTMLElement): boolean {
-    if (input.value.split(' ').join('').length !== 16) {
-      const span = el('span.span-num', 'incorrect card number entry');
-      if (wrapper.children.length < 3) mount(wrapper, span);
-      input.classList.add('invalid');
-      return false;
-    } else {
-      input.classList.remove('invalid');
-      const span = wrapper.querySelector('.span-num');
-      if (span) {
-        span.textContent = '';
-      }
-      return true;
-    }
+  checkCardNum(input: HTMLInputElement, wrapper: HTMLElement): boolean {
+    return this.checkCardFields(input, wrapper, validateCardNumValue, 'span-num', 'card number');
   }
-
-  validateCardYear(input: HTMLInputElement, wrapper: HTMLElement): boolean {
-    if (+input.value.split('/')[0] > 12 || +input.value.split('/')[0] < 1) {
-      const span = el('span.span-year', 'incorrect card expiration date');
-      if (wrapper.children.length < 3) mount(wrapper, span);
-      input.classList.add('invalid');
-      return false;
-    } else {
-      input.classList.remove('invalid');
-      const span = wrapper.querySelector('.span-year');
-      if (span) {
-        span.textContent = '';
-      }
-      return true;
-    }
+  checkCardYear(input: HTMLInputElement, wrapper: HTMLElement): boolean {
+    return this.checkCardFields(
+      input,
+      wrapper,
+      validateCardYearValue,
+      'span-year',
+      'card expiration date'
+    );
   }
-
-  validateCardCode(input: HTMLInputElement, wrapper: HTMLElement): boolean {
-    if (+input.value.length < 3) {
-      const span = el('span.span-code', 'incorrect card code entry');
-      if (wrapper.children.length < 3) mount(wrapper, span);
-      input.classList.add('invalid');
-      return false;
-    } else {
-      input.classList.remove('invalid');
-      const span = wrapper.querySelector('.span-code');
-      if (span) {
-        span.textContent = '';
-      }
-      return true;
-    }
+  checkCardCode(input: HTMLInputElement, wrapper: HTMLElement): boolean {
+    return this.checkCardFields(input, wrapper, validateCardCodeValue, 'span-code', 'card code');
   }
-
   private setErrorStyle(el: HTMLInputElement, message: string) {
     if (el.nextElementSibling) {
       el.nextElementSibling.textContent = message;
