@@ -40,6 +40,7 @@
   },
   "dependencies": {
     "imask": "^6.4.3",
+    "jest": "^29.3.1",
     "navigo": "^8.11.1",
     "nouislider": "^15.6.1",
     "redom": "^3.29.1",
