@@ -58,7 +58,7 @@ export class Promocode {
     if (this.input instanceof HTMLInputElement) {
       const val = this.input.value;
       const coupon = this.promoList.find((e) => e.name.toUpperCase() === val.toUpperCase());
-      setChildren(this.currentPromo, coupon ? [this.promoListItem(coupon)] : []);
+      setChildren(this.currentPromo, coupon && !coupon.applied ? [this.promoListItem(coupon)] : []);
     }
   }
 
