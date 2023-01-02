@@ -14,12 +14,13 @@ body {
   min-height: 100vh;
   min-width: 320px;
   font-family: Raleway, sans-serif;
+ 
 }
 main {
   flex: 1 1 auto;
   position: relative;
   @media (max-width: $s){
-    margin-top: 145px;
+    padding-top: 145px;
   }
 }
 button {
@@ -64,4 +65,16 @@ input {
   display: flex;
   flex-direction: column;
   position: relative;
+   
+  background:
+  url(./assets/images/404/404-2.svg) 90% 25%/auto no-repeat,
+  url(./assets/images/404/404-3.svg) 0% 0%/auto no-repeat,
+  url(./assets/images/404/404-4.svg) 15% 60%/auto no-repeat,
+  url(./assets/images/404/404-5.svg) 60% 22%/auto no-repeat,
+  url(./assets/images/404/404-6.svg) 80% 75%/auto no-repeat,
+  url(./assets/images/404/404-5.svg) 15% 105%/15% no-repeat,
+  url(./assets/images/404/404-5.svg) 92% 88%/7% no-repeat,
+  url(./assets/images/404/404-6.svg) 95% 10%/3% no-repeat,
+  url(./assets/images/404/404-2.svg) 65% 65%/4% no-repeat,
+  url(./assets/images/404/404-2.svg) 40% 80%/5% no-repeat;
 }

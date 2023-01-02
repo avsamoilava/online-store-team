@@ -123,6 +123,7 @@
     max-width: 300px;
     margin: 30px 0 0;
     box-shadow: 0 0 20px rgb(0 0 0 / 10%);
+    background: $light;
     
     @media (max-width: $m) {
       grid-column: 2/3;
