@@ -20,6 +20,7 @@ class CatalogPage extends Catalog {
           this.filters.element(),
           el('.catalog__products', [
             el('.catalog__controls', [
+              el('button.catalog__filters-show', { onclick: this.filters.show.bind(this.filters) }),
               this.filters.dropdown.element(),
               viewControls(this.changeView.bind(this)),
               this.filters.searchInput.element(),

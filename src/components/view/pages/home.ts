@@ -5,7 +5,6 @@ export class Home {
   element() {
     return el('section.home', [
       el('.container', [
-        el('.home__title', 'home'),
         el('.home__content', [
           el('.home__image.home__image-left'),
           el('.home__image.home__image-right'),

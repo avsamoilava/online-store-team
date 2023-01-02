@@ -2,6 +2,7 @@ import { el, setChildren } from 'redom';
 import { ProductInCartType } from '../../../types';
 import { getPriceWithDiscount } from '../../utils';
 import BaseProduct from '../classes/BaseProduct';
+import { navigate } from '../../utils';
 
 class ProductInCart extends BaseProduct<ProductInCartType> {
   private totalSum: number;
@@ -21,8 +22,11 @@ class ProductInCart extends BaseProduct<ProductInCartType> {
 
     setChildren(this.container, [
       el('.product__preview', [
-        el('.product_num', `${index + 1}`),
-        el('img', { src: this.product.thumbnail }),
+        el('.product__num', `${index + 1}`),
+        el('img', {
+          src: this.product.thumbnail,
+          onclick: () => navigate(`/details/${this.product.id}`),
+        }),
         el('span', this.product.title),
       ]),
       el('.product__disc', `${this.product.discountPercentage}%`),

@@ -1,8 +1,11 @@
 import { setChildren } from 'redom';
 
 class Modal {
-  protected modalWrap = document.querySelector('.modal') as HTMLElement;
-  private activeClass = 'modal--active';
+  constructor(
+    protected modalWrap = document.querySelector('.modal') as HTMLElement,
+    protected activeClass = 'modal--active'
+  ) {}
+
   render(content: HTMLElement) {
     this.modalWrap.addEventListener('click', (e) => this.close(e));
     setChildren(this.modalWrap, [content]);
@@ -16,7 +19,12 @@ class Modal {
 
   close(e?: Event) {
     const target = e?.target as HTMLElement;
-    if (!e || target.classList.contains('modal') || target.classList.contains('modal__close')) {
+    if (
+      !e ||
+      target.classList.contains('modal') ||
+      target.classList.contains('modal__close') ||
+      target.classList.contains('filters__close')
+    ) {
       document.body.style.overflow = 'auto';
       this.modalWrap.classList.remove(this.activeClass);
     }

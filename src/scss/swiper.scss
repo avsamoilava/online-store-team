@@ -28,18 +28,6 @@
   height: 100%;
   object-fit: cover;
 }
-/* 
-.swiper {
-  width: 100%;
-  height: 300px;
-  margin-left: auto;
-  margin-right: auto;
-} */
-
-/* .swiper-slide {
-  background-size: cover;
-  background-position: center;
-} */
 
 .mySwiper2 {
   height: 80%;
@@ -62,9 +50,9 @@
   opacity: 1;
 }
 
-/* .swiper-slide img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-} */
+.mySwiper2 {
+  .swiper-button-next,
+  .swiper-button-prev {
+    color: $accent;
+  }
+}
