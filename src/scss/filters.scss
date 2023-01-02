@@ -7,6 +7,7 @@
     position: absolute;
     top: 0;
     left: 0;
+    bottom: 0;
     right: 100%;
     max-width: 0;
     z-index: 1;
@@ -67,5 +68,17 @@
     gap: 16px;
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
+  }
+
+  &__btn {
+    height: 70px;
+    &_apply {
+      display: none;
+      @media (max-width: $l) {
+        display: block;
+        flex-grow: 1;
+      }
+    }
   }
 }

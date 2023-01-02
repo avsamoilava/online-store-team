@@ -46,7 +46,12 @@ class Filters extends Modal {
       this.block('Price:', this.priceInput.element(prices)),
       this.block('Stock:', this.stockInput.element(stock)),
       el('.filters__btns', [
-        el('button.btn', { onclick: () => this.reset() }, 'Reset filters'),
+        el('button.btn.filters__btn', { onclick: () => this.reset() }, 'Reset filters'),
+        el(
+          'button.btn.filters__btn.filters__btn_apply',
+          { onclick: () => this.close() },
+          'Apply filters'
+        ),
         copyBtnEl(),
       ]),
     ]);
