@@ -13,12 +13,17 @@ const emptyProduct = {
 };
 
 test('Функция getPriceWithDiscount верно рассчитывает стоимость продукта со скидкой', () => {
-  expect(getPriceWithDiscount({ ...emptyProduct, discountPercentage: 10, price: 100 })).toBe(90);
-  expect(getPriceWithDiscount({ ...emptyProduct, discountPercentage: 15, price: 100 })).toBe(85);
-  expect(getPriceWithDiscount({ ...emptyProduct, discountPercentage: 20, price: 100 })).toBe(80);
-  expect(getPriceWithDiscount({ ...emptyProduct, discountPercentage: 1, price: 200 })).toBe(198);
-  expect(getPriceWithDiscount({ ...emptyProduct, discountPercentage: 2, price: 200 })).toBe(196);
-  expect(getPriceWithDiscount({ ...emptyProduct, discountPercentage: 3, price: 200 })).toBe(194);
-  expect(getPriceWithDiscount({ ...emptyProduct, discountPercentage: 10, price: 1000 })).toBe(900);
-  expect(getPriceWithDiscount({ ...emptyProduct, discountPercentage: 90, price: 1000 })).toBe(100);
+  const cases = [
+    { input: { ...emptyProduct, discountPercentage: 10, price: 100 }, expected: 90 },
+    { input: { ...emptyProduct, discountPercentage: 15, price: 100 }, expected: 85 },
+    { input: { ...emptyProduct, discountPercentage: 20, price: 100 }, expected: 80 },
+    { input: { ...emptyProduct, discountPercentage: 1, price: 200 }, expected: 198 },
+    { input: { ...emptyProduct, discountPercentage: 2, price: 200 }, expected: 196 },
+    { input: { ...emptyProduct, discountPercentage: 3, price: 200 }, expected: 194 },
+    { input: { ...emptyProduct, discountPercentage: 10, price: 1000 }, expected: 900 },
+    { input: { ...emptyProduct, discountPercentage: 90, price: 1000 }, expected: 100 },
+  ];
+  cases.forEach(({ input, expected }) => {
+    expect(getPriceWithDiscount(input)).toBe(expected);
+  });
 });
