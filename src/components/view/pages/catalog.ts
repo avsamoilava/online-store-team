@@ -1,7 +1,8 @@
 import { el, setChildren } from 'redom';
 import { Product } from '../../../types';
-import { filterAndSortProducts, getProductsByPage } from '../../utils';
+import { filterAndSortProducts, getMinAndMax, getProductsByPage } from '../../utils';
 import BasePage from '../classes/BasePage';
+import Filters from '../elements/filters';
 import HeaderCart from '../elements/HeaderCart';
 import Pagination from '../elements/pagination';
 import ProductCard from '../elements/productCard';
@@ -11,6 +12,8 @@ class Catalog extends BasePage {
   public filteredData: Readonly<Product>[] = [];
   protected headerCart: HeaderCart = new HeaderCart();
   protected productsInfo = el('.catalog__info');
+  public filters: Filters = new Filters();
+
   constructor() {
     super(
       el('.products#columns3'),
@@ -48,6 +51,12 @@ class Catalog extends BasePage {
 
     const filteredProducts = getProductsByPage(productsArray, this.page, this.limit);
     this.productsListEl(filteredProducts);
+    if (this.filteredData.length) {
+      const priceValues = getMinAndMax('price', this.filteredData);
+      const stockValues = getMinAndMax('stock', this.filteredData);
+      this.filters.priceInput.restoreState(priceValues.min, priceValues.max);
+      this.filters.stockInput.restoreState(stockValues.min, stockValues.max);
+    }
   }
 
   productsListEl(filteredProducts?: Readonly<Product>[]) {

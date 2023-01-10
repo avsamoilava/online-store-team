@@ -2,17 +2,17 @@ import { el } from 'redom';
 import * as noUiSlider from 'nouislider';
 import 'nouislider/dist/nouislider.css';
 import { MinAndMax, QueryParams } from '../../../types';
-import { setQueryString } from '../../utils';
-import BaseElement from '../classes/BaseElement';
+import { getParams, setQueryString } from '../../utils';
 import { router } from '../../router';
 
-class RangeInput extends BaseElement {
+class RangeInput {
   private rangeInput: HTMLElement = el('.range__input');
   private min: number;
   private max: number;
+  protected key: keyof QueryParams;
 
   constructor(key: keyof QueryParams) {
-    super(key);
+    this.key = key;
     this.min = 0;
     this.max = 0;
   }
@@ -44,10 +44,14 @@ class RangeInput extends BaseElement {
       },
     });
   }
-  restoreState() {
-    super.restoreState((query: string | undefined) =>
-      this.setRange(query ? query.split('-') : [this.min, this.max])
-    );
+
+  restoreState(min?: number, max?: number) {
+    if (min && max) {
+      this.setRange([min, max]);
+      return;
+    }
+    const paramsString = getParams()[this.key];
+    this.setRange(paramsString ? paramsString.split('-') : [this.min, this.max]);
   }
   setRange(range: (string | number)[]) {
     (this.rangeInput as noUiSlider.target).noUiSlider?.set(range);

@@ -1,13 +1,10 @@
 import { el } from 'redom';
 import { Product } from '../../../types';
 import { getInfo, getMinAndMax } from '../../utils';
-import Filters from '../elements/filters';
 import { viewControls } from '../elements/viewControls';
 import Catalog from './catalog';
 
 class CatalogPage extends Catalog {
-  filters: Filters = new Filters();
-
   constructor() {
     super();
   }

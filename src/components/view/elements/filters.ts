@@ -10,8 +10,8 @@ import Modal from './Modal';
 
 class Filters extends Modal {
   private filtersContent: HTMLElement = el('.filters__content');
-  private priceInput: RangeInput;
-  private stockInput: RangeInput;
+  public priceInput: RangeInput;
+  public stockInput: RangeInput;
   private categoriesList: FilterList;
   private brandsList: FilterList;
   public searchInput: SearchInput;
