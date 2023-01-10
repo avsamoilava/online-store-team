@@ -1,4 +1,5 @@
 import { Product, ApiResponse } from '../../types';
+import { router } from '../router';
 import Loader from '../view/elements/Loader';
 class Controller {
   url = 'https://dummyjson.com/products';
@@ -11,12 +12,12 @@ class Controller {
     return res;
   }
 
-  getOne(id: string, cb: (data: Readonly<Product>) => void) {
+  getOne(id: string, cb: (data: Readonly<Product>) => void, onError: () => void) {
     fetch(`${this.url}/${id}`)
       .then((res) => this.errorHandler(res))
       .then((res) => res.json())
       .then((data) => cb(data))
-      .catch((err) => console.error(`There is an error: ${err}`));
+      .catch((err) => onError());
   }
 
   getAll(cb: (data: ApiResponse) => void) {

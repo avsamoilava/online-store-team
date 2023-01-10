@@ -36,9 +36,15 @@ class App {
       .on('/details/:id', (data) => {
         disableCurrent();
         if (data?.data) {
-          this.controller.getOne(data.data.id, (item: Readonly<Product>) =>
-            this.view.renderDetails(item)
-          );
+          try {
+            this.controller.getOne(
+              data.data.id,
+              (item: Readonly<Product>) => this.view.renderDetails(item),
+              () => this.view.render('404')
+            );
+          } catch (error) {
+            console.log('sdkgnsldgnsldnol');
+          }
         }
       })
       .notFound(() => this.view.render('404'))

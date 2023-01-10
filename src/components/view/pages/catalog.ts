@@ -56,6 +56,7 @@ class Catalog extends BasePage {
       const stockValues = getMinAndMax('stock', this.filteredData);
       this.filters.priceInput.restoreState(priceValues.min, priceValues.max);
       this.filters.stockInput.restoreState(stockValues.min, stockValues.max);
+    } else if (!this.filteredData.length) {
     }
   }
 
