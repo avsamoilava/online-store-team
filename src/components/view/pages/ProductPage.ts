@@ -9,6 +9,7 @@ import { getPriceWithDiscount } from '../../utils';
 import { stars } from '../elements/stars';
 import { breadCrumbs } from '../elements/breadCrumbs';
 import Modal from '../elements/Modal';
+import duplicateFilter from '../../utils/duplicate';
 
 class ProductPage extends BaseProduct<Product> {
   private slider1: HTMLElement = el('.swiper.mySwiper', {
@@ -17,6 +18,7 @@ class ProductPage extends BaseProduct<Product> {
   private slider2: HTMLElement = el('.swiper.mySwiper2');
   private nextBtn = el('.swiper-button-next');
   private prevBtn = el('.swiper-button-prev');
+  private imageList = duplicateFilter(this.product.images);
 
   constructor(product: Product) {
     super(product);
@@ -66,7 +68,7 @@ class ProductPage extends BaseProduct<Product> {
   private initSlider() {
     const swiper1 = new Swiper(this.slider1, {
       modules: [Navigation],
-      loop: this.product.images.length > 4,
+      loop: this.imageList.length > 4,
       spaceBetween: 10,
       slidesPerView: 4,
       freeMode: true,
@@ -78,7 +80,7 @@ class ProductPage extends BaseProduct<Product> {
         nextEl: this.nextBtn,
         prevEl: this.prevBtn,
       },
-      loop: this.product.images.length > 4,
+      loop: this.imageList.length > 4,
       spaceBetween: 10,
       thumbs: {
         swiper: swiper1,
@@ -91,7 +93,7 @@ class ProductPage extends BaseProduct<Product> {
     setChildren(slider, [
       el(
         '.swiper-wrapper',
-        this.product.images.map((url) => el('.swiper-slide', [el('img', { src: url })]))
+        this.imageList.map((url) => el('.swiper-slide', [el('img', { src: url })]))
       ),
       ...btns,
     ]);
