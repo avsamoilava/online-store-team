@@ -1,0 +1,83 @@
+.btn {
+  padding: 22px;
+  font-size: 17px;
+  line-height: 138.9%;
+  text-align: center;
+  letter-spacing: 0.02em;
+  border: 1px solid $accent-interactive;
+  transition: all .3s ease-in-out;
+  color: $accent-interactive;
+  &:hover {
+    background-color: $accent-interactive;
+    color: $light;
+    box-shadow: 0 0 6px rgba($dark, 0.5);
+  }
+  &-fill {
+    background-color: $accent-interactive;
+    color: $light;
+    &:hover {
+      border-color: $accent;
+      background-color: $accent;
+    }
+  }
+
+  &-small {
+    padding: 5px;
+  }
+
+  @media (max-width: $s) {
+    padding: 15px;
+  }
+}
+
+.copy-btn {
+  width: 70px;
+  height: 70px;
+  position: relative;
+  padding: 16px;
+  &::after {
+    content: "";
+    position: absolute;
+    width: 100px;
+    height: 47px;
+    padding: 12px;
+    background-color: #333;
+    color: #fff;
+    z-index: 20;
+    text-align: center;
+    top: -60px;
+    left: -15px;
+    opacity: 0;
+    pointer-events: none;
+    transition: all .3s ease-in-out;
+    transform: translateY(8px);
+  }
+  svg {
+    transition: all .3s ease-in-out;
+  }
+  &:hover {
+    svg {
+      fill: #fff;
+    }
+    &::after {
+      content: "Copy";
+      pointer-events: all;
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  &--active {
+    background-color: $accent-interactive;
+    svg {
+      fill: #fff;
+    }
+    &:hover::after {
+      content: "Copied!";
+    }
+    &::after {
+      content: "Copied!";
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+}

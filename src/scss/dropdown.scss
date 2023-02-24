@@ -1,0 +1,80 @@
+.dropdown {
+  position: relative;
+  border: 2px solid $accent;
+  flex: 1 1 30%;
+  &__text {
+    pointer-events: none;
+  }
+  &__top {
+    cursor: pointer;
+    padding: 15px 20px;
+    padding-right: 50px;
+    height: 100%;
+    background-color: $light;
+    transition: all .3s ease-in-out;
+    &::before {
+      content: "";
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      background-image: url('./assets/images/icons/triangle.svg');
+      width: 17px;
+      height: 12px;
+      background-repeat: no-repeat;
+      background-size: 17px 12px;
+      transform: translateY(-50%);
+      transition: all .3s ease-in-out;
+    }
+    &:hover {
+      background-color: $medium;
+    }
+  }
+  &__close {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    top: 0;
+    right: -40px;
+    cursor: pointer;
+    transition: all .3s ease-in-out;
+    display: none;
+    &:hover {
+      transform: scale(1.1);
+    }
+    &--active {
+      display: block;
+    }
+  }
+  &__list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    transform-origin: top;
+    transition: all .3s ease-in-out;
+    transform: scaleY(0);
+    z-index: 10;
+    width: 100%;
+    outline: 2px solid $accent;
+  }
+  &__top--active {
+    & + .dropdown__list {
+      transform: scaleY(1);
+    }
+    &::before {
+      transform: translateY(-50%) rotate(180deg);
+    }
+  }
+  &__item {
+    padding: 15px 20px;
+    cursor: pointer;
+    background-color: $light;
+    transition: all .3s ease-in-out;
+    &:not(:last-child) {
+      border-bottom: 1px solid #999;
+    }
+    &:hover {
+      padding-left: 25px;
+      background-color: $medium;
+    }
+  }
+}

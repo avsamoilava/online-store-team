@@ -1,0 +1,159 @@
+.details {
+  padding: 20px 10px;
+  &__content {
+    flex: 0 0 45%;
+  }
+
+  &__container {
+    display: flex;
+    gap: 40px;
+
+    @media (max-width: $m) {
+      flex-direction: column;
+    }
+  }
+
+  &__content {
+    @media (max-width: $m) {
+      display: grid;
+      grid-template-columns: 40% 60%;
+      grid-template-rows: repeat(7, auto);
+      column-gap: 15px;
+      align-items: center;
+    }
+    @media (max-width: $s) {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  &__title {
+    font-size: 2.5rem;
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
+
+  &__desc {
+    margin: 20px 0;
+    font-style: italic;
+  }
+
+  &__price {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+
+
+    &_full {
+     text-decoration: line-through;
+     color: $placeholders;
+     font-size: 1.5rem;
+     @media (max-width: $s) {
+      font-size: 1.2rem;
+     }
+    }
+
+    &_final {
+      font-size: 3rem;
+      font-weight: 500;
+      color: $accent-extra;
+      @media (max-width: $s) {
+        font-size: 2rem;
+       }
+    }
+  }
+
+  &__brand {
+    margin-bottom: 10px;
+    span:first-child {
+      color: $placeholders;
+    }
+
+    span:last-child {
+      font-size: 1.5rem;
+      padding-left: 5px;
+    }
+  }
+
+  &__rate {
+    margin-bottom: 10px;
+    span:first-child {
+      color: $placeholders;
+    }
+    span:last-child {
+      font-size: 1.5rem;
+      padding-left: 5px;
+    }
+  }
+
+  &__category {
+    margin: 10px 0;
+    span:first-child {
+      color: $placeholders;
+    }
+    span:last-child {
+      font-size: 1.5rem;
+      padding-left: 5px;
+    }
+  }
+
+  &__discount {
+    margin-bottom: 10px;
+    span:first-child {
+      color: $placeholders;
+    }
+    span:last-child {
+      font-size: 1.5rem;
+      padding-left: 5px;
+    }
+  }
+
+  &__slider {
+    max-width: 45%;
+    @media (max-width: $m) {
+      flex: 1 0 auto;
+      max-width: 100%;
+    }
+  }
+
+  &__buy-info {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 350px;
+    margin: 30px 0 0;
+    box-shadow: 0 0 20px rgb(0 0 0 / 10%);
+    background: $light;
+    
+    @media (max-width: $m) {
+      grid-column: 2/3;
+      grid-row: 1/6;
+      display: block; 
+      max-width: 100%;
+    }
+
+    @media (max-width: $s) {
+      align-self: center;
+    }
+  }
+
+  .card__btn {
+    width: 100%;
+    height: 70px;
+    margin-bottom: 20px;
+  }
+
+  &__modal {
+    background: #6e9c9fb4;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100%;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}

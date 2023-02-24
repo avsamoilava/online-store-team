@@ -1,0 +1,158 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: $light;
+
+  &__top {
+    max-height: 405px;
+    margin-bottom: 12px;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    padding-bottom: 100%;
+  }
+  &__info {
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba($accent, 0.77);
+    padding: 3%;
+    transform: translate(-100%, -100%);
+    transition: all .3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    &-title {
+      font-size: 1rem;
+      color: $light;
+      letter-spacing: 1px;
+      font-weight: 600;
+      margin-right: auto;
+      span {
+        font-weight: 400;
+      }
+      &:not(:last-child) {
+        margin-bottom: 10px;
+      }
+
+      @media (min-width: $s) and (max-width: 670px) {
+        font-size: 0.8rem;
+        &:not(:last-child) {
+          margin-bottom: 8px;
+        }
+      }
+    }
+    &-link {
+      background-image: url('./assets/arrow.svg');
+      background-repeat: no-repeat;
+      background-size: 20px 30px;
+      background-position: right center;
+      text-transform: uppercase;
+      color: $light;
+      font-size: 1.2rem;
+      text-align: center;
+      padding-right: 32px;
+      margin: auto;
+      transition: all .3s ease-in-out;
+      &:hover {
+        transform: scale(1.1);
+      }
+    }
+  }
+  &__price {
+    color: $accent-extra;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 140%;
+    margin-bottom: 12px;
+    letter-spacing: 0.02em;
+  }
+  &__title {
+    $lh: 140%;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: $lh;
+    height: calc(4 * $lh);
+    letter-spacing: 0.02em;
+    color: $dark;
+    text-align: center;
+    margin: 0 15px 7px;
+    @media (max-width: $s) {
+      font-size: 1rem;
+    }
+  }
+  &__image {
+    position: absolute;
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+  }
+  &__buttons {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  &__btn {
+    flex-grow: 1;
+    width: 50%;
+    &--disabled {
+      .card__btn-small.plus {
+        opacity: 0.6;
+        filter:hue-rotate(45deg);
+        pointer-events: none;
+      }
+    }
+  }
+  &__btn-wrapper {
+    position: relative;
+    display: flex;
+    border: 1px solid $accent;
+    justify-content: space-between;
+    align-items: center;
+    padding: 3%;
+    height: 70px;
+    @media (max-width: $s) {
+      height: 56px;
+    }
+  }
+  &__add-btn {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    font-size: inherit;
+    border: none;
+  }
+  &__counter {
+    font-size: 20px;
+  }
+  &__btn-small {
+    width: 40px;
+    height: 40px;
+    background-repeat: no-repeat;
+    background-size: 40px 40px;
+    transition: all .3s ease-in-out;
+    &:hover {
+      filter: brightness(1.1);
+    }
+    &:active {
+      transform: scale(0.94);
+    }
+    &.plus {
+      background-image: url('./assets/images/icons/plus.svg');
+    }
+    &.minus {
+      background-image: url('./assets/images/icons/minus.svg');
+    }
+  }
+  &:hover {
+    .card__info {
+      transform: translate(0);
+    }
+  }
+}

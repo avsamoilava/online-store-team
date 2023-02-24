@@ -1,0 +1,107 @@
+html,
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  min-height: 100vh;
+  min-width: 320px;
+  font-family: Raleway, sans-serif;
+
+}
+
+main {
+  flex: 1 1 auto;
+  position: relative;
+
+  @media (max-width: $s) {
+    margin-top: 143px;
+  }
+}
+
+button {
+  border: none;
+  cursor: pointer;
+  margin: 0;
+  padding: 0;
+  font-family: inherit;
+  background-color: transparent;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+img {
+  max-width: 100%;
+}
+
+h1,
+h2,
+h3,
+h4,
+p {
+  margin: 0;
+}
+
+input {
+  font-family: inherit;
+  border: none;
+  background-color: transparent;
+}
+
+.container {
+  max-width: 1140px;
+  padding: 0 15px;
+  margin: 0 auto;
+}
+
+.wrapper {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+
+  background:
+    url(./assets/images/404/404-2.svg) 90% 25%/16% no-repeat,
+    url(./assets/images/404/404-3.svg) 0% 0%/30% no-repeat,
+    url(./assets/images/404/404-4.svg) 10% 60%/8% no-repeat,
+    url(./assets/images/404/404-5.svg) 60% 22%/auto no-repeat,
+    url(./assets/images/404/404-6.svg) 80% 75%/auto no-repeat,
+    url(./assets/images/404/404-5.svg) 15% 100%/16% no-repeat,
+    url(./assets/images/404/404-5.svg) 92% 88%/12% no-repeat,
+    url(./assets/images/404/404-6.svg) 95% 10%/3% no-repeat,
+    url(./assets/images/404/404-2.svg) 65% 65%/6% no-repeat,
+    url(./assets/images/404/404-2.svg) 35% 80%/3% no-repeat;
+
+  @media (max-width: $m) {
+    background:
+      url(./assets/images/404/404-2.svg) 90% 25%/16% no-repeat,
+      url(./assets/images/404/404-3.svg) 0% 0%/70% no-repeat,
+      url(./assets/images/404/404-4.svg) 10% 60%/8% no-repeat,
+      url(./assets/images/404/404-5.svg) 60% 22%/auto no-repeat,
+      url(./assets/images/404/404-6.svg) 80% 75%/auto no-repeat,
+      url(./assets/images/404/404-5.svg) 15% 100%/16% no-repeat,
+      url(./assets/images/404/404-5.svg) 92% 88%/12% no-repeat,
+      url(./assets/images/404/404-6.svg) 95% 10%/3% no-repeat,
+      url(./assets/images/404/404-2.svg) 65% 65%/6% no-repeat,
+      url(./assets/images/404/404-2.svg) 35% 80%/3% no-repeat;
+  }
+}

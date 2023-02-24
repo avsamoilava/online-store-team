@@ -1,0 +1,29 @@
+//settings
+@import 'scss/variables';
+@import 'scss/settings';
+@import 'scss/fonts';
+
+//elements
+@import 'scss/header';
+@import 'scss/footer';
+@import 'scss/buttons';
+@import 'scss/productCard';
+@import 'scss/pagination';
+@import 'scss/dropdown';
+@import 'scss/filters';
+@import 'scss/checkbox';
+@import 'scss/rangeInput';
+@import 'scss/breadcrumbs';
+@import 'scss/view-controls';
+@import 'scss/swiper';
+@import 'scss/stars';
+@import 'scss/loader';
+@import 'scss/details';
+
+//pages
+@import 'scss/catalog';
+@import 'scss/home';
+@import 'scss/cart';
+@import 'scss/page404';
+@import 'scss/modal';
+
